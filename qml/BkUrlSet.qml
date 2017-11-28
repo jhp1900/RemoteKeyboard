@@ -5,7 +5,8 @@ Rectangle {
     width: 400; height: 150;
     color: "lightblue";
     z: 100;
-    radius: 5
+    radius: 5;
+    visible: false;
 
     TextEdit {
         id: urlEdit

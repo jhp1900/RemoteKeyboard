@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>qml/main.qml</file>
         <file>qml/BkUrlSet.qml</file>
+        <file>qml/MenuBar.qml</file>
+        <file>qml/MenuItem.qml</file>
     </qresource>
 </RCC>
