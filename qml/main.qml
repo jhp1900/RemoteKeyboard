@@ -3,6 +3,7 @@ import QtQuick.Controls 2.1
 import QtQuick.Window 2.2
 
 Window {
+    id: win
     visible: true
     width: Screen.width;
     height: Screen.height;
@@ -111,6 +112,7 @@ Window {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
+                                bkUrlSet.show();
                                 menuCtrol.sourceComponent = undefined;
                             }
                         }
@@ -136,25 +138,18 @@ Window {
             }
         }
 
-//        Rectangle {
-//            width: 100
-//            height: 80
-//            color: "green"
+        BkUrlSet {
+            id: bkUrlSet
+            x: (win.width - bkUrlSet.width) / 2;
+            y: (win.height - bkUrlSet.height) / 2;
+            visible: false;
+        }
 
-//            Drag.active: dragArea.drag.active
-//            Drag.hotSpot.x: 10
-//            Drag.hotSpot.y: 10
-
-//            MouseArea {
-//                id: dragArea
-//                anchors.fill: parent
-//                drag.target: parent
-//                onClicked: {
-//                    console.log("Drag On Click!")
-//                }
-//            }
-//        }
-
+        MouseArea {
+            anchors.fill: bkUrlSet;
+            drag.target: bkUrlSet;
+            drag.axis: Drag.XAndYAxis
+        }
     }
 
 
