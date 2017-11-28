@@ -3,7 +3,10 @@ TEMPLATE = app
 QT += qml quick
 CONFIG += c++11
 
-SOURCES += main.cpp
+SOURCES += \
+    source/main.cpp \
+    source/qffmpeg.cpp \
+    source/dispatching.cpp
 
 RESOURCES += qml.qrc
 
@@ -28,3 +31,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    source/qffmpeg.h \
+    source/dispatching.h \
+    source/myimageprovider.h \
+    source/rtspthread.h
+
+INCLUDEPATH += $$PWD/ffmpeg/include
+
+LIBS += $$PWD/ffmpeg/lib/avcodec.lib \
+        $$PWD/ffmpeg/lib/avdevice.lib \
+        $$PWD/ffmpeg/lib/avfilter.lib \
+        $$PWD/ffmpeg/lib/avformat.lib \
+        $$PWD/ffmpeg/lib/avutil.lib \
+        $$PWD/ffmpeg/lib/postproc.lib \
+        $$PWD/ffmpeg/lib/swresample.lib \
+        $$PWD/ffmpeg/lib/swscale.lib \
