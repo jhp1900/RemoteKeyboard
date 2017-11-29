@@ -16,7 +16,7 @@ signals:
     void callQmlRefeshImg();
 
 public slots:
-    void start();
+    void start(QString url);
     void stop();
     void SetImage(const QImage & img);
 

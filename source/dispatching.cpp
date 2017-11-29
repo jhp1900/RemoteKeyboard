@@ -13,13 +13,13 @@ Dispatching::~Dispatching()
 {
 }
 
-void Dispatching::start()
+void Dispatching::start(QString url)
 {
-    qDebug() << "Dispatching Start!!";
+    qDebug() << "Dispatching Start!! - " << url;
     ffmpeg = new QFFmpeg(this);
     connect(ffmpeg, SIGNAL(GetImage(QImage)), this, SLOT(SetImage(QImage)));
 
-    if (ffmpeg->OpenURL("rtsp://18.18.8.197:556/l")) {
+    if (ffmpeg->OpenURL(url.toLatin1().data())) {
        RtspThread * rtsp = new RtspThread(this);
        rtsp->setFFmpeg(ffmpeg);
        rtsp->start();

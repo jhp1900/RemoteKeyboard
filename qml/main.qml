@@ -66,5 +66,9 @@ Window {
         }
     }
 
+    Connections {
+        target: bkUrlSet;
+        onClickStart: dispatching.start(url);
+    }
 
 }

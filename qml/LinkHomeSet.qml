@@ -10,7 +10,8 @@ Rectangle {
 
     Rectangle {
         anchors.fill: parent;
-        color: "blue";
+        color: parent.color;
+        radius: parent.radius;
         MouseArea {
             anchors.fill: parent;
             onPressed: {
@@ -27,6 +28,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.bottom: btnAnchor.top
         color: parent.color;
+        radius: parent.radius;
 
         Text {
             id: ipText;

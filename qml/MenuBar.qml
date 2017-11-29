@@ -16,18 +16,17 @@ Rectangle {
 
         color: "#3c3c3c"
         MenuItem {
-            id: itemBk
-            innerY: 2
+            id: itemBk;
+            innerY: 2;
             showText: "背景流";
             onClicked: {
-                //dispatching.start();
                 bkUrlSet.show();
                 hide();
             }
         }
         MenuItem {
-            id: itemHome
-            innerY: 44
+            id: itemHome;
+            innerY: 44;
             showText: "连接主机";
             onClicked: {
                 linkHomeSet.show();
@@ -35,16 +34,16 @@ Rectangle {
             }
         }
         MenuItem {
-            id: itemCtrl
-            innerY: 86
+            id: itemCtrl;
+            innerY: 86;
             showText: "控制台";
             onClicked: {
                 hide();
             }
         }
         MenuItem {
-            id: itemQuit
-            innerY: 128
+            id: itemQuit;
+            innerY: 128;
             showText: "Quit";
             onClicked: {
                 Qt.quit();

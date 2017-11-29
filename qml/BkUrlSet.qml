@@ -8,9 +8,12 @@ Rectangle {
     radius: 5;
     visible: false;
 
+    signal clickStart(string url);
+
     Rectangle {
         anchors.fill: parent;
-        color: "blue";
+        color: parent.color;
+        radius: parent.radius;
         MouseArea {
             anchors.fill: parent;
             onPressed: {
@@ -56,7 +59,10 @@ Rectangle {
         }
         MouseArea {
             anchors.fill: parent
-            onClicked: console.log("Ok click")
+            onClicked: {
+                emit: clickStart(urlEdit.text)
+                onClicked: hide();
+            }
         }
     }
     Rectangle {
