@@ -2,8 +2,10 @@
 #define DISPATCHING_H
 
 #include <QObject>
-#include "myimageprovider.h"
-#include "qffmpeg.h"
+
+class MyImageProvider;
+class QFFmpeg;
+class Comm;
 
 class Dispatching : public QObject
 {
@@ -19,10 +21,14 @@ public slots:
     void start(QString url);
     void stop();
     void SetImage(const QImage & img);
+    void startKepplive(QString ip, QString port);
+    void sendAction(QString act);
 
 private:
     MyImageProvider * imgProvider;
     QFFmpeg * ffmpeg;
+    Comm * comm;
+    QString m_data;
 };
 
 #endif // DISPATCHING_H

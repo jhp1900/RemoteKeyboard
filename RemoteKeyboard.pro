@@ -6,7 +6,8 @@ CONFIG += c++11
 SOURCES += \
     source/main.cpp \
     source/qffmpeg.cpp \
-    source/dispatching.cpp
+    source/dispatching.cpp \
+    source/comm.cpp
 
 RESOURCES += qml.qrc
 
@@ -36,7 +37,8 @@ HEADERS += \
     source/qffmpeg.h \
     source/dispatching.h \
     source/myimageprovider.h \
-    source/rtspthread.h
+    source/rtspthread.h \
+    source/comm.h
 
 INCLUDEPATH += $$PWD/ffmpeg/include
 
@@ -48,3 +50,5 @@ LIBS += $$PWD/ffmpeg/lib/avcodec.lib \
         $$PWD/ffmpeg/lib/postproc.lib \
         $$PWD/ffmpeg/lib/swresample.lib \
         $$PWD/ffmpeg/lib/swscale.lib \
+
+LIBS += $$PWD/lib/ws2_32.lib

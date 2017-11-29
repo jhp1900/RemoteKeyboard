@@ -8,6 +8,8 @@ Rectangle {
     radius: 5;
     visible: false;
 
+    signal clickLinkHome(string ip, string port);
+
     Rectangle {
         anchors.fill: parent;
         color: parent.color;
@@ -45,6 +47,7 @@ Rectangle {
             anchors.right: portText.left;
             anchors.rightMargin: 20;
             anchors.verticalCenter: parent.verticalCenter;
+            text: "127.0.0.1";
             Rectangle {
                 anchors.fill: parent
                 anchors.margins: -8
@@ -68,7 +71,7 @@ Rectangle {
             anchors.right: parent.right;
             anchors.rightMargin: 50
             anchors.verticalCenter: parent.verticalCenter;
-
+            text: "12307"
             Rectangle {
                 anchors.fill: parent
                 anchors.margins: -8
@@ -98,7 +101,10 @@ Rectangle {
         }
         MouseArea {
             anchors.fill: parent
-            onClicked: console.log("Ok click")
+            onClicked: {
+                emit: clickLinkHome(ipEdit.text, portEdit.text);
+                hide();
+            }
         }
     }
     Rectangle {

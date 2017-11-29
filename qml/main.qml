@@ -71,4 +71,8 @@ Window {
         onClickStart: dispatching.start(url);
     }
 
+    Connections {
+        target: linkHomeSet
+        onClickLinkHome: dispatching.startKepplive(ip, port);
+    }
 }

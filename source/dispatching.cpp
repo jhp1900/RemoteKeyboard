@@ -1,11 +1,16 @@
 #include <QDebug>
 
 #include "dispatching.h"
+#include "myimageprovider.h"
+#include "qffmpeg.h"
 #include "rtspthread.h"
+#include "comm.h"
 
 Dispatching::Dispatching(MyImageProvider * imgPro, QObject *parent)
     : QObject(parent)
     , imgProvider(imgPro)
+    , ffmpeg(NULL)
+    , comm(NULL)
 {
 }
 
@@ -37,4 +42,22 @@ void Dispatching::SetImage(const QImage &img)
         imgProvider->setPixmap(QPixmap::fromImage(img.scaled(1920, 1080)));
         emit callQmlRefeshImg();
     }
+}
+
+void Dispatching::startKepplive(QString ip, QString port)
+{
+    m_data = "456123789";
+    qDebug() << ip << " : " << port;
+    comm = new Comm(this);
+    comm->linkInfo(ip, port);
+    //comm->sendData("m_data");
+    comm->start();
+}
+
+void Dispatching::sendAction(QString act)
+{
+    if (!comm)
+        return;
+    comm->sendData("act.toLatin1().data()");
+    qDebug() << "send action";
 }
