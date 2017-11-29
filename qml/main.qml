@@ -17,6 +17,10 @@ Window {
             id: img
             anchors.fill: parent
             source: "image://provider"
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: menuBar.hide();
+            }
         }
 
         Connections {
@@ -38,11 +42,8 @@ Window {
             color: "red"
 
             MouseArea {
-                id:btnMenu;
                 anchors.fill: parent;
-                onClicked: {
-                    menuBar.show();
-                }
+                onClicked: menuBar.show();
             }
         }
 
@@ -55,13 +56,13 @@ Window {
         BkUrlSet {
             id: bkUrlSet
             x: (win.width - bkUrlSet.width) / 2;
-            y: (win.height - bkUrlSet.height) / 2;
+            y: 150;
         }
 
-        MouseArea {
-            anchors.fill: bkUrlSet;
-            drag.target: bkUrlSet;
-            drag.axis: Drag.XAndYAxis
+        LinkHomeSet {
+            id: linkHomeSet
+            x: (win.width - linkHomeSet.width) / 2;
+            y: 300;
         }
     }
 

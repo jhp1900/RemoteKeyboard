@@ -6,7 +6,7 @@ Rectangle {
     visible: false;
 
     property int innerWidth: menuBtn.width;
-    property int innerHeight: 172;
+    property int innerHeight: 170;
 
     Rectangle {
         id: columnLay
@@ -30,6 +30,7 @@ Rectangle {
             innerY: 44
             showText: "连接主机";
             onClicked: {
+                linkHomeSet.show();
                 hide();
             }
         }

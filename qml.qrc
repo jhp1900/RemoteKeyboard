@@ -4,5 +4,7 @@
         <file>qml/BkUrlSet.qml</file>
         <file>qml/MenuBar.qml</file>
         <file>qml/MenuItem.qml</file>
+        <file>qml/LinkHomeSet.qml</file>
+        <file>qml/Mask.qml</file>
     </qresource>
 </RCC>
