@@ -2,6 +2,8 @@ import QtQuick 2.6
 import QtQuick.Controls 2.1
 import QtQuick.Window 2.2
 
+import "../js/componentCreation.js" as ChScript;
+
 Window {
     id: win
     visible: true
@@ -63,6 +65,47 @@ Window {
             id: linkHomeSet
             x: (win.width - linkHomeSet.width) / 2;
             y: 300;
+        }
+
+        Rectangle {
+            id: randomAdd
+            width: 50; height: 50;
+            anchors.top: menuBtn.top;
+            anchors.right: menuBtn.left
+            anchors.rightMargin: 10;
+            color: "#06849d"
+            Text {
+                anchors.centerIn: parent;
+                text: "Random"
+            }
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: {
+                    console.log("Click Random Add");
+                    ChScript.createChObj(600, 500, "CH2", "CH-", 0);
+                }
+            }
+        }
+
+        Rectangle {
+            id: firstAdd
+            width: 50; height: 50;
+            anchors.top: menuBtn.top;
+            anchors.right: randomAdd.left
+            anchors.rightMargin: 10;
+            color: "#06849d"
+            Text {
+                anchors.centerIn: parent;
+                text: "First"
+            }
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: {
+                    console.log("Click First Add");
+                    ChScript.createChObj(100, 100, "CH1", "CH", 0);
+                    ChScript.createChObj(300, 500, "CH2", "CH-", 0);
+                }
+            }
         }
     }
 

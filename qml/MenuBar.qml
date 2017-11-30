@@ -84,8 +84,8 @@ Rectangle {
     PropertyAnimation {
         id: animHeightIncrease
         target: barRoot
-        duration: 200
-        easing.type: Easing.OutBounce;
+        duration: 100
+        easing.type: Easing.InExpo;
         property: "height";
         from: 0;
         to: barRoot.height
@@ -93,8 +93,8 @@ Rectangle {
     PropertyAnimation {
         id: animHeightDecrease
         target: barRoot
-        duration: 200
-        easing.type: Easing.OutBounce;
+        duration: 250
+        easing.type: Easing.InExpo;
         property: "height";
         from: barRoot.height;
         to: 0

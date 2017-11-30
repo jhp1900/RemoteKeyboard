@@ -5,6 +5,7 @@
         <file>qml/MenuBar.qml</file>
         <file>qml/MenuItem.qml</file>
         <file>qml/LinkHomeSet.qml</file>
-        <file>qml/Mask.qml</file>
+        <file>js/componentCreation.js</file>
+        <file>qml/ChItem.qml</file>
     </qresource>
 </RCC>

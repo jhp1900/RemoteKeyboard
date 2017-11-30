@@ -47,7 +47,7 @@ Rectangle {
     PropertyAnimation {
         id: animHeightIncrease
         target: itemRoot
-        duration: 200
+        duration: 250
         easing.type: Easing.OutBounce;
         property: "height";
         from: 0;
@@ -56,8 +56,8 @@ Rectangle {
     PropertyAnimation {
         id: animHeightDecrease
         target: itemRoot
-        duration: 200
-        easing.type: Easing.OutBounce;
+        duration: 250
+        easing.type: Easing.InExpo;
         property: "height";
         from: itemRoot.height;
         to: 0
@@ -66,7 +66,7 @@ Rectangle {
         id: animSmall;
         target: itemRoot;
         duration: 100;
-        easing.type: Easing.OutBounce;
+        easing.type: Easing.InExpo;
         property: "scale";
         from: 1;
         to: 0;
