@@ -34,7 +34,7 @@ public:
     ~Dispatching();
 
 private:
-    void cmpChMap();        // Compare Channel map change
+    void cmpChMap(const std::map<std::string, bool> &data);        // Compare Channel map change
 
 signals:
     void callQmlRefeshImg();

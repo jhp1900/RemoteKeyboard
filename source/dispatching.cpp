@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <iostream>
+#include <QDateTime>
 
 #include "pugixml.hpp"
 #include "pugixml.cpp"
@@ -22,24 +23,34 @@ Dispatching::~Dispatching()
 {
 }
 
-void Dispatching::cmpChMap()
+void Dispatching::cmpChMap(const std::map<std::string, bool> &data)
 {
-   std::multimap<int, std::pair<std::string, bool>> cmpResult;
+    std::multimap<int, std::pair<std::string, bool>> cmpResult;
+    std::cout << "Ergodic data map ...... " << data.size() << std::endl;
+    for (auto item = data.cbegin(); item != data.cend(); ++item) {
+        std::cout << item->first << " : " << item->second;
+        if (m_old_chs.find(item->first) == m_old_chs.end()) {
+            std::cout << " no find!" << std::endl;
+            cmpResult.insert(make_pair(1, *item));
+        } else {
+            m_old_chs.erase(item->first);
+            std::cout << " is find! OK!" << std::endl;
+        }
+    }
 
-   for (auto item = m_pack.ch.cbegin(); item != m_pack.ch.cend(); ++item) {
-       if (m_old_chs.find(item->first) == m_old_chs.end()) {
-           std::pair<std::string, bool> temp = make_pair(item->first, item->second);
-           cmpResult.insert(make_pair(1, temp));
-       } else {
-           m_old_chs.erase(item);
-       }
-   }
+    std::cout << "Ergodic surplus m_old_chs map ...... " << m_old_chs.size() << std::endl;
+    for (auto item = m_old_chs.cbegin(); item != m_old_chs.cend(); ++item) {
+        cmpResult.insert(make_pair(-1, *item));
+        std::cout << item->first << " : " << item->second << " is surplus!" << std::endl;
+    }
 
-   for (auto item = m_old_chs.cbegin(); item != m_old_chs.cend(); ++item) {
-       std::pair<std::string, bool> temp = { item->first, item->second };
-       cmpResult.insert(make_pair(-1, temp));
-   }
-   m_old_chs = m_pack.ch;
+    std::cout << "Ergodic cmpResult multimap ...... " << cmpResult.size() << std::endl;
+    for (auto item = cmpResult.cbegin(); item != cmpResult.cend(); ++item) {
+        std::cout << item->first << " : " << item->second.first << " - " << item->second.second << std::endl;
+    }
+
+    std::cout << std::endl;
+    m_old_chs = data;
 }
 
 void Dispatching::start(QString url)
@@ -88,7 +99,8 @@ void Dispatching::sendAction(QString act)
 
 void Dispatching::convertData(std::string data)
 {
-    //std::cout << "Convert : " << data << std::endl;
+    qDebug() << "Convert : " << QDateTime::currentDateTime().toString();
+    std::cout << data;
 
     pugi::xml_document doc;
     doc.load(data.c_str());
@@ -101,10 +113,10 @@ void Dispatching::convertData(std::string data)
     if (ch_node) {
         auto attr = ch_node.first_attribute();
         while (attr) {
-            m_pack.ch[attr.name()] = attr.as_bool();
+            pack.ch[attr.name()] = attr.as_bool();
             attr = attr.next_attribute();
         }
-        cmpChMap();
+        cmpChMap(m_pack.ch);
     }
 
     pugi::xml_node cur_node = root.child("CUR");

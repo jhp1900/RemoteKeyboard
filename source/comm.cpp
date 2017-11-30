@@ -10,13 +10,13 @@ Comm::Comm(QObject * parent)
     , m_ip("")
     , m_port("")
     //, m_send_data(NULL)
-    , m_kepplive_pwd(NULL)
+    , m_kepplive_pwd("KEPPLIVE")
 {
     WORD sockVersion = MAKEWORD(2, 2);
     WSADATA data;
     WSAStartup(sockVersion, &data);
 
-    m_kepplive_pwd = "KEPPLIVE";
+    //m_kepplive_pwd = ;
 }
 
 Comm::~Comm()
@@ -46,7 +46,7 @@ void Comm::run()
         if(m_quit_flag)
             break;
 
-        Sleep(1500);
+        Sleep(3000);
 
         m_client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
         if(m_client == INVALID_SOCKET) {
