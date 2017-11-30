@@ -22,6 +22,26 @@ Dispatching::~Dispatching()
 {
 }
 
+void Dispatching::cmpChMap()
+{
+   std::multimap<int, std::pair<std::string, bool>> cmpResult;
+
+   for (auto item = m_pack.ch.cbegin(); item != m_pack.ch.cend(); ++item) {
+       if (m_old_chs.find(item->first) == m_old_chs.end()) {
+           std::pair<std::string, bool> temp = make_pair(item->first, item->second);
+           cmpResult.insert(make_pair(1, temp));
+       } else {
+           m_old_chs.erase(item);
+       }
+   }
+
+   for (auto item = m_old_chs.cbegin(); item != m_old_chs.cend(); ++item) {
+       std::pair<std::string, bool> temp = { item->first, item->second };
+       cmpResult.insert(make_pair(-1, temp));
+   }
+   m_old_chs = m_pack.ch;
+}
+
 void Dispatching::start(QString url)
 {
     qDebug() << "Dispatching Start!! - " << url;
@@ -50,7 +70,7 @@ void Dispatching::SetImage(const QImage &img)
 
 void Dispatching::startKepplive(QString ip, QString port)
 {
-    m_data = "456123789";
+    //m_data = "456123789";
     qDebug() << ip << " : " << port;
     comm = new Comm(this);
     comm->linkInfo(ip, port);
@@ -77,14 +97,6 @@ void Dispatching::convertData(std::string data)
         return;
 
     m_pack.clear();
-    pugi::xml_node cur_node = root.child("CUR");
-    if (cur_node){
-        m_pack.pgm = cur_node.attribute("pgm").as_uint();
-        m_pack.pvw = cur_node.attribute("pvw").as_uint();
-        m_pack.pgm_ps = cur_node.attribute("pgm_ps").as_uint();
-        m_pack.pvw_ps = cur_node.attribute("pvw_ps").as_uint();
-    }
-
     pugi::xml_node ch_node = root.child("CH");
     if (ch_node) {
         auto attr = ch_node.first_attribute();
@@ -92,9 +104,14 @@ void Dispatching::convertData(std::string data)
             m_pack.ch[attr.name()] = attr.as_bool();
             attr = attr.next_attribute();
         }
+        cmpChMap();
     }
-    std::cout << "pgm:" << m_pack.pgm << " pvw:" << m_pack.pvw << std::endl;
-    for (auto i = m_pack.ch.cbegin(); i != m_pack.ch.cend(); ++i) {
-        std::cout << "CH-name:" << i->first << " CH-vlu:" << i->second << std::endl;
+
+    pugi::xml_node cur_node = root.child("CUR");
+    if (cur_node) {
+        m_pack.pgm = cur_node.attribute("pgm").as_uint();
+        m_pack.pvw = cur_node.attribute("pvw").as_uint();
+        m_pack.pgm_ps = cur_node.attribute("pgm_ps").as_uint();
+        m_pack.pvw_ps = cur_node.attribute("pvw_ps").as_uint();
     }
 }

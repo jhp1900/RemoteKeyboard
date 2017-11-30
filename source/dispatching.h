@@ -33,6 +33,9 @@ public:
     explicit Dispatching(MyImageProvider * imgPro, QObject *parent = nullptr);
     ~Dispatching();
 
+private:
+    void cmpChMap();        // Compare Channel map change
+
 signals:
     void callQmlRefeshImg();
 
@@ -50,6 +53,8 @@ private:
     Comm * comm;
     QString m_data;
     SockPack m_pack;
+
+    std::map<std::string, bool> m_old_chs;
 };
 
 #endif // DISPATCHING_H
