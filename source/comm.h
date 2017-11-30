@@ -3,6 +3,7 @@
 
 #include <winsock2.h>
 #include <QThread>
+#include <string>
 
 class Comm : public QThread
 {
@@ -16,6 +17,9 @@ public:
     void run();
 
     void setQuitFlag(bool flag) { m_quit_flag = flag; }
+
+signals:
+    void recvPack(std::string data);
 
 private:
     bool m_quit_flag;

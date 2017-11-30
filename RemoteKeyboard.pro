@@ -40,7 +40,8 @@ HEADERS += \
     source/rtspthread.h \
     source/comm.h
 
-INCLUDEPATH += $$PWD/ffmpeg/include
+INCLUDEPATH += $$PWD/ffmpeg/include \
+               $$PWD/open_source/pugixml
 
 LIBS += $$PWD/ffmpeg/lib/avcodec.lib \
         $$PWD/ffmpeg/lib/avdevice.lib \

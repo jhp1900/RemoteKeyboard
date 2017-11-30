@@ -46,7 +46,7 @@ void Comm::run()
         if(m_quit_flag)
             break;
 
-        Sleep(1000);
+        Sleep(1500);
 
         m_client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
         if(m_client == INVALID_SOCKET) {
@@ -62,11 +62,11 @@ void Comm::run()
 
         send(m_client, m_kepplive_pwd, strlen(m_kepplive_pwd), 0);
 
-        char *recData;
-        int ret = ::recv(m_client, recData, 1024 * 2, 0);
+        char *data;
+        int ret = ::recv(m_client, data, 1024 * 2, 0);
         if(ret > 0){
-            recData[ret] = 0x00;
-            qDebug() << ret << "  :  " << recData;
+            data[ret] = 0x00;
+            emit recvPack(data);
         }
         closesocket(m_client);
     }
