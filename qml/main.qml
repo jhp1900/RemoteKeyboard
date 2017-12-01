@@ -13,6 +13,7 @@ Window {
     flags: Qt.WindowSystemMenuHint | Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint | Qt.Window
 
     signal destroyCH(string name);
+    signal switchToActivity(string pgmName, string pvwName);
 
     Rectangle {
         anchors.fill: parent;
@@ -126,6 +127,10 @@ Window {
             } else if (ref_type === 0) {
 
             }
+        }
+        onCallQmlChangeChActivity: {
+            console.log("onCallQmlChangeChActivity : " + pgmName + " - " + pvwName);
+            switchToActivity(pgmName, pvwName);
         }
     }
 

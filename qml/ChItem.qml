@@ -6,7 +6,8 @@ Rectangle {
     id: chRoot;
     width: 80;
     height: 60;
-    color: "red";
+    radius: 5
+    color: "#77cccccc";
 
     property string chName: "CH1";
     property string idCard: "CH";   // CH ; CH- ; PS ;
@@ -15,6 +16,10 @@ Rectangle {
 
     Text {
         anchors.centerIn: parent;
+        font.pixelSize: 28;
+        font.bold: true;
+        style: Text.Outline;
+        styleColor: "#ffffff";
         text: chName;
     }
     MouseArea {
@@ -23,13 +28,6 @@ Rectangle {
         onClicked: {
             console.log(chName);
         }
-    }
-
-    Component.onCompleted: {
-//        if (idCard !== "PS")
-//            animBig.start();
-//        else
-//            animBig1.start();
     }
 
     PropertyAnimation {
@@ -87,5 +85,14 @@ Rectangle {
             subName = chName.substring(0, end);
         if (subName === name)
             animSmall.start();
+    }
+
+    function onSwitchToActivity(pgm_name, pvw_name) {
+        if (chName === pgm_name)
+            color = "#77ff0000";
+        else if (chName === pvw_name)
+            color = "#7700ff00";
+        else
+            color = "#77cccccc";
     }
 }

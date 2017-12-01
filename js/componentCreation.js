@@ -18,6 +18,7 @@ function finishChCreation(x, y, name, idCard, y2) {
             item.y2 = y2;
             item.beformCreat();
             win.destroyCH.connect(item.onDestroyCH);
+            win.switchToActivity.connect(item.onSwitchToActivity);
 //            sprite.xClicked.connect(doSomething);
 //            root.testDestroy.connect(sprite.doDestroy);
         }

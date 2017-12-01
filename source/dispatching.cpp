@@ -148,9 +148,17 @@ void Dispatching::convertData(std::string data)
 
     pugi::xml_node cur_node = root.child("CUR");
     if (cur_node) {
-        m_pack.pgm = cur_node.attribute("pgm").as_uint();
-        m_pack.pvw = cur_node.attribute("pvw").as_uint();
-        m_pack.pgm_ps = cur_node.attribute("pgm_ps").as_uint();
-        m_pack.pvw_ps = cur_node.attribute("pvw_ps").as_uint();
+        auto pgm = cur_node.attribute("pgm").as_uint();
+        auto pvw = cur_node.attribute("pvw").as_uint();
+        auto pgm_ps = cur_node.attribute("pgm_ps").as_uint();
+        auto pvw_ps = cur_node.attribute("pvw_ps").as_uint();
+
+        QString pgmName = "CH" + QString::number(pgm, 10);
+        QString pvwName = "CH" + QString::number(pvw, 10);
+        if(pgm_ps > 0)
+            pgmName += "-" + QString::number(pgm_ps, 10);
+        if(pvw_ps > 0)
+            pvwName += "-" + QString::number(pvw_ps, 10);
+        emit callQmlChangeChActivity(pgmName, pvwName);
     }
 }

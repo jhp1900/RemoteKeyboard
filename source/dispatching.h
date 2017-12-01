@@ -41,6 +41,7 @@ signals:
     void callQmlRefeshImg();
     void callQmlLoadupCh(QString name, QString ch_type, int count, int index);
     void callQmlRefeshCh(QString name, QString ch_type, int ref_type);
+    void callQmlChangeChActivity(QString pgmName, QString pvwName);
 
 public slots:
     void start(QString url);

@@ -46,7 +46,7 @@ void Comm::run()
         if(m_quit_flag)
             break;
 
-        Sleep(8000);
+        Sleep(1000);
 
         m_client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
         if(m_client == INVALID_SOCKET) {

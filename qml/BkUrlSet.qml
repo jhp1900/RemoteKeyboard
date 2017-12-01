@@ -60,8 +60,8 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                emit: clickStart(urlEdit.text)
                 onClicked: hide();
+                emit: clickStart(urlEdit.text)
             }
         }
     }
