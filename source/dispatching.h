@@ -14,15 +14,15 @@ struct SockPack
 public:
     unsigned int pgm;
     unsigned int pvw;
-    int pgm_ps;
-    int pvw_ps;
-    std::map<std::string, bool> ch;
+    unsigned int pgm_ps;
+    unsigned int pvw_ps;
 
 public:
-    void clear() {
-        pgm = pvw = 0;
-        pgm_ps = pvw_ps = 0;
-        ch.clear();
+    inline bool operator !=(const SockPack &sp) {
+        if (this->pgm != sp.pgm || this->pgm_ps != sp.pgm_ps
+                || this->pvw != sp.pvw || this->pvw_ps != sp.pvw_ps)
+            return true;
+        return false;
     }
 };
 
@@ -56,9 +56,9 @@ private:
     QFFmpeg * ffmpeg;
     Comm * comm;
     QString m_data;
-    SockPack m_pack;
 
     std::map<std::string, bool> m_old_chs;
+    SockPack m_old_pack;
     bool m_first_refesh;
 };
 
