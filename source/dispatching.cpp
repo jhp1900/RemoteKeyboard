@@ -16,6 +16,7 @@ Dispatching::Dispatching(MyImageProvider * imgPro, QObject *parent)
     , imgProvider(imgPro)
     , ffmpeg(NULL)
     , comm(NULL)
+    , m_first_refesh(true)
 {
 }
 
@@ -44,13 +45,39 @@ void Dispatching::cmpChMap(const std::map<std::string, bool> &data)
         std::cout << item->first << " : " << item->second << " is surplus!" << std::endl;
     }
 
-    std::cout << "Ergodic cmpResult multimap ...... " << cmpResult.size() << std::endl;
-    for (auto item = cmpResult.cbegin(); item != cmpResult.cend(); ++item) {
-        std::cout << item->first << " : " << item->second.first << " - " << item->second.second << std::endl;
-    }
+//    std::cout << "Ergodic cmpResult multimap ...... " << cmpResult.size() << std::endl;
+//    for (auto item = cmpResult.cbegin(); item != cmpResult.cend(); ++item) {
+//        std::cout << item->first << " : " << item->second.first << " - " << item->second.second << std::endl;
+//    }
 
     std::cout << std::endl;
     m_old_chs = data;
+
+    if (cmpResult.size())
+        refeshCh(cmpResult);
+}
+
+void Dispatching::refeshCh(const std::multimap<int, std::pair<std::string, bool> > &refesh)
+{
+    if(m_first_refesh) {
+        m_first_refesh = false;
+        int count = refesh.size();
+        int i = 0;
+        std::cout << "Ergodic refesh multimap ...... " << refesh.size() << std::endl;
+        for (auto item = refesh.cbegin(); item != refesh.cend(); ++item) {
+            if(item->second.second)
+                emit callQmlLoadupCh(item->second.first.c_str(), "CH-", count, ++i);
+            else
+                emit callQmlLoadupCh(item->second.first.c_str(), "CH", count, ++i);
+        }
+    } else {
+        for (auto item = refesh.cbegin(); item != refesh.cend(); ++item) {
+            if (item->second.second)
+                emit callQmlRefeshCh(item->second.first.c_str(), "CH-", item->first);
+            else
+                emit callQmlRefeshCh(item->second.first.c_str(), "CH", item->first);
+        }
+    }
 }
 
 void Dispatching::start(QString url)
@@ -113,7 +140,7 @@ void Dispatching::convertData(std::string data)
     if (ch_node) {
         auto attr = ch_node.first_attribute();
         while (attr) {
-            pack.ch[attr.name()] = attr.as_bool();
+            m_pack.ch[attr.name()] = attr.as_bool();
             attr = attr.next_attribute();
         }
         cmpChMap(m_pack.ch);

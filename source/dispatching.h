@@ -35,9 +35,12 @@ public:
 
 private:
     void cmpChMap(const std::map<std::string, bool> &data);        // Compare Channel map change
+    void refeshCh(const std::multimap<int, std::pair<std::string, bool>> & refesh);
 
 signals:
     void callQmlRefeshImg();
+    void callQmlLoadupCh(QString name, QString ch_type, int count, int index);
+    void callQmlRefeshCh(QString name, QString ch_type, int ref_type);
 
 public slots:
     void start(QString url);
@@ -55,6 +58,7 @@ private:
     SockPack m_pack;
 
     std::map<std::string, bool> m_old_chs;
+    bool m_first_refesh;
 };
 
 #endif // DISPATCHING_H

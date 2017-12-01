@@ -12,6 +12,8 @@ Window {
     title: qsTr("RemoteKeyboard")
     flags: Qt.WindowSystemMenuHint | Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint | Qt.Window
 
+    signal destroyCH(string name);
+
     Rectangle {
         anchors.fill: parent;
 
@@ -22,14 +24,6 @@ Window {
             MouseArea {
                 anchors.fill: parent;
                 onClicked: menuBar.hide();
-            }
-        }
-
-        Connections {
-            target: dispatching
-            onCallQmlRefeshImg: {
-                img.source = ""
-                img.source = "image://provider"
             }
         }
 
@@ -109,11 +103,37 @@ Window {
         }
     }
 
+    // C++ Call QML ****************************************************************
+    Connections {
+        target: dispatching
+        onCallQmlRefeshImg: {
+            img.source = ""
+            img.source = "image://provider"
+        }
+        onCallQmlLoadupCh: {
+            console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index);
+            var gap = (win.width - count * 80) / (count + 1);
+            var h = (win.height - 60) / 2;
+            ChScript.createChObj(gap * index, h, name, ch_type, 0);
+        }
+        onCallQmlRefeshCh: {
+            if (ref_type === 1) {
+                var w = win.width - 120;
+                var h = (win.height - 60) / 2;
+                ChScript.createChObj(w, h, name, ch_type, 0);
+            } else if (ref_type === -1) {
+                emit: destroyCH(name);
+            } else if (ref_type === 0) {
+
+            }
+        }
+    }
+
+    // QML Call C++ ****************************************************************
     Connections {
         target: bkUrlSet;
         onClickStart: dispatching.start(url);
     }
-
     Connections {
         target: linkHomeSet
         onClickLinkHome: dispatching.startKepplive(ip, port);

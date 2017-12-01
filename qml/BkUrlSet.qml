@@ -30,7 +30,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: 40
-        text: "rtsp://192.168.31.104:556/123";
+        text: "rtsp://18.18.8.197:554/123";
         Rectangle {
             anchors.fill: parent
             anchors.margins: -10

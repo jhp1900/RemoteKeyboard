@@ -50,6 +50,7 @@ Rectangle {
         property: "scale";
         from: 1;
         to: 0;
+        onStopped: chRoot.destroy();
     }
     PropertyAnimation {
         id: animDown;
@@ -77,5 +78,14 @@ Rectangle {
             ChScript.createChObj(chRoot.x, chRoot.y + 200, chName + "-5", "PS", chRoot.y);
             ChScript.createChObj(chRoot.x, chRoot.y + 300, chName + "-6", "PS", chRoot.y);
         }
+    }
+
+    function onDestroyCH(name) {
+        var subName = chName;
+        var end = chName.indexOf('-');
+        if (end > 0)
+            subName = chName.substring(0, end);
+        if (subName === name)
+            animSmall.start();
     }
 }
