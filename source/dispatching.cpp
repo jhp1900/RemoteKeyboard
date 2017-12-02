@@ -154,12 +154,15 @@ void Dispatching::convertData(std::string data)
         sp.pgm_ps = cur_node.attribute("pgm_ps").as_uint();
         sp.pvw_ps = cur_node.attribute("pvw_ps").as_uint();
 
+        qDebug() << "SockInfo: " << sp.pgm << " - " << sp.pvw << " - " << sp.pgm_ps << " - " << sp.pvw_ps;
+
         if (m_old_pack != sp) {
             QString pgmName = "CH" + QString::number(sp.pgm, 10);
             QString pvwName = "CH" + QString::number(sp.pvw, 10);
-            if(sp.pgm_ps > 0)
+
+            if(sp.pgm_ps > 0 && ch_data[pgmName.toLatin1().data()])
                 pgmName += "-" + QString::number(sp.pgm_ps, 10);
-            if(sp.pvw_ps > 0)
+            if(sp.pvw_ps > 0 && ch_data[pvwName.toLatin1().data()])
                 pvwName += "-" + QString::number(sp.pvw_ps, 10);
 
             emit callQmlChangeChActivity(pgmName, pvwName);
