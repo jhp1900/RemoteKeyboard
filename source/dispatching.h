@@ -48,8 +48,9 @@ public slots:
     void stop();
     void SetImage(const QImage & img);
     void startKepplive(QString ip, QString port);
-    void sendAction(QString act);
     void convertData(std::string data);
+
+    void onQmlChSwitch(QString name, bool single);
 
 private:
     MyImageProvider * imgProvider;

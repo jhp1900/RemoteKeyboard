@@ -112,7 +112,7 @@ Window {
             img.source = "image://provider"
         }
         onCallQmlLoadupCh: {
-            console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index);
+            console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + ch_type);
             var gap = (win.width - count * 80) / (count + 1);
             var h = (win.height - 60) / 2;
             ChScript.createChObj(gap * index, h, name, ch_type, 0);
@@ -142,5 +142,16 @@ Window {
     Connections {
         target: linkHomeSet
         onClickLinkHome: dispatching.startKepplive(ip, port);
+    }
+
+    // JS Function *****************************************************************
+    function onChClicked(name) {
+        console.log("main qml on clicked + " + name);
+        dispatching.onQmlChSwitch(name, true);
+    }
+
+    function onChDbClicked(name) {
+        console.log("main qml on double clicked + " + name);
+        dispatching.onQmlChSwitch(name, false);
     }
 }

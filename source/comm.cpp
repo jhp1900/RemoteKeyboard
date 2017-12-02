@@ -1,5 +1,6 @@
 #include <cstring>
 #include <QDebug>
+#include <iostream>
 
 #include "comm.h"
 
@@ -33,8 +34,17 @@ bool Comm::linkInfo(QString ip, QString port)
     m_home_addr.sin_addr.S_un.S_addr = inet_addr(m_ip.toLatin1().data());
 }
 
-bool Comm::sendData(std::string data)
+bool Comm::sendData(QString data)
 {
+    SOCKET client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (client == INVALID_SOCKET)
+        return false;
+    if(::connect(client, (sockaddr*)&m_home_addr, sizeof(m_home_addr)) == SOCKET_ERROR) {
+        closesocket(client);
+        return false;
+    }
+    send(client, data.toLatin1().data(), data.length(), 0);
+    closesocket(client);
     return true;
 }
 
@@ -61,9 +71,10 @@ void Comm::run()
         }
 
         send(m_client, m_kepplive_pwd, strlen(m_kepplive_pwd), 0);
-
+        //std::cout << "send and : " << m_kepplive_pwd << "  ";
         char *data;
         int ret = ::recv(m_client, data, 1024 * 2, 0);
+        //std::cout << ret << std::endl;
         if(ret > 0){
             data[ret] = 0x00;
             emit recvPack(data);

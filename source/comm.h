@@ -13,7 +13,7 @@ public:
     ~Comm();
 
     bool linkInfo(QString ip, QString port);
-    bool sendData(std::string data);
+    bool sendData(QString data);
     void run();
 
     void setQuitFlag(bool flag) { m_quit_flag = flag; }

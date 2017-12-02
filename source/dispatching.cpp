@@ -27,22 +27,22 @@ Dispatching::~Dispatching()
 void Dispatching::cmpChMap(const std::map<std::string, bool> &data)
 {
     std::multimap<int, std::pair<std::string, bool>> cmpResult;
-    std::cout << "Ergodic data map ...... " << data.size() << std::endl;
+//    std::cout << "Ergodic data map ...... " << data.size() << std::endl;
     for (auto item = data.cbegin(); item != data.cend(); ++item) {
-        std::cout << item->first << " : " << item->second;
+//        std::cout << item->first << " : " << item->second;
         if (m_old_chs.find(item->first) == m_old_chs.end()) {
-            std::cout << " no find!" << std::endl;
+//            std::cout << " no find!" << std::endl;
             cmpResult.insert(make_pair(1, *item));
         } else {
             m_old_chs.erase(item->first);
-            std::cout << " is find! OK!" << std::endl;
+//            std::cout << " is find! OK!" << std::endl;
         }
     }
 
-    std::cout << "Ergodic surplus m_old_chs map ...... " << m_old_chs.size() << std::endl;
+//    std::cout << "Ergodic surplus m_old_chs map ...... " << m_old_chs.size() << std::endl;
     for (auto item = m_old_chs.cbegin(); item != m_old_chs.cend(); ++item) {
         cmpResult.insert(make_pair(-1, *item));
-        std::cout << item->first << " : " << item->second << " is surplus!" << std::endl;
+//        std::cout << item->first << " : " << item->second << " is surplus!" << std::endl;
     }
 
 //    std::cout << "Ergodic cmpResult multimap ...... " << cmpResult.size() << std::endl;
@@ -50,7 +50,7 @@ void Dispatching::cmpChMap(const std::map<std::string, bool> &data)
 //        std::cout << item->first << " : " << item->second.first << " - " << item->second.second << std::endl;
 //    }
 
-    std::cout << std::endl;
+//    std::cout << std::endl;
     m_old_chs = data;
 
     if (cmpResult.size())
@@ -101,6 +101,7 @@ void Dispatching::stop()
 void Dispatching::SetImage(const QImage &img)
 {
     if (img.height() > 0) {
+        //imgProvider->setImage(img);
         imgProvider->setPixmap(QPixmap::fromImage(img.scaled(1920, 1080)));
         emit callQmlRefeshImg();
     }
@@ -116,18 +117,10 @@ void Dispatching::startKepplive(QString ip, QString port)
     comm->start();
 }
 
-void Dispatching::sendAction(QString act)
-{
-    if (!comm)
-        return;
-    comm->sendData("act.toLatin1().data()");
-    qDebug() << "send action";
-}
-
 void Dispatching::convertData(std::string data)
 {
-    qDebug() << "Convert : " << QDateTime::currentDateTime().toString();
-    std::cout << data;
+//    qDebug() << "Convert : " << QDateTime::currentDateTime().toString();
+//    std::cout << data;
 
     pugi::xml_document doc;
     doc.load(data.c_str());
@@ -154,7 +147,7 @@ void Dispatching::convertData(std::string data)
         sp.pgm_ps = cur_node.attribute("pgm_ps").as_uint();
         sp.pvw_ps = cur_node.attribute("pvw_ps").as_uint();
 
-        qDebug() << "SockInfo: " << sp.pgm << " - " << sp.pvw << " - " << sp.pgm_ps << " - " << sp.pvw_ps;
+        //qDebug() << "SockInfo: " << sp.pgm << " - " << sp.pvw << " - " << sp.pgm_ps << " - " << sp.pvw_ps;
 
         if (m_old_pack != sp) {
             QString pgmName = "CH" + QString::number(sp.pgm, 10);
@@ -168,5 +161,20 @@ void Dispatching::convertData(std::string data)
             emit callQmlChangeChActivity(pgmName, pvwName);
             m_old_pack = sp;
         }
+    }
+}
+
+void Dispatching::onQmlChSwitch(QString name, bool single)
+{
+    if (!comm)
+        return;
+    if(single){
+        name.replace(0, 2, "PVW");
+        comm->sendData(name);
+        qDebug() << "Send : " << name;
+    } else {
+        name.replace(0, 2, "PGM");
+        comm->sendData(name);
+        qDebug() << "Send : " << name;
     }
 }

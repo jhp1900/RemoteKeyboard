@@ -11,8 +11,10 @@ Rectangle {
 
     property string chName: "CH1";
     property string idCard: "CH";   // CH ; CH- ; PS ;
-
     property int y2;
+
+    signal chClicked(string name);
+    signal chDbClicked(string name);
 
     Text {
         anchors.centerIn: parent;
@@ -26,7 +28,12 @@ Rectangle {
         anchors.fill: parent;
         drag.target: chRoot;
         onClicked: {
-            console.log(chName);
+            //console.log("clicked" + chName);
+            emit: chClicked(chName);
+        }
+        onDoubleClicked: {
+            //console.log("Double Clicked" + chName);
+            emit: chDbClicked(chName);
         }
     }
 
