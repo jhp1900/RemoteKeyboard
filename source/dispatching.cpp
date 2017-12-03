@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <iostream>
 #include <QDateTime>
+#include <QTimer>
 
 #include "pugixml.hpp"
 #include "pugixml.cpp"
@@ -17,7 +18,10 @@ Dispatching::Dispatching(MyImageProvider * imgPro, QObject *parent)
     , ffmpeg(NULL)
     , comm(NULL)
     , m_first_refesh(true)
+    , m_pTimer(NULL)
 {
+    m_pTimer = new QTimer(this);
+    connect(m_pTimer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
 }
 
 Dispatching::~Dispatching()
@@ -164,17 +168,25 @@ void Dispatching::convertData(std::string data)
     }
 }
 
+void Dispatching::handleTimeout()
+{
+    m_pTimer->stop();
+    comm->sendData(m_pvw_name);
+    qDebug() << "Send PVW : " << m_pvw_name;
+}
+
 void Dispatching::onQmlChSwitch(QString name, bool single)
 {
     if (!comm)
         return;
     if(single){
         name.replace(0, 2, "PVW");
-        comm->sendData(name);
-        qDebug() << "Send : " << name;
+        m_pvw_name = name;
+        m_pTimer->start(200);
     } else {
+        m_pTimer->stop();
         name.replace(0, 2, "PGM");
         comm->sendData(name);
-        qDebug() << "Send : " << name;
+        qDebug() << "Send PGM : " << name;
     }
 }

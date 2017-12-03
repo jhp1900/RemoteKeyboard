@@ -8,6 +8,7 @@
 class MyImageProvider;
 class QFFmpeg;
 class Comm;
+class QTimer;
 
 struct SockPack
 {
@@ -49,6 +50,7 @@ public slots:
     void SetImage(const QImage & img);
     void startKepplive(QString ip, QString port);
     void convertData(std::string data);
+    void handleTimeout();
 
     void onQmlChSwitch(QString name, bool single);
 
@@ -61,6 +63,8 @@ private:
     std::map<std::string, bool> m_old_chs;
     SockPack m_old_pack;
     bool m_first_refesh;
+    QTimer * m_pTimer;
+    QString m_pvw_name;
 };
 
 #endif // DISPATCHING_H
