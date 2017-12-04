@@ -2,7 +2,7 @@ import QtQuick 2.7
 
 Rectangle {
     id: linkHomeRoot;
-    width: 400; height: 150;
+    width: 480; height: 200;
     color: "lightblue";
     z: 100;
     radius: 5;
@@ -34,9 +34,9 @@ Rectangle {
 
         Text {
             id: ipText;
-            width: 30;
+            width: 50;
             anchors.left: parent.left;
-            anchors.leftMargin: 50;
+            anchors.leftMargin: 30;
             anchors.verticalCenter: parent.verticalCenter;
             text: "IP:"
         }
@@ -45,12 +45,13 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter | Text.AlignHCenter
             anchors.left: ipText.right;
             anchors.right: portText.left;
-            anchors.rightMargin: 20;
+            anchors.rightMargin: 40;
             anchors.verticalCenter: parent.verticalCenter;
+            font.pixelSize: 18;
             text: "192.168.31.140";
             Rectangle {
                 anchors.fill: parent
-                anchors.margins: -8
+                anchors.margins: -14
                 color: "transparent"
                 border.width: 1
             }
@@ -58,23 +59,23 @@ Rectangle {
 
         Text {
             id: portText
-            width: 40;
+            width: 60;
             anchors.right: portEdit.left;
-            //anchors.leftMargin: 50;
             anchors.verticalCenter: parent.verticalCenter;
             text: "PORT:"
         }
         TextEdit {
             id: portEdit
-            width: 40;
+            width: 60;
             verticalAlignment: Text.AlignVCenter | Text.AlignHCenter;
             anchors.right: parent.right;
-            anchors.rightMargin: 50
+            anchors.rightMargin: 50;
             anchors.verticalCenter: parent.verticalCenter;
-            text: "12307"
+            font.pixelSize: 18;
+            text: "12307";
             Rectangle {
                 anchors.fill: parent
-                anchors.margins: -8
+                anchors.margins: -14
                 color: "transparent"
                 border.width: 1
             }
@@ -83,24 +84,24 @@ Rectangle {
 
     Item {
         id: btnAnchor;
-        height: 40;
-        anchors.bottom: linkHomeRoot.bottom
-        anchors.bottomMargin: 15
-        anchors.horizontalCenter: linkHomeRoot.horizontalCenter
+        height: 60;
+        anchors.bottom: linkHomeRoot.bottom;
+        anchors.bottomMargin: 15;
+        anchors.horizontalCenter: linkHomeRoot.horizontalCenter;
     }
     Rectangle {
-        width: 80; height: 40;
-        color: "yellow"
-        anchors.top: btnAnchor.top
-        anchors.right: btnAnchor.left
-        anchors.rightMargin: 20
-        radius: 5
+        width: 120; height: 60;
+        color: "yellow";
+        anchors.top: btnAnchor.top;
+        anchors.right: btnAnchor.left;
+        anchors.rightMargin: 20;
+        radius: 5;
         Text {
-            anchors.centerIn: parent
-            text: qsTr("Ok")
+            anchors.centerIn: parent;
+            text: qsTr("Ok");
         }
         MouseArea {
-            anchors.fill: parent
+            anchors.fill: parent;
             onClicked: {
                 emit: clickLinkHome(ipEdit.text, portEdit.text);
                 hide();
@@ -108,41 +109,41 @@ Rectangle {
         }
     }
     Rectangle {
-        width: 80; height: 40;
-        color: "yellow"
-        anchors.top: btnAnchor.top
-        anchors.left: btnAnchor.right
-        anchors.leftMargin: 20
-        radius: 5
+        width: 120; height: 60;
+        color: "yellow";
+        anchors.top: btnAnchor.top;
+        anchors.left: btnAnchor.right;
+        anchors.leftMargin: 20;
+        radius: 5;
         Text {
-            anchors.centerIn: parent
-            text: qsTr("Cancel")
+            anchors.centerIn: parent;
+            text: qsTr("Cancel");
         }
         MouseArea {
-            anchors.fill: parent
+            anchors.fill: parent;
             onClicked: hide();
         }
     }
 
     Item {
         id: closeAnchor;
-        anchors.top: linkHomeRoot.top
-        anchors.right: linkHomeRoot.right
-        anchors.topMargin: 20
-        anchors.rightMargin: 20
+        anchors.top: linkHomeRoot.top;
+        anchors.right: linkHomeRoot.right;
+        anchors.topMargin: 20;
+        anchors.rightMargin: 20;
     }
     Rectangle {
         width: 40; height: 40;
-        anchors.bottom: closeAnchor.top
-        anchors.left: closeAnchor.right
-        color: "red"
-        radius: 20
+        anchors.bottom: closeAnchor.top;
+        anchors.left: closeAnchor.right;
+        color: "red";
+        radius: 20;
         Text {
-            anchors.centerIn: parent
-            text: "X"
+            anchors.centerIn: parent;
+            text: "X";
         }
         MouseArea {
-            anchors.fill: parent
+            anchors.fill: parent;
             onClicked: hide();
         }
     }

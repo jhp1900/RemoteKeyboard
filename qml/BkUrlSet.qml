@@ -2,7 +2,7 @@ import QtQuick 2.7
 
 Rectangle {
     id: bkUrlRoot;
-    width: 400; height: 150;
+    width: 480; height: 200;
     color: "lightblue";
     z: 100;
     radius: 5;
@@ -25,15 +25,16 @@ Rectangle {
 
     TextEdit {
         id: urlEdit
-        width: 250;
-        verticalAlignment: Text.AlignVCenter | Text.AlignHCenter
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.topMargin: 40
+        width: 400;
+        verticalAlignment: Text.AlignVCenter | Text.AlignHCenter;
+        anchors.top: parent.top;
+        anchors.horizontalCenter: parent.horizontalCenter;
+        anchors.topMargin: 60;
+        font.pixelSize: 18;
         text: "rtsp://18.18.8.197:554/123";
         Rectangle {
             anchors.fill: parent
-            anchors.margins: -10
+            anchors.margins: -15
             color: "transparent"
             border.width: 1
         }
@@ -41,66 +42,66 @@ Rectangle {
 
     Item {
         id: btnAnchor;
-        height: 40;
-        anchors.bottom: bkUrlRoot.bottom
-        anchors.bottomMargin: 15
-        anchors.horizontalCenter: bkUrlRoot.horizontalCenter
+        height: 60;
+        anchors.bottom: bkUrlRoot.bottom;
+        anchors.bottomMargin: 15;
+        anchors.horizontalCenter: bkUrlRoot.horizontalCenter;
     }
     Rectangle {
-        width: 80; height: 40;
-        color: "yellow"
-        anchors.top: btnAnchor.top
-        anchors.right: btnAnchor.left
-        anchors.rightMargin: 20
-        radius: 5
+        width: 120; height: 60;
+        color: "yellow";
+        anchors.top: btnAnchor.top;
+        anchors.right: btnAnchor.left;
+        anchors.rightMargin: 20;
+        radius: 5;
         Text {
-            anchors.centerIn: parent
-            text: qsTr("Ok")
+            anchors.centerIn: parent;
+            text: qsTr("Ok");
         }
         MouseArea {
-            anchors.fill: parent
+            anchors.fill: parent;
             onClicked: {
                 onClicked: hide();
-                emit: clickStart(urlEdit.text)
+                emit: clickStart(urlEdit.text);
             }
         }
     }
     Rectangle {
-        width: 80; height: 40;
-        color: "yellow"
-        anchors.top: btnAnchor.top
-        anchors.left: btnAnchor.right
-        anchors.leftMargin: 20
-        radius: 5
+        width: 120; height: 60;
+        color: "yellow";
+        anchors.top: btnAnchor.top;
+        anchors.left: btnAnchor.right;
+        anchors.leftMargin: 20;
+        radius: 5;
         Text {
-            anchors.centerIn: parent
-            text: qsTr("Cancel")
+            anchors.centerIn: parent;
+            text: qsTr("Cancel");
         }
         MouseArea {
-            anchors.fill: parent
+            anchors.fill: parent;
             onClicked: hide();
         }
     }
 
     Item {
         id: closeAnchor;
-        anchors.top: bkUrlRoot.top
-        anchors.right: bkUrlRoot.right
-        anchors.topMargin: 20
-        anchors.rightMargin: 20
+        anchors.top: bkUrlRoot.top;
+        anchors.right: bkUrlRoot.right;
+        anchors.topMargin: 20;
+        anchors.rightMargin: 20;
     }
     Rectangle {
         width: 40; height: 40;
-        anchors.bottom: closeAnchor.top
-        anchors.left: closeAnchor.right
-        color: "red"
-        radius: 20
+        anchors.bottom: closeAnchor.top;
+        anchors.left: closeAnchor.right;
+        color: "red";
+        radius: 20;
         Text {
-            anchors.centerIn: parent
-            text: "X"
+            anchors.centerIn: parent;
+            text: "X";
         }
         MouseArea {
-            anchors.fill: parent
+            anchors.fill: parent;
             onClicked: hide();
         }
     }

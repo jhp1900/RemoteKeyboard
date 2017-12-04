@@ -30,8 +30,8 @@ Window {
 
         Rectangle {
             id: menuBtn;
-            width: 80;
-            height: 80;
+            width: 120;
+            height: 120;
             anchors.top: parent.top;
             anchors.topMargin: 10;
             anchors.right: parent.right;
@@ -61,47 +61,6 @@ Window {
             x: (win.width - linkHomeSet.width) / 2;
             y: 300;
         }
-
-        Rectangle {
-            id: randomAdd
-            width: 50; height: 50;
-            anchors.top: menuBtn.top;
-            anchors.right: menuBtn.left
-            anchors.rightMargin: 10;
-            color: "#06849d"
-            Text {
-                anchors.centerIn: parent;
-                text: "Random"
-            }
-            MouseArea {
-                anchors.fill: parent;
-                onClicked: {
-                    console.log("Click Random Add");
-                    ChScript.createChObj(600, 500, "CH3", 0, 0);
-                }
-            }
-        }
-
-        Rectangle {
-            id: firstAdd
-            width: 50; height: 50;
-            anchors.top: menuBtn.top;
-            anchors.right: randomAdd.left
-            anchors.rightMargin: 10;
-            color: "#06849d"
-            Text {
-                anchors.centerIn: parent;
-                text: "First"
-            }
-            MouseArea {
-                anchors.fill: parent;
-                onClicked: {
-                    console.log("Click First Add");
-                    ChScript.createChObj(100, 100, "CH1", 1, 0);
-                    ChScript.createChObj(300, 500, "CH2", 0, 0);
-                }
-            }
-        }
     }
 
     // C++ Call QML ****************************************************************
@@ -113,14 +72,14 @@ Window {
         }
         onCallQmlLoadupCh: {
             console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + ch_type);
-            var gap = (win.width - count * 80) / (count + 1);
-            var h = (win.height - 60) / 2;
+            var gap = (win.width - count * 100) / (count + 1);
+            var h = (win.height - 80) / 2;
             ChScript.createChObj(gap * index, h, name, ch_type, 0);
         }
         onCallQmlRefeshCh: {
             if (ref_type === 1) {
-                var w = win.width - 120;
-                var h = (win.height - 60) / 2;
+                var w = win.width - 150;
+                var h = (win.height - 80) / 2;
                 ChScript.createChObj(w, h, name, ch_type, 0);
             } else if (ref_type === -1) {
                 emit: destroyCH(name);

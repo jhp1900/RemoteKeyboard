@@ -2,13 +2,13 @@ import QtQuick 2.0
 
 Rectangle {
     id: itemRoot;
-    color: "#00718c"
+    color: "#00718c";
     border.color: Qt.lighter(color);
     visible: false;
 
     property int innerX: 2;
-    property int innerWidth: 76;
-    property int innerHeight: 40;
+    property int innerWidth: barRoot.width - 4;
+    property int innerHeight: 60;
 
     property int innerY;
     property string showText: "";
@@ -17,10 +17,11 @@ Rectangle {
 
     Text {
         anchors.centerIn: parent
-        text: showText
+        font.pixelSize: 20;
+        text: showText;
     }
     MouseArea {
-        anchors.fill: parent
+        anchors.fill: parent;
         onClicked: itemRoot.clicked();
     }
 
@@ -45,22 +46,22 @@ Rectangle {
     }
 
     PropertyAnimation {
-        id: animHeightIncrease
-        target: itemRoot
-        duration: 250
+        id: animHeightIncrease;
+        target: itemRoot;
+        duration: 250;
         easing.type: Easing.OutBounce;
         property: "height";
         from: 0;
-        to: itemRoot.height
+        to: itemRoot.height;
     }
     PropertyAnimation {
-        id: animHeightDecrease
-        target: itemRoot
-        duration: 250
+        id: animHeightDecrease;
+        target: itemRoot;
+        duration: 250;
         easing.type: Easing.InExpo;
         property: "height";
         from: itemRoot.height;
-        to: 0
+        to: 0;
     }
     PropertyAnimation {
         id: animSmall;

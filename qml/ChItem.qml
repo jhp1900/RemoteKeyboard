@@ -4,8 +4,8 @@ import "../js/componentCreation.js" as ChScript;
 
 Rectangle {
     id: chRoot;
-    width: 80;
-    height: 60;
+    width: 100;
+    height: 80;
     radius: 5
     color: "#77cccccc";
 

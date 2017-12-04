@@ -6,7 +6,7 @@ Rectangle {
     visible: false;
 
     property int innerWidth: menuBtn.width;
-    property int innerHeight: 170;
+    property int innerHeight: 250;
 
     Rectangle {
         id: columnLay
@@ -18,6 +18,7 @@ Rectangle {
         MenuItem {
             id: itemBk;
             innerY: 2;
+
             showText: "背景流";
             onClicked: {
                 bkUrlSet.show();
@@ -26,7 +27,7 @@ Rectangle {
         }
         MenuItem {
             id: itemHome;
-            innerY: 44;
+            innerY: 64;
             showText: "连接主机";
             onClicked: {
                 linkHomeSet.show();
@@ -35,7 +36,7 @@ Rectangle {
         }
         MenuItem {
             id: itemCtrl;
-            innerY: 86;
+            innerY: 126;
             showText: "控制台";
             onClicked: {
                 hide();
@@ -43,7 +44,7 @@ Rectangle {
         }
         MenuItem {
             id: itemQuit;
-            innerY: 128;
+            innerY: 188;
             showText: "Quit";
             onClicked: {
                 Qt.quit();
