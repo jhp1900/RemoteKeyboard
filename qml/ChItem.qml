@@ -10,8 +10,9 @@ Rectangle {
     color: "#77cccccc";
 
     property string chName: "CH1";
-    property string idCard: "CH";   // CH ; CH- ; PS ;
+    property int chType: -1;   // 0-未使能; 1-没有预置位的通道; 2-带预置位的通道; 3-预置位;
     property int y2;
+    property bool stateEnable: true;
 
     signal chClicked(string name);
     signal chDbClicked(string name);
@@ -25,15 +26,20 @@ Rectangle {
         text: chName;
     }
     MouseArea {
+        id: mouseArea;
         anchors.fill: parent;
         drag.target: chRoot;
         onClicked: {
-            //console.log("clicked" + chName);
-            emit: chClicked(chName);
+            if (stateEnable) {
+                console.log("clicked" + chName);
+                emit: chClicked(chName);
+            }
         }
         onDoubleClicked: {
-            //console.log("Double Clicked" + chName);
-            emit: chDbClicked(chName);
+            if (stateEnable) {
+                console.log("Double Clicked" + chName);
+                emit: chDbClicked(chName);
+            }
         }
     }
 
@@ -67,21 +73,33 @@ Rectangle {
         to: y;
     }
 
-    function beformCreat() {
-        if (idCard !== "PS")
+    onChTypeChanged: {
+        switch(chType) {
+        case 0:
             animBig.start();
-        else
+            chRoot.stateEnable = false;
+            break;
+        case 1:
+        case 2:
+            animBig.start();
+            chRoot.stateEnable = true;
+            break;
+        case 3:
             animDown.start();
+            break;
+        }
+
+        console.log("OnChTypeChanged : " + chName + " - " + chType);
     }
 
     function creatPreset() {
-        if (idCard === "CH-") {
-            ChScript.createChObj(chRoot.x, chRoot.y - 300, chName + "-1", "PS", chRoot.y);
-            ChScript.createChObj(chRoot.x, chRoot.y - 200, chName + "-2", "PS", chRoot.y);
-            ChScript.createChObj(chRoot.x, chRoot.y - 100, chName + "-3", "PS", chRoot.y);
-            ChScript.createChObj(chRoot.x, chRoot.y + 100, chName + "-4", "PS", chRoot.y);
-            ChScript.createChObj(chRoot.x, chRoot.y + 200, chName + "-5", "PS", chRoot.y);
-            ChScript.createChObj(chRoot.x, chRoot.y + 300, chName + "-6", "PS", chRoot.y);
+        if (chType === 2) {
+            ChScript.createChObj(chRoot.x, chRoot.y - 300, chName + "-1", 3, chRoot.y);
+            ChScript.createChObj(chRoot.x, chRoot.y - 200, chName + "-2", 3, chRoot.y);
+            ChScript.createChObj(chRoot.x, chRoot.y - 100, chName + "-3", 3, chRoot.y);
+            ChScript.createChObj(chRoot.x, chRoot.y + 100, chName + "-4", 3, chRoot.y);
+            ChScript.createChObj(chRoot.x, chRoot.y + 200, chName + "-5", 3, chRoot.y);
+            ChScript.createChObj(chRoot.x, chRoot.y + 300, chName + "-6", 3, chRoot.y);
         }
     }
 

@@ -35,13 +35,13 @@ public:
     ~Dispatching();
 
 private:
-    void cmpChMap(const std::map<std::string, bool> &data);        // Compare Channel map change
-    void refeshCh(const std::multimap<int, std::pair<std::string, bool>> & refesh);
+    void cmpChMap(const std::map<std::string, unsigned int> &data);        // Compare Channel map change
+    void refeshCh(const std::multimap<int, std::pair<std::string, unsigned int>> & refesh);
 
 signals:
     void callQmlRefeshImg();
-    void callQmlLoadupCh(QString name, QString ch_type, int count, int index);
-    void callQmlRefeshCh(QString name, QString ch_type, int ref_type);
+    void callQmlLoadupCh(QString name, int ch_type, int count, int index);
+    void callQmlRefeshCh(QString name, int ch_type, int ref_type);
     void callQmlChangeChActivity(QString pgmName, QString pvwName);
 
 public slots:
@@ -60,7 +60,7 @@ private:
     Comm * comm;
     QString m_data;
 
-    std::map<std::string, bool> m_old_chs;
+    std::map<std::string, unsigned int> m_old_chs;
     SockPack m_old_pack;
     bool m_first_refesh;
     QTimer * m_pTimer;

@@ -28,40 +28,28 @@ Dispatching::~Dispatching()
 {
 }
 
-void Dispatching::cmpChMap(const std::map<std::string, bool> &data)
+void Dispatching::cmpChMap(const std::map<std::string, unsigned int> &data)
 {
-    std::multimap<int, std::pair<std::string, bool>> cmpResult;
-//    std::cout << "Ergodic data map ...... " << data.size() << std::endl;
+    std::multimap<int, std::pair<std::string, unsigned int>> cmpResult;
     for (auto item = data.cbegin(); item != data.cend(); ++item) {
-//        std::cout << item->first << " : " << item->second;
         if (m_old_chs.find(item->first) == m_old_chs.end()) {
-//            std::cout << " no find!" << std::endl;
             cmpResult.insert(make_pair(1, *item));
         } else {
             m_old_chs.erase(item->first);
-//            std::cout << " is find! OK!" << std::endl;
         }
     }
 
-//    std::cout << "Ergodic surplus m_old_chs map ...... " << m_old_chs.size() << std::endl;
     for (auto item = m_old_chs.cbegin(); item != m_old_chs.cend(); ++item) {
         cmpResult.insert(make_pair(-1, *item));
-//        std::cout << item->first << " : " << item->second << " is surplus!" << std::endl;
     }
 
-//    std::cout << "Ergodic cmpResult multimap ...... " << cmpResult.size() << std::endl;
-//    for (auto item = cmpResult.cbegin(); item != cmpResult.cend(); ++item) {
-//        std::cout << item->first << " : " << item->second.first << " - " << item->second.second << std::endl;
-//    }
-
-//    std::cout << std::endl;
     m_old_chs = data;
 
     if (cmpResult.size())
         refeshCh(cmpResult);
 }
 
-void Dispatching::refeshCh(const std::multimap<int, std::pair<std::string, bool> > &refesh)
+void Dispatching::refeshCh(const std::multimap<int, std::pair<std::string, unsigned int> > &refesh)
 {
     if(m_first_refesh) {
         m_first_refesh = false;
@@ -69,17 +57,11 @@ void Dispatching::refeshCh(const std::multimap<int, std::pair<std::string, bool>
         int i = 0;
         std::cout << "Ergodic refesh multimap ...... " << refesh.size() << std::endl;
         for (auto item = refesh.cbegin(); item != refesh.cend(); ++item) {
-            if(item->second.second)
-                emit callQmlLoadupCh(item->second.first.c_str(), "CH-", count, ++i);
-            else
-                emit callQmlLoadupCh(item->second.first.c_str(), "CH", count, ++i);
+            emit callQmlLoadupCh(item->second.first.c_str(), item->second.second, count, ++i);
         }
     } else {
         for (auto item = refesh.cbegin(); item != refesh.cend(); ++item) {
-            if (item->second.second)
-                emit callQmlRefeshCh(item->second.first.c_str(), "CH-", item->first);
-            else
-                emit callQmlRefeshCh(item->second.first.c_str(), "CH", item->first);
+            emit callQmlRefeshCh(item->second.first.c_str(), item->second.second, item->first);
         }
     }
 }
@@ -132,12 +114,12 @@ void Dispatching::convertData(std::string data)
     if (!root)
         return;
 
-    std::map<std::string, bool> ch_data = {};
+    std::map<std::string, unsigned int> ch_data = {};
     pugi::xml_node ch_node = root.child("CH");
     if (ch_node) {
         auto attr = ch_node.first_attribute();
         while (attr) {
-            ch_data[attr.name()] = attr.as_bool();
+            ch_data[attr.name()] = attr.as_uint();
             attr = attr.next_attribute();
         }
         cmpChMap(ch_data);

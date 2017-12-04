@@ -77,7 +77,7 @@ Window {
                 anchors.fill: parent;
                 onClicked: {
                     console.log("Click Random Add");
-                    ChScript.createChObj(600, 500, "CH2", "CH-", 0);
+                    ChScript.createChObj(600, 500, "CH3", 0, 0);
                 }
             }
         }
@@ -97,8 +97,8 @@ Window {
                 anchors.fill: parent;
                 onClicked: {
                     console.log("Click First Add");
-                    ChScript.createChObj(100, 100, "CH1", "CH", 0);
-                    ChScript.createChObj(300, 500, "CH2", "CH-", 0);
+                    ChScript.createChObj(100, 100, "CH1", 1, 0);
+                    ChScript.createChObj(300, 500, "CH2", 0, 0);
                 }
             }
         }

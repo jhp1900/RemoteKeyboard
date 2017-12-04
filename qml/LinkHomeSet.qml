@@ -47,7 +47,7 @@ Rectangle {
             anchors.right: portText.left;
             anchors.rightMargin: 20;
             anchors.verticalCenter: parent.verticalCenter;
-            text: "127.0.0.1";
+            text: "192.168.31.140";
             Rectangle {
                 anchors.fill: parent
                 anchors.margins: -8
