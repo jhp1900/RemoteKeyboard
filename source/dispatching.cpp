@@ -172,3 +172,10 @@ void Dispatching::onQmlChSwitch(QString name, bool single)
         qDebug() << "Send PGM : " << name;
     }
 }
+
+void Dispatching::onQmlSendAction(QString action)
+{
+    if (!comm)
+        return;
+    comm->sendData(action);
+}

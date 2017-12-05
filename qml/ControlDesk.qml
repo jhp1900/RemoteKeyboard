@@ -9,7 +9,9 @@ Rectangle {
     radius: 5;
     visible: false;
 
-    signal clickStart(string url);
+    //property string ctrAction: "CH1";
+
+    signal sendAction(string action);
 
     Rectangle {
         anchors.fill: parent;
@@ -24,70 +26,91 @@ Rectangle {
         }
     }
 
-    GridLayout {
-        columns: 1;
-        rows: 4;
+    RowLayout {
         anchors.fill: parent;
-        rowSpacing: 5;
+        spacing: 10;
 
         Rectangle {
+            Layout.fillWidth: true;
+        }
+
+        Rectangle {
+            id: beginBtn
             color: "yellow";
+            Layout.fillWidth: true;
+            Layout.preferredWidth: 120;
+            Layout.preferredHeight: 60;
             radius: 5;
-            Layout.row: 1;
-            Layout.column: 1;
+            Text {
+                anchors.centerIn: parent;
+                text: qsTr("开始录制")
+            }
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: {
+                    emit: sendAction("BeginRecode");
+                }
+            }
         }
         Rectangle {
+            id: stopBtn;
             color: "yellow";
+            Layout.fillWidth: true;
+            Layout.preferredWidth: 120;
+            Layout.preferredHeight: 60;
             radius: 5;
-            Layout.row: 1;
-            Layout.column: 2;
+            Text {
+                anchors.centerIn: parent;
+                text: qsTr("结束录制")
+            }
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: {
+                    emit: sendAction("StopRecode");
+                }
+            }
+        }
+        Rectangle {
+            id: autoBtn;
+            color: "yellow";
+            Layout.fillWidth: true;
+            Layout.preferredWidth: 120;
+            Layout.preferredHeight: 60;
+            radius: 5;
+            Text {
+                anchors.centerIn: parent;
+                text: qsTr("自动导播")
+            }
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: {
+                    emit: sendAction("AutoDirector");
+                }
+            }
+        }
+        Rectangle {
+            id: manualBtn;
+            color: "yellow";
+            Layout.fillWidth: true;
+            Layout.preferredWidth: 120;
+            Layout.preferredHeight: 60;
+            radius: 5;
+            Text {
+                anchors.centerIn: parent;
+                text: qsTr("手动导播")
+            }
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: {
+                    emit: sendAction("ManualDirector");
+                }
+            }
+        }
+
+        Rectangle {
+            Layout.fillWidth: true;
         }
     }
-
-//    Item {
-//        id: btnAnchor;
-//        height: 60;
-//        anchors.verticalCenter: deskRoot.verticalCenter;
-//        anchors.horizontalCenter: deskRoot.horizontalCenter;
-//    }
-//    Rectangle {
-//        id: beginBtn;
-//        height: 60;
-//        color: "yellow";
-//        anchors.verticalCenter: deskRoot.verticalCenter;
-//        anchors.left: deskRoot.left;
-//        anchors.leftMargin: 40;
-//        radius: 5;
-//        Text {
-//            anchors.centerIn: parent;
-//            text: qsTr("Ok");
-//        }
-//        MouseArea {
-//            anchors.fill: parent;
-//            onClicked: {
-//                onClicked: hide();
-//                emit: clickStart(urlEdit.text);
-//            }
-//        }
-//    }
-//    Rectangle {
-//        height: 60;
-//        color: "yellow";
-//        anchors.verticalCenter: deskRoot.verticalCenter;
-//        anchors.left: beginBtn.right;
-//        anchors.leftMargin: 10;
-//        anchors.right: deskRoot.right;
-//        anchors.rightMargin: 40;
-//        radius: 5;
-//        Text {
-//            anchors.centerIn: parent;
-//            text: qsTr("Cancel");
-//        }
-//        MouseArea {
-//            anchors.fill: parent;
-//            onClicked: hide();
-//        }
-//    }
 
     Item {
         id: closeAnchor;

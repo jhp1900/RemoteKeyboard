@@ -108,6 +108,10 @@ Window {
         target: linkHomeSet
         onClickLinkHome: dispatching.startKepplive(ip, port);
     }
+    Connections {
+        target: controlDesk;
+        onSendAction: dispatching.onQmlSendAction(action);
+    }
 
     // JS Function *****************************************************************
     function onChClicked(name) {

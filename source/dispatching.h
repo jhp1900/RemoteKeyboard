@@ -53,6 +53,7 @@ public slots:
     void handleTimeout();
 
     void onQmlChSwitch(QString name, bool single);
+    void onQmlSendAction(QString action);
 
 private:
     MyImageProvider * imgProvider;

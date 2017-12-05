@@ -48,7 +48,7 @@ Rectangle {
             anchors.rightMargin: 40;
             anchors.verticalCenter: parent.verticalCenter;
             font.pixelSize: 18;
-            text: "192.168.31.140";
+            text: "18.18.8.22";
             Rectangle {
                 anchors.fill: parent
                 anchors.margins: -14
