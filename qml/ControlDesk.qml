@@ -9,7 +9,10 @@ Rectangle {
     radius: 5;
     visible: false;
 
-    //property string ctrAction: "CH1";
+    property int recodeState: -1;
+    property int directMode: -1;
+    property string dirAction: "BeginRecord";
+    property string dirStr: "开始录制";
 
     signal sendAction(string action);
 
@@ -35,20 +38,22 @@ Rectangle {
         }
 
         Rectangle {
-            id: beginBtn
+            id: dirBtn
             color: "yellow";
             Layout.fillWidth: true;
             Layout.preferredWidth: 120;
             Layout.preferredHeight: 60;
             radius: 5;
             Text {
+                id: dirText;
                 anchors.centerIn: parent;
-                text: qsTr("开始录制")
+                font.pixelSize: 20;
+                text: dirStr;
             }
             MouseArea {
                 anchors.fill: parent;
                 onClicked: {
-                    emit: sendAction("BeginRecode");
+                    emit: sendAction(dirAction);
                 }
             }
         }
@@ -60,13 +65,15 @@ Rectangle {
             Layout.preferredHeight: 60;
             radius: 5;
             Text {
+                id: stopText;
                 anchors.centerIn: parent;
+                font.pixelSize: 20;
                 text: qsTr("结束录制")
             }
             MouseArea {
                 anchors.fill: parent;
                 onClicked: {
-                    emit: sendAction("StopRecode");
+                    emit: sendAction("StopRecord");
                 }
             }
         }
@@ -78,7 +85,9 @@ Rectangle {
             Layout.preferredHeight: 60;
             radius: 5;
             Text {
+                id: autoText;
                 anchors.centerIn: parent;
+                font.pixelSize: 20;
                 text: qsTr("自动导播")
             }
             MouseArea {
@@ -96,7 +105,9 @@ Rectangle {
             Layout.preferredHeight: 60;
             radius: 5;
             Text {
+                id: manualText;
                 anchors.centerIn: parent;
+                font.pixelSize: 20;
                 text: qsTr("手动导播")
             }
             MouseArea {
@@ -132,6 +143,32 @@ Rectangle {
         MouseArea {
             anchors.fill: parent;
             onClicked: hide();
+        }
+    }
+
+    onRecodeStateChanged: {
+        if (recodeState === 0) {    // 停止态
+            dirAction = "BeginRecord";
+            dirStr = "开始录制";
+            dirText.color = "black";
+        } else if (recodeState === 1) {     // 录制态
+            dirAction = "PauseRecord";
+            dirStr = "暂停录制";
+            dirText.color = "red";
+        } else if (recodeState === 2) {     // 暂停态
+            dirAction = "BeginRecord";
+            dirStr = "继续录制";
+            dirText.color = "red";
+        }
+    }
+
+    onDirectModeChanged: {
+        if (directMode === 0) {
+            autoText.color = "red";
+            manualText.color = "black";
+        } else if (directMode === 1) {
+            manualText.color = "red";
+            autoText.color = "black";
         }
     }
 

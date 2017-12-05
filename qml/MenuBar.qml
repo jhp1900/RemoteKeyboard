@@ -39,7 +39,7 @@ Rectangle {
             innerY: 126;
             showText: "控制台";
             onClicked: {
-                controlDesk.show();
+                ctrlDesk.show();
                 hide();
             }
         }

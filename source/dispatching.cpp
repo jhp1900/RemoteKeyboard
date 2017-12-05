@@ -125,27 +125,34 @@ void Dispatching::convertData(std::string data)
         cmpChMap(ch_data);
     }
 
-    SockPack sp;
+    SockCHPack scp;
+    SockStatePack ssp;
     pugi::xml_node cur_node = root.child("CUR");
     if (cur_node) {
-        sp.pgm = cur_node.attribute("pgm").as_uint();
-        sp.pvw = cur_node.attribute("pvw").as_uint();
-        sp.pgm_ps = cur_node.attribute("pgm_ps").as_uint();
-        sp.pvw_ps = cur_node.attribute("pvw_ps").as_uint();
+        scp.pgm = cur_node.attribute("pgm").as_uint();
+        scp.pvw = cur_node.attribute("pvw").as_uint();
+        scp.pgm_ps = cur_node.attribute("pgm_ps").as_uint();
+        scp.pvw_ps = cur_node.attribute("pvw_ps").as_uint();
 
-        //qDebug() << "SockInfo: " << sp.pgm << " - " << sp.pvw << " - " << sp.pgm_ps << " - " << sp.pvw_ps;
+        if (m_old_scp != scp) {
+            QString pgmName = "CH" + QString::number(scp.pgm, 10);
+            QString pvwName = "CH" + QString::number(scp.pvw, 10);
 
-        if (m_old_pack != sp) {
-            QString pgmName = "CH" + QString::number(sp.pgm, 10);
-            QString pvwName = "CH" + QString::number(sp.pvw, 10);
-
-            if(sp.pgm_ps > 0 && ch_data[pgmName.toLatin1().data()])
-                pgmName += "-" + QString::number(sp.pgm_ps, 10);
-            if(sp.pvw_ps > 0 && ch_data[pvwName.toLatin1().data()])
-                pvwName += "-" + QString::number(sp.pvw_ps, 10);
+            if(scp.pgm_ps > 0 && ch_data[pgmName.toLatin1().data()])
+                pgmName += "-" + QString::number(scp.pgm_ps, 10);
+            if(scp.pvw_ps > 0 && ch_data[pvwName.toLatin1().data()])
+                pvwName += "-" + QString::number(scp.pvw_ps, 10);
 
             emit callQmlChangeChActivity(pgmName, pvwName);
-            m_old_pack = sp;
+            m_old_scp = scp;
+        }
+
+        ssp.direct_mode = cur_node.attribute("dir_md").as_uint();
+        ssp.recode_state = cur_node.attribute("rcd_st").as_uint();
+        if (m_old_ssp != ssp) {
+            emit callQmlCtrlState("DirectMode", ssp.direct_mode);
+            emit callQmlCtrlState("RecodeState", ssp.recode_state);
+            m_old_ssp = ssp;
         }
     }
 }

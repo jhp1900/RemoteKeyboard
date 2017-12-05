@@ -31,7 +31,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter;
         anchors.topMargin: 60;
         font.pixelSize: 18;
-        text: "rtsp://18.18.8.197:554/123";
+        text: "rtsp://192.0.0.200/11";
         Rectangle {
             anchors.fill: parent
             anchors.margins: -15

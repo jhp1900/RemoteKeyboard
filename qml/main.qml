@@ -63,8 +63,8 @@ Window {
         }
 
         ControlDesk {
-            id: controlDesk;
-            x: (win.width - controlDesk.width) / 2;
+            id: ctrlDesk;
+            x: (win.width - ctrlDesk.width) / 2;
             y: 550;
         }
     }
@@ -97,6 +97,13 @@ Window {
             console.log("onCallQmlChangeChActivity : " + pgmName + " - " + pvwName);
             switchToActivity(pgmName, pvwName);
         }
+        onCallQmlCtrlState: {
+            if (obj === "DirectMode") {
+                ctrlDesk.directMode = val;
+            } else if (obj === "RecodeState") {
+                ctrlDesk.recodeState = val;
+            }
+        }
     }
 
     // QML Call C++ ****************************************************************
@@ -109,7 +116,7 @@ Window {
         onClickLinkHome: dispatching.startKepplive(ip, port);
     }
     Connections {
-        target: controlDesk;
+        target: ctrlDesk;
         onSendAction: dispatching.onQmlSendAction(action);
     }
 

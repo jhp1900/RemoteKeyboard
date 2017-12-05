@@ -10,7 +10,7 @@ class QFFmpeg;
 class Comm;
 class QTimer;
 
-struct SockPack
+struct SockCHPack
 {
 public:
     unsigned int pgm;
@@ -19,9 +19,24 @@ public:
     unsigned int pvw_ps;
 
 public:
-    inline bool operator !=(const SockPack &sp) {
-        if (this->pgm != sp.pgm || this->pgm_ps != sp.pgm_ps
-                || this->pvw != sp.pvw || this->pvw_ps != sp.pvw_ps)
+    inline bool operator !=(const SockCHPack &scp) {
+        if (this->pgm != scp.pgm
+                || this->pgm_ps != scp.pgm_ps
+                || this->pvw != scp.pvw
+                || this->pvw_ps != scp.pvw_ps)
+            return true;
+        return false;
+    }
+};
+
+struct SockStatePack
+{
+    unsigned int direct_mode;
+    unsigned int recode_state;
+
+    inline bool operator !=(const SockStatePack ssp) {
+        if (this->direct_mode != ssp.direct_mode
+                || this->recode_state != ssp.recode_state)
             return true;
         return false;
     }
@@ -43,6 +58,7 @@ signals:
     void callQmlLoadupCh(QString name, int ch_type, int count, int index);
     void callQmlRefeshCh(QString name, int ch_type, int ref_type);
     void callQmlChangeChActivity(QString pgmName, QString pvwName);
+    void callQmlCtrlState(QString obj, int val);
 
 public slots:
     void start(QString url);
@@ -62,7 +78,8 @@ private:
     QString m_data;
 
     std::map<std::string, unsigned int> m_old_chs;
-    SockPack m_old_pack;
+    SockCHPack m_old_scp;
+    SockStatePack m_old_ssp;
     bool m_first_refesh;
     QTimer * m_pTimer;
     QString m_pvw_name;
