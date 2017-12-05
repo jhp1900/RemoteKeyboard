@@ -51,15 +51,21 @@ Window {
         }
 
         BkUrlSet {
-            id: bkUrlSet
+            id: bkUrlSet;
             x: (win.width - bkUrlSet.width) / 2;
-            y: 150;
+            y: 50;
         }
 
         LinkHomeSet {
-            id: linkHomeSet
+            id: linkHomeSet;
             x: (win.width - linkHomeSet.width) / 2;
             y: 300;
+        }
+
+        ControlDesk {
+            id: controlDesk;
+            x: (win.width - controlDesk.width) / 2;
+            y: 550;
         }
     }
 

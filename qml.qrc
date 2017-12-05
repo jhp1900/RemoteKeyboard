@@ -7,5 +7,6 @@
         <file>qml/LinkHomeSet.qml</file>
         <file>js/componentCreation.js</file>
         <file>qml/ChItem.qml</file>
+        <file>qml/ControlDesk.qml</file>
     </qresource>
 </RCC>
