@@ -67,6 +67,14 @@ Window {
             x: (win.width - ctrlDesk.width) / 2;
             y: 550;
         }
+
+        StateBar {
+            id: stateBar;
+            anchors.left: parent.left;
+            anchors.leftMargin: 10;
+            anchors.top: parent.top;
+            anchors.topMargin: 10;
+        }
     }
 
     // C++ Call QML ****************************************************************
@@ -100,8 +108,10 @@ Window {
         onCallQmlCtrlState: {
             if (obj === "DirectMode") {
                 ctrlDesk.directMode = val;
+                stateBar.directMode = val;
             } else if (obj === "RecodeState") {
                 ctrlDesk.recodeState = val;
+                stateBar.recodeState = val;
             }
         }
     }

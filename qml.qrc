@@ -8,5 +8,11 @@
         <file>js/componentCreation.js</file>
         <file>qml/ChItem.qml</file>
         <file>qml/ControlDesk.qml</file>
+        <file>qml/StateBar.qml</file>
+        <file>res/auto.png</file>
+        <file>res/begin.png</file>
+        <file>res/manual.png</file>
+        <file>res/pause.png</file>
+        <file>res/stop.png</file>
     </qresource>
 </RCC>
