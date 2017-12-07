@@ -21,15 +21,15 @@ Rectangle {
         MenuItem {
             id: itemWin;
             innerY: 2;
-            showText: "恢复";
+            showText: "全屏";
             onClicked: {
+                maxWin = !maxWin;
                 emit: changeWinSize(maxWin);
                 hide();
                 if (maxWin)
                     showText = "恢复";
                 else
                     showText = "全屏";
-                maxWin = !maxWin;
             }
         }
         MenuItem {

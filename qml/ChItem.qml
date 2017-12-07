@@ -94,12 +94,29 @@ Rectangle {
 
     function creatPreset() {
         if (chType === 2) {
-            ChScript.createChObj(chRoot.x, chRoot.y - 300, chName + "-1", 3, chRoot.y);
-            ChScript.createChObj(chRoot.x, chRoot.y - 200, chName + "-2", 3, chRoot.y);
-            ChScript.createChObj(chRoot.x, chRoot.y - 100, chName + "-3", 3, chRoot.y);
-            ChScript.createChObj(chRoot.x, chRoot.y + 100, chName + "-4", 3, chRoot.y);
-            ChScript.createChObj(chRoot.x, chRoot.y + 200, chName + "-5", 3, chRoot.y);
-            ChScript.createChObj(chRoot.x, chRoot.y + 300, chName + "-6", 3, chRoot.y);
+            var chY = -3;
+            var h = win.height;
+            var yTop = chRoot.y > chY*-100;
+            var yBottom = chRoot.y + (chY+7)*100 < h;
+            while (!(yTop && yBottom)) {
+                if (!yTop)
+                    ++chY;
+                else if (!yBottom)
+                    --chY;
+
+                yTop = chRoot.y > chY*-100;
+                yBottom = chRoot.y + (chY+7)*100 < h;
+            }
+
+            if (chY === -7)
+                chY = -6;
+
+            for(var i = 1; i < 7; ++i){
+                if (chY === 0)
+                    ++chY;
+                ChScript.createChObj(chRoot.x, chRoot.y + chY*100, chName + "-" + i, 3, chRoot.y);
+                ++ chY;
+            }
         }
     }
 

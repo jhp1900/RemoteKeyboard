@@ -7,9 +7,9 @@ import "../js/componentCreation.js" as ChScript;
 Window {
     id: win
     visible: true
-    width: 1280;
-    height: 720;
-    visibility: Window.FullScreen;
+    width: Screen.desktopAvailableWidth;
+    height: Screen.desktopAvailableHeight;
+    //visibility: Window.FullScreen;
     title: qsTr("RemoteKeyboard")
     flags: Qt.WindowMinMaxButtonsHint | Qt.Window;
 
@@ -93,13 +93,15 @@ Window {
     Connections {
         target: dispatching
         onCallQmlRefeshImg: {
-            img.source = ""
-            img.source = "image://provider"
+            for (var i = 0; i < 5; ++i) {
+                img.source = ""
+                img.source = "image://provider"
+            }
         }
         onCallQmlLoadupCh: {
-            console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + ch_type);
-            var gap = (win.width - count * 100) / (count + 1);
+            var gap = Math.floor((win.width - 100) / (count + 1));
             var h = (win.height - 80) / 2;
+            console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + ch_type + " - " + gap + " - " + h);
             ChScript.createChObj(gap * index, h, name, ch_type, 0);
         }
         onCallQmlRefeshCh: {
