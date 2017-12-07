@@ -18,8 +18,11 @@ function finishChCreation(x, y, name, chType, y2) {
             item.chType = chType;
             win.destroyCH.connect(item.onDestroyCH);
             win.switchToActivity.connect(item.onSwitchToActivity);
+            win.refeshCH.connect(item.onRefeshCH);
+            win.removePS.connect(item.onRemovePS);
             item.chClicked.connect(win.onChClicked);
             item.chDbClicked.connect(win.onChDbClicked);
+            item.chRemovePS.connect(win.onChRemovePS);
         }
     } else if (comCH.status === Component.Error) {
         console.log("Error loading component: ", comCH.errorString());

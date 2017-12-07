@@ -32,9 +32,12 @@ void Dispatching::cmpChMap(const std::map<std::string, unsigned int> &data)
 {
     std::multimap<int, std::pair<std::string, unsigned int>> cmpResult;
     for (auto item = data.cbegin(); item != data.cend(); ++item) {
-        if (m_old_chs.find(item->first) == m_old_chs.end()) {
+        auto old_item = m_old_chs.find(item->first);
+        if (old_item == m_old_chs.end()) {
             cmpResult.insert(make_pair(1, *item));
         } else {
+            if(item->second != old_item->second)
+                cmpResult.insert(make_pair(0, *item));
             m_old_chs.erase(item->first);
         }
     }
@@ -87,7 +90,8 @@ void Dispatching::stop()
 void Dispatching::SetImage(const QImage &img)
 {
     if (img.height() > 0) {
-        imgProvider->setImage(img.scaled(1920, 1080));
+        imgProvider->setImage(img);
+        //imgProvider->setImage(img.scaled(1920, 1080));
         //imgProvider->setPixmap(QPixmap::fromImage(img.scaled(1920, 1080)));
         emit callQmlRefeshImg();
     }

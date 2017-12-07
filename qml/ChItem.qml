@@ -16,6 +16,7 @@ Rectangle {
 
     signal chClicked(string name);
     signal chDbClicked(string name);
+    signal chRemovePS(string name);
 
     Text {
         anchors.centerIn: parent;
@@ -80,6 +81,10 @@ Rectangle {
             chRoot.stateEnable = false;
             break;
         case 1:
+            emit: chRemovePS(chName);
+            animBig.start();
+            chRoot.stateEnable = true;
+            break;
         case 2:
             animBig.start();
             chRoot.stateEnable = true;
@@ -136,5 +141,21 @@ Rectangle {
             color = "#7700ff00";
         else
             color = "#77cccccc";
+    }
+
+    function onRefeshCH(name, chType) {
+        if (chName !== name)
+            return;
+        chRoot.chType = chType;
+        console.log(" - - - - On Refesh CH Changed : " + name + " - " + chType);
+    }
+
+    function onRemovePS(name) {
+        var end = chName.indexOf('-');
+        if (end > 0) {
+            var subName = chName.substring(0, end);
+            if (subName === name)
+                animSmall.start();
+        }
     }
 }

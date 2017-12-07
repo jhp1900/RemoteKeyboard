@@ -55,8 +55,8 @@ private:
 
 signals:
     void callQmlRefeshImg();
-    void callQmlLoadupCh(QString name, int ch_type, int count, int index);
-    void callQmlRefeshCh(QString name, int ch_type, int ref_type);
+    void callQmlLoadupCh(QString name, int chType, int count, int index);
+    void callQmlRefeshCh(QString name, int chType, int refType);
     void callQmlChangeChActivity(QString pgmName, QString pvwName);
     void callQmlCtrlState(QString obj, int val);
 

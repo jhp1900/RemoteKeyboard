@@ -15,6 +15,8 @@ Window {
 
     signal destroyCH(string name);
     signal switchToActivity(string pgmName, string pvwName);
+    signal refeshCH(string name, int chType);
+    signal removePS(string name);
 
     Rectangle {
         anchors.fill: parent;
@@ -101,18 +103,18 @@ Window {
         onCallQmlLoadupCh: {
             var gap = Math.floor((win.width - 100) / (count + 1));
             var h = (win.height - 80) / 2;
-            console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + ch_type + " - " + gap + " - " + h);
-            ChScript.createChObj(gap * index, h, name, ch_type, 0);
+            console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + chType + " - " + gap + " - " + h);
+            ChScript.createChObj(gap * index, h, name, chType, 0);
         }
         onCallQmlRefeshCh: {
-            if (ref_type === 1) {
+            if (refType === 1) {
                 var w = win.width - 150;
                 var h = (win.height - 80) / 2;
-                ChScript.createChObj(w, h, name, ch_type, 0);
-            } else if (ref_type === -1) {
+                ChScript.createChObj(w, h, name, chType, 0);
+            } else if (refType === -1) {
                 emit: destroyCH(name);
-            } else if (ref_type === 0) {
-
+            } else if (refType === 0) {
+                emit: refeshCH(name, chType);
             }
         }
         onCallQmlChangeChActivity: {
@@ -153,5 +155,9 @@ Window {
     function onChDbClicked(name) {
         console.log("main qml on double clicked + " + name);
         dispatching.onQmlChSwitch(name, false);
+    }
+
+    function onChRemovePS(name) {
+        emit: removePS(name);
     }
 }
