@@ -6,19 +6,35 @@ Rectangle {
     visible: false;
 
     property int innerWidth: menuBtn.width;
-    property int innerHeight: 250;
+    property int innerHeight: 312;
+    property bool maxWin: false;
+
+    signal changeWinSize(bool maxWin);
 
     Rectangle {
         id: columnLay
         width: barRoot.width;
         height: barRoot.height;
         anchors.centerIn: parent;
-
         color: "#3c3c3c"
+
+        MenuItem {
+            id: itemWin;
+            innerY: 2;
+            showText: "恢复";
+            onClicked: {
+                emit: changeWinSize(maxWin);
+                hide();
+                if (maxWin)
+                    showText = "恢复";
+                else
+                    showText = "全屏";
+                maxWin = !maxWin;
+            }
+        }
         MenuItem {
             id: itemBk;
-            innerY: 2;
-
+            innerY: 64;
             showText: "背景流";
             onClicked: {
                 bkUrlSet.show();
@@ -27,7 +43,7 @@ Rectangle {
         }
         MenuItem {
             id: itemHome;
-            innerY: 64;
+            innerY: 126;
             showText: "连接主机";
             onClicked: {
                 linkHomeSet.show();
@@ -36,7 +52,7 @@ Rectangle {
         }
         MenuItem {
             id: itemCtrl;
-            innerY: 126;
+            innerY: 188;
             showText: "控制台";
             onClicked: {
                 ctrlDesk.show();
@@ -45,7 +61,7 @@ Rectangle {
         }
         MenuItem {
             id: itemQuit;
-            innerY: 188;
+            innerY: 250;
             showText: "Quit";
             onClicked: {
                 Qt.quit();
@@ -63,6 +79,7 @@ Rectangle {
     Connections {
         target: animHeightIncrease;
         onStopped: {
+            itemWin.itemShow();
             itemBk.itemShow();
             itemHome.itemShow();
             itemCtrl.itemShow();
@@ -71,6 +88,7 @@ Rectangle {
     }
 
     function hide() {
+        itemWin.itemHide();
         itemBk.itemHide();
         itemHome.itemHide();
         itemCtrl.itemHide();

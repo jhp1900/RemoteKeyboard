@@ -87,8 +87,8 @@ void Dispatching::stop()
 void Dispatching::SetImage(const QImage &img)
 {
     if (img.height() > 0) {
-        //imgProvider->setImage(img);
-        imgProvider->setPixmap(QPixmap::fromImage(img.scaled(1920, 1080)));
+        imgProvider->setImage(img.scaled(1920, 1080));
+        //imgProvider->setPixmap(QPixmap::fromImage(img.scaled(1920, 1080)));
         emit callQmlRefeshImg();
     }
 }

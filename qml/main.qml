@@ -7,10 +7,11 @@ import "../js/componentCreation.js" as ChScript;
 Window {
     id: win
     visible: true
-    width: Screen.width;
-    height: Screen.height;
+    width: 1280;
+    height: 720;
+    visibility: Window.FullScreen;
     title: qsTr("RemoteKeyboard")
-    flags: Qt.WindowSystemMenuHint | Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint | Qt.Window
+    flags: Qt.WindowMinMaxButtonsHint | Qt.Window;
 
     signal destroyCH(string name);
     signal switchToActivity(string pgmName, string pvwName);
@@ -74,6 +75,17 @@ Window {
             anchors.leftMargin: 10;
             anchors.top: parent.top;
             anchors.topMargin: 10;
+        }
+    }
+
+    //
+    Connections {
+        target: menuBar;
+        onChangeWinSize: {
+            if (maxWin)
+                win.visibility = Window.FullScreen;
+            else
+                win.visibility = Window.AutomaticVisibility;
         }
     }
 
