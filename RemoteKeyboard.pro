@@ -7,7 +7,8 @@ SOURCES += \
     source/main.cpp \
     source/qffmpeg.cpp \
     source/dispatching.cpp \
-    source/comm.cpp
+    source/comm.cpp \
+    source/qcfg.cpp
 
 RESOURCES += qml.qrc
 
@@ -38,7 +39,8 @@ HEADERS += \
     source/dispatching.h \
     source/myimageprovider.h \
     source/rtspthread.h \
-    source/comm.h
+    source/comm.h \
+    source/qcfg.h
 
 INCLUDEPATH += $$PWD/ffmpeg/include \
                $$PWD/open_source/pugixml

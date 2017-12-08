@@ -3,14 +3,16 @@
 #include <QDateTime>
 #include <QTimer>
 
-#include "pugixml.hpp"
-#include "pugixml.cpp"
+//#include "pugixml.hpp"
+//#include "pugixml.cpp"
 
 #include "dispatching.h"
 #include "myimageprovider.h"
 #include "qffmpeg.h"
 #include "rtspthread.h"
 #include "comm.h"
+
+#include "qcfg.h"
 
 Dispatching::Dispatching(MyImageProvider * imgPro, QObject *parent)
     : QObject(parent)
@@ -22,6 +24,8 @@ Dispatching::Dispatching(MyImageProvider * imgPro, QObject *parent)
 {
     m_pTimer = new QTimer(this);
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
+
+    m_cfg = std::make_shared<QCfg>();
 }
 
 Dispatching::~Dispatching()
@@ -105,6 +109,7 @@ void Dispatching::startKepplive(QString ip, QString port)
     comm->linkInfo(ip, port);
     connect(comm, SIGNAL(recvPack(std::string)), this, SLOT(convertData(std::string)));
     comm->start();
+    m_cfg->setCurrentIpPlan(ip);
 }
 
 void Dispatching::convertData(std::string data)
@@ -189,4 +194,10 @@ void Dispatching::onQmlSendAction(QString action)
     if (!comm)
         return;
     comm->sendData(action);
+}
+
+void Dispatching::onQmlSaveCHPoint(QString name, int x, int y)
+{
+    m_cfg->saveCHPoint(name, x, y);
+    qDebug() << name << " POINT IS : " << x << " - - - " << y;
 }

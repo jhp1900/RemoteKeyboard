@@ -17,6 +17,7 @@ Window {
     signal switchToActivity(string pgmName, string pvwName);
     signal refeshCH(string name, int chType);
     signal removePS(string name);
+    signal sendActionToCH(string action);
 
     Rectangle {
         anchors.fill: parent;
@@ -77,6 +78,22 @@ Window {
             anchors.leftMargin: 10;
             anchors.top: parent.top;
             anchors.topMargin: 10;
+        }
+
+        Rectangle {
+            width: 50;
+            height: 50;
+            anchors.top: menuBtn.top;
+            anchors.right: menuBtn.left;
+            anchors.rightMargin: 10;
+            color: "blue";
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: {
+                    emit: sendActionToCH("Collect");
+                    console.log("sendAction over!!!\n");
+                }
+            }
         }
     }
 
@@ -159,5 +176,9 @@ Window {
 
     function onChRemovePS(name) {
         emit: removePS(name);
+    }
+
+    function onChSendPoint(name, x, y) {
+        dispatching.onQmlSaveCHPoint(name, x, y);
     }
 }

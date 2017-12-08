@@ -17,6 +17,7 @@ Rectangle {
     signal chClicked(string name);
     signal chDbClicked(string name);
     signal chRemovePS(string name);
+    signal chSendPoint(string name, int x, int y);
 
     Text {
         anchors.centerIn: parent;
@@ -157,5 +158,11 @@ Rectangle {
             if (subName === name)
                 animSmall.start();
         }
+    }
+
+    function onSendActionToCH(action) {
+        if (action === "Collect")
+            chSendPoint(chName, chRoot.x, chRoot.y);
+            //console.log(chRoot.chName + " POINT : " + chRoot.x + " - - " + chRoot.y);
     }
 }

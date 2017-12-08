@@ -4,11 +4,13 @@
 #include <QObject>
 #include <string>
 #include <memory>
+//#include <share.h>
 
 class MyImageProvider;
 class QFFmpeg;
 class Comm;
 class QTimer;
+class QCfg;
 
 struct SockCHPack
 {
@@ -70,6 +72,7 @@ public slots:
 
     void onQmlChSwitch(QString name, bool single);
     void onQmlSendAction(QString action);
+    void onQmlSaveCHPoint(QString name, int x, int y);
 
 private:
     MyImageProvider * imgProvider;
@@ -83,6 +86,8 @@ private:
     bool m_first_refesh;
     QTimer * m_pTimer;
     QString m_pvw_name;
+
+    std::shared_ptr<QCfg> m_cfg;
 };
 
 #endif // DISPATCHING_H
