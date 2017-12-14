@@ -1,34 +1,50 @@
 #ifndef COMM_H
 #define COMM_H
 
-#include <winsock2.h>
-#include <QThread>
+#include <WinSock2.h>
+#include <QObject>
+#include <QString>
+#include <thread>
+#include <mutex>
 #include <string>
 
-class Comm : public QThread
+#define  TIMEFOR_THREAD_EXIT 1000
+#define  TIMEFOR_THREAD_SLEEP 500
+#define  BUF_MAX_NUM 1024 * 2
+
+class Comm : public QObject
 {
     Q_OBJECT
 public:
-    explicit Comm(QObject * parent = 0);
-    ~Comm();
+  Comm();
+  ~Comm();
 
-    bool linkInfo(QString ip, QString port);
-    bool sendData(QString data);
-    void run();
+  BOOL ConnectServer(const char * ip, int port);
+  BOOL DisconnectServer();
+  BOOL RunClient();
+  void SendData(const char * data);
 
-    void setQuitFlag(bool flag) { m_quit_flag = flag; }
+public:
+  static void KeepLiveFun(void *param);
+  static void SendThreadFun(void *param);
+  static void RecvThreadFun(void *param);
 
 signals:
-    void recvPack(std::string data);
+  void recvPack(QString pack);
 
 private:
-    bool m_quit_flag;
-    SOCKET m_client;
-    sockaddr_in m_home_addr;
-    QString m_ip;
-    QString m_port;
-    char m_send_data[MAX_PATH];
-    char * m_kepplive_pwd;
+  SOCKET keep_sock_;
+  SOCKET action_sock_;
+  BOOL is_connected_;
+  BOOL send_data_;
+
+  std::string send_str_;
+
+  std::thread kelv_thread_;
+  std::thread send_thread_;
+  std::thread recv_thread_;
+  std::mutex send_mutex_;
+  std::mutex recv_mutex_;
 };
 
 #endif // COMM_H

@@ -33,13 +33,13 @@ Rectangle {
         drag.target: chRoot;
         onClicked: {
             if (stateEnable) {
-                console.log("clicked" + chName);
+                //console.log("clicked" + chName);
                 emit: chClicked(chName);
             }
         }
         onDoubleClicked: {
             if (stateEnable) {
-                console.log("Double Clicked" + chName);
+                //console.log("Double Clicked" + chName);
                 emit: chDbClicked(chName);
             }
         }

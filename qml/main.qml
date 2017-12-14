@@ -165,12 +165,12 @@ Window {
 
     // JS Function *****************************************************************
     function onChClicked(name) {
-        console.log("main qml on clicked + " + name);
+        //console.log("main qml on clicked + " + name);
         dispatching.onQmlChSwitch(name, true);
     }
 
     function onChDbClicked(name) {
-        console.log("main qml on double clicked + " + name);
+        //console.log("main qml on double clicked + " + name);
         dispatching.onQmlChSwitch(name, false);
     }
 

@@ -67,8 +67,8 @@ public slots:
     void stop();
     void SetImage(const QImage & img);
     void startKepplive(QString ip, QString port);
-    void convertData(std::string data);
-    void handleTimeout();
+    void convertData(QString data);
+    void clickTimeout();
 
     void onQmlChSwitch(QString name, bool single);
     void onQmlSendAction(QString action);
@@ -84,7 +84,7 @@ private:
     SockCHPack m_old_scp;
     SockStatePack m_old_ssp;
     bool m_first_refesh;
-    QTimer * m_pTimer;
+    QTimer * m_pClickTimer;
     QString m_pvw_name;
 
     std::shared_ptr<QCfg> m_cfg;

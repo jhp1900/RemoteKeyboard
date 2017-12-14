@@ -20,10 +20,11 @@ Dispatching::Dispatching(MyImageProvider * imgPro, QObject *parent)
     , ffmpeg(NULL)
     , comm(NULL)
     , m_first_refesh(true)
-    , m_pTimer(NULL)
+    , m_pClickTimer(NULL)
 {
-    m_pTimer = new QTimer(this);
-    connect(m_pTimer, SIGNAL(timeout()), this, SLOT(handleTimeout()));
+    comm = new Comm();
+    m_pClickTimer = new QTimer(this);
+    connect(m_pClickTimer, SIGNAL(timeout()), this, SLOT(clickTimeout()));
 
     m_cfg = std::make_shared<QCfg>();
 }
@@ -103,22 +104,24 @@ void Dispatching::SetImage(const QImage &img)
 
 void Dispatching::startKepplive(QString ip, QString port)
 {
-    //m_data = "456123789";
     qDebug() << ip << " : " << port;
-    comm = new Comm(this);
-    comm->linkInfo(ip, port);
-    connect(comm, SIGNAL(recvPack(std::string)), this, SLOT(convertData(std::string)));
-    comm->start();
-    m_cfg->setCurrentIpPlan(ip);
+
+    if (comm->ConnectServer(ip.toLatin1().data(), port.toInt()) && comm->RunClient()){
+        connect(comm, SIGNAL(recvPack(QString)), this, SLOT(convertData(QString)));
+        m_cfg->setCurrentIpPlan(ip);
+        qDebug() << "Sock Client Start OK !!";
+    } else {
+        qDebug() << "Sock Client Start ERROR !!";
+    }
 }
 
-void Dispatching::convertData(std::string data)
+void Dispatching::convertData(QString data)
 {
 //    qDebug() << "Convert : " << QDateTime::currentDateTime().toString();
 //    std::cout << data;
 
     pugi::xml_document doc;
-    doc.load(data.c_str());
+    doc.load(data.toLatin1().data());
     pugi::xml_node root = doc.child("RMT");
     if (!root)
         return;
@@ -166,11 +169,11 @@ void Dispatching::convertData(std::string data)
     }
 }
 
-void Dispatching::handleTimeout()
+void Dispatching::clickTimeout()
 {
-    m_pTimer->stop();
-    comm->sendData(m_pvw_name);
-    qDebug() << "Send PVW : " << m_pvw_name;
+    m_pClickTimer->stop();
+    comm->SendData(m_pvw_name.toLatin1().data());
+    //qDebug() << "Send PVW : " << m_pvw_name;
 }
 
 void Dispatching::onQmlChSwitch(QString name, bool single)
@@ -180,12 +183,12 @@ void Dispatching::onQmlChSwitch(QString name, bool single)
     if(single){
         name.replace(0, 2, "PVW");
         m_pvw_name = name;
-        m_pTimer->start(200);
+        m_pClickTimer->start(200);
     } else {
-        m_pTimer->stop();
+        m_pClickTimer->stop();
         name.replace(0, 2, "PGM");
-        comm->sendData(name);
-        qDebug() << "Send PGM : " << name;
+        comm->SendData(name.toLatin1().data());
+        //qDebug() << "Send PGM : " << name;
     }
 }
 
@@ -193,7 +196,7 @@ void Dispatching::onQmlSendAction(QString action)
 {
     if (!comm)
         return;
-    comm->sendData(action);
+    comm->SendData(action.toLatin1().data());
 }
 
 void Dispatching::onQmlSaveCHPoint(QString name, int x, int y)

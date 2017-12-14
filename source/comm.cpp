@@ -1,84 +1,190 @@
-#include <cstring>
-#include <QDebug>
 #include <iostream>
-
+#include <QDebug>
 #include "comm.h"
 
-Comm::Comm(QObject * parent)
-    : QThread(parent)
-    , m_quit_flag(false)
-    , m_client(INVALID_SOCKET)
-    , m_ip("")
-    , m_port("")
-    //, m_send_data(NULL)
-    , m_kepplive_pwd("KEPPLIVE")
+Comm::Comm()
+  : keep_sock_(INVALID_SOCKET)
+  , action_sock_(INVALID_SOCKET)
+  , is_connected_(FALSE)
+  , send_data_(FALSE)
 {
-    WORD sockVersion = MAKEWORD(2, 2);
-    WSADATA data;
-    WSAStartup(sockVersion, &data);
-
-    //m_kepplive_pwd = ;
 }
 
 Comm::~Comm()
 {
+    if (kelv_thread_.joinable())
+        kelv_thread_.join();
+  if (send_thread_.joinable())
+    send_thread_.join();
+  if (recv_thread_.joinable())
+    recv_thread_.join();
+
+  closesocket(keep_sock_);
+  closesocket(action_sock_);
+  WSACleanup();
 }
 
-bool Comm::linkInfo(QString ip, QString port)
+BOOL Comm::ConnectServer(const char * ip, int port)
 {
-    m_ip = ip;
-    m_port = port;
+  WSADATA wsd;
+  if (WSAStartup(MAKEWORD(2, 2), &wsd) != 0)
+    return FALSE;
+  if ((keep_sock_ = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
+    return FALSE;
+  if ((action_sock_ = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
+    return FALSE;
 
-    m_home_addr.sin_family = AF_INET;
-    m_home_addr.sin_port = htons(m_port.toUShort());
-    m_home_addr.sin_addr.S_un.S_addr = inet_addr(m_ip.toLatin1().data());
-}
+  unsigned long ul = 1;
+  if (ioctlsocket(keep_sock_, FIONBIO, &ul) == SOCKET_ERROR)
+    return FALSE;
+  if (ioctlsocket(action_sock_, FIONBIO, &ul) == SOCKET_ERROR)
+    return FALSE;
 
-bool Comm::sendData(QString data)
-{
-    SOCKET client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (client == INVALID_SOCKET)
-        return false;
-    if(::connect(client, (sockaddr*)&m_home_addr, sizeof(m_home_addr)) == SOCKET_ERROR) {
-        closesocket(client);
-        return false;
+  sockaddr_in sv_addr;
+  sv_addr.sin_family = AF_INET;
+  sv_addr.sin_addr.S_un.S_addr = inet_addr(ip);
+  sv_addr.sin_port = htons(port);
+
+  int reVal;
+  while (true) {
+    reVal = ::connect(keep_sock_, (SOCKADDR*)&sv_addr, sizeof(sv_addr));
+    if (reVal == SOCKET_ERROR) {
+      int err_code = WSAGetLastError();
+      if (err_code == WSAEWOULDBLOCK || err_code == WSAEINVAL)
+        continue;
+      else if (err_code == WSAEISCONN)
+        break;
+      else
+        return FALSE;
     }
-    send(client, data.toLatin1().data(), data.length(), 0);
-    closesocket(client);
-    return true;
+    if (reVal == 0)
+      break;
+  }
+  while (true) {
+    reVal = ::connect(action_sock_, (SOCKADDR*)&sv_addr, sizeof(sv_addr));
+    if (reVal == SOCKET_ERROR) {
+      int err_code = WSAGetLastError();
+      if (err_code == WSAEWOULDBLOCK || err_code == WSAEINVAL)
+        continue;
+      else if (err_code == WSAEISCONN)
+        break;
+      else
+        return FALSE;
+    }
+    if (reVal == 0)
+      break;
+  }
+
+  is_connected_ = TRUE;
+
+  return TRUE;
 }
 
-void Comm::run()
+BOOL Comm::DisconnectServer()
 {
-    m_quit_flag = false;
+  is_connected_ = FALSE;
+  return TRUE;
+}
 
-    while (true) {
-        if(m_quit_flag)
+BOOL Comm::RunClient()
+{
+    kelv_thread_ = std::thread(KeepLiveFun, this);
+  send_thread_ = std::thread(SendThreadFun, this);
+  recv_thread_ = std::thread(RecvThreadFun, this);
+  return TRUE;
+}
+
+void Comm::SendData(const char * data)
+{
+  send_str_ = data;
+  send_data_ = TRUE;
+}
+
+void Comm::KeepLiveFun(void *param)
+{
+    int i = 10;
+    Comm * comm = (Comm*)param;
+    while (comm->is_connected_) {
+        comm->send_mutex_.lock();
+        while (i--) {
+            int val = send(comm->keep_sock_, "KEEPLIVE", 10, 0);
+            if (val == SOCKET_ERROR) {
+                int err_code = WSAGetLastError();
+                if (err_code == WSAEWOULDBLOCK)
+                    continue;
+                else
+                    return;
+            }
             break;
-
-        Sleep(1000);
-
-        m_client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-        if(m_client == INVALID_SOCKET) {
-            qDebug() << "INVALID_SOCKET !";
-            continue;
         }
-
-        if(::connect(m_client, (sockaddr*)&m_home_addr, sizeof(m_home_addr)) == SOCKET_ERROR) {
-            qDebug() << "connect error !";
-            closesocket(m_client);
-            continue;
-        }
-
-        send(m_client, m_kepplive_pwd, strlen(m_kepplive_pwd), 0);
-        //std::cout << "send and : " << m_kepplive_pwd << "  ";
-        char *data;
-        int ret = ::recv(m_client, data, 1024 * 2, 0);
-        //std::cout << ret << std::endl;
-        if(ret > 0){
-            data[ret] = 0x00;
-            emit recvPack(data);
-        }
-        closesocket(m_client);
+        comm->send_mutex_.unlock();
+        Sleep(TIMEFOR_THREAD_SLEEP * 2);
     }
+
+    qDebug() << " @ @ The KeepLive Thread Is Over ! ! ! \n\n";
+}
+
+void Comm::SendThreadFun(void * param)
+{
+  Comm * comm = (Comm*)param;
+  while (comm->is_connected_) {
+    if (comm->send_data_) {
+      comm->send_mutex_.lock();
+      while (true) {
+        int val = send(comm->action_sock_, comm->send_str_.c_str(), comm->send_str_.length(), 0);
+        if (val == SOCKET_ERROR) {
+          int err_code = WSAGetLastError();
+          if (err_code == WSAEWOULDBLOCK) {
+            continue;
+          }
+          else {
+            comm->send_data_ = FALSE;
+            return;
+          }
+        }
+        qDebug() << "Send Msg : " << QString(QLatin1String(comm->send_str_.c_str()));
+        comm->send_data_ = FALSE;
+        break;
+      }
+      comm->send_mutex_.unlock();
+    }
+    Sleep(TIMEFOR_THREAD_SLEEP);
+  }
+
+  qDebug() << " $ $ The Send Thread Is Over ! ! ! \n\n";
+}
+
+void Comm::RecvThreadFun(void * param)
+{
+  Comm * comm = (Comm*)param;
+  int val;
+  char temp[BUF_MAX_NUM];
+  memset(temp, 0, BUF_MAX_NUM);
+  while (comm->is_connected_) {
+    val = recv(comm->keep_sock_, temp, BUF_MAX_NUM, 0);
+    if (val == SOCKET_ERROR) {
+      int err_code = WSAGetLastError();
+      if (err_code == WSAEWOULDBLOCK) {
+        Sleep(TIMEFOR_THREAD_SLEEP);
+        continue;
+      }
+      else {
+        comm->is_connected_ = FALSE;
+        return;
+      }
+    }
+
+    if (val == 0) {
+      comm->is_connected_ = FALSE;
+      return;
+    }
+
+    if (val > 0) {
+      emit comm->recvPack(QString(QLatin1String(temp)));
+      memset(temp, 0, BUF_MAX_NUM);
+    }
+    Sleep(TIMEFOR_THREAD_SLEEP);
+  }
+
+  qDebug() << " # # The Recv Thread Is Over ! ! ! \n\n";
 }
