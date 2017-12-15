@@ -16,35 +16,35 @@ class Comm : public QObject
 {
     Q_OBJECT
 public:
-  Comm();
-  ~Comm();
+    Comm();
+    ~Comm();
 
-  BOOL ConnectServer(const char * ip, int port);
-  BOOL DisconnectServer();
-  BOOL RunClient();
-  void SendData(const char * data);
+    BOOL ConnectServer(const char * ip, int port);
+    BOOL DisconnectServer();
+    BOOL RunClient();
+    void SendData(const char * data);
 
 public:
-  static void KeepLiveFun(void *param);
-  static void SendThreadFun(void *param);
-  static void RecvThreadFun(void *param);
+    static void KeepLiveFun(void *param);
+    static void SendThreadFun(void *param);
+    static void RecvThreadFun(void *param);
 
 signals:
-  void recvPack(QString pack);
+    void recvPack(QString pack);
 
 private:
-  SOCKET keep_sock_;
-  SOCKET action_sock_;
-  BOOL is_connected_;
-  BOOL send_data_;
+    SOCKET keep_sock_;
+    SOCKET action_sock_;
+    BOOL is_connected_;
+    BOOL send_data_;
 
-  std::string send_str_;
+    std::string send_str_;
 
-  std::thread kelv_thread_;
-  std::thread send_thread_;
-  std::thread recv_thread_;
-  std::mutex send_mutex_;
-  std::mutex recv_mutex_;
+    std::thread kelv_thread_;
+    std::thread send_thread_;
+    std::thread recv_thread_;
+    std::mutex send_mutex_;
+    std::mutex recv_mutex_;
 };
 
 #endif // COMM_H
