@@ -4,15 +4,17 @@ import "../js/componentCreation.js" as ChScript;
 
 Rectangle {
     id: chRoot;
-    width: 100;
-    height: 80;
+    width: 120;
+    height: 100;
     radius: 5
     color: "#77cccccc";
+    z: 50
 
     property string chName: "CH1";
     property int chType: -1;   // 0-未使能; 1-没有预置位的通道; 2-带预置位的通道; 3-预置位;
     property int y2;
     property bool stateEnable: true;
+    property int chSpace: 120;
 
     signal chClicked(string name);
     signal chDbClicked(string name);
@@ -21,7 +23,7 @@ Rectangle {
 
     Text {
         anchors.centerIn: parent;
-        font.pixelSize: 28;
+        font.pixelSize: 34;
         font.bold: true;
         style: Text.Outline;
         styleColor: "#ffffff";
@@ -100,18 +102,21 @@ Rectangle {
 
     function creatPreset() {
         if (chType === 2) {
-            var chY = -3;
             var h = win.height;
-            var yTop = chRoot.y > chY*-100;
-            var yBottom = chRoot.y + (chY+7)*100 < h;
+            if (h < 7 * chRoot.chSpace) {
+                chRoot.chSpace = h / 7;
+            }
+            var chY = -3;
+            var yTop = chRoot.y > -chY * chRoot.chSpace;
+            var yBottom = chRoot.y + (chY+7) * chRoot.chSpace < h;
             while (!(yTop && yBottom)) {
                 if (!yTop)
                     ++chY;
                 else if (!yBottom)
                     --chY;
 
-                yTop = chRoot.y > chY*-100;
-                yBottom = chRoot.y + (chY+7)*100 < h;
+                yTop = chRoot.y > -chY * chRoot.chSpace;
+                yBottom = chRoot.y + (chY+7) * chRoot.chSpace < h;
             }
 
             if (chY === -7)
@@ -120,7 +125,7 @@ Rectangle {
             for(var i = 1; i < 7; ++i){
                 if (chY === 0)
                     ++chY;
-                ChScript.createChObj(chRoot.x, chRoot.y + chY*100, chName + "-" + i, 3, chRoot.y);
+                ChScript.createChObj(chRoot.x, chRoot.y + chY * chRoot.chSpace, chName + "-" + i, 3, chRoot.y);
                 ++ chY;
             }
         }

@@ -4,7 +4,7 @@ Rectangle {
     id: linkHomeRoot;
     width: 480; height: 200;
     color: "lightblue";
-    z: 100;
+    z: 200;
     radius: 5;
     visible: false;
 

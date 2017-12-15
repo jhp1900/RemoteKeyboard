@@ -8,7 +8,7 @@ Rectangle {
 
     property int innerX: 2;
     property int innerWidth: barRoot.width - 4;
-    property int innerHeight: 60;
+    property int innerHeight: 90;
 
     property int innerY;
     property string showText: "";

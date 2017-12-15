@@ -34,8 +34,8 @@ Window {
 
         Rectangle {
             id: menuBtn;
-            width: 120;
-            height: 120;
+            width: 150;
+            height: 150;
             anchors.top: parent.top;
             anchors.topMargin: 10;
             anchors.right: parent.right;
@@ -118,8 +118,8 @@ Window {
             }
         }
         onCallQmlLoadupCh: {
-            var gap = Math.floor((win.width - 100) / (count + 1));
-            var h = (win.height - 80) / 2;
+            var gap = Math.floor((win.width - 120) / (count + 1));
+            var h = (win.height - 100) / 2;
             console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + chType + " - " + gap + " - " + h);
             ChScript.createChObj(gap * index, h, name, chType, 0);
         }

@@ -6,8 +6,9 @@ Comm::Comm()
     : keep_sock_(INVALID_SOCKET)
     , action_sock_(INVALID_SOCKET)
     , is_connected_(FALSE)
-    , send_data_(FALSE)
+    , send_event_(NULL)
 {
+    send_event_ = CreateEvent(NULL, TRUE, FALSE, NULL);
 }
 
 Comm::~Comm()
@@ -19,6 +20,7 @@ Comm::~Comm()
     if (recv_thread_.joinable())
         recv_thread_.join();
 
+    CloseHandle(send_event_);
     closesocket(keep_sock_);
     closesocket(action_sock_);
     WSACleanup();
@@ -51,7 +53,7 @@ BOOL Comm::ConnectServer(const char * ip, int port)
         if (reVal == SOCKET_ERROR) {
             int err_code = WSAGetLastError();
             if (err_code == WSAEWOULDBLOCK || err_code == WSAEINVAL) {
-                Sleep(50);
+                Sleep(TIMEFOR_THREAD_CONTINUE);
                 continue;
             }
             else if (err_code == WSAEISCONN)
@@ -67,7 +69,7 @@ BOOL Comm::ConnectServer(const char * ip, int port)
         if (reVal == SOCKET_ERROR) {
             int err_code = WSAGetLastError();
             if (err_code == WSAEWOULDBLOCK || err_code == WSAEINVAL) {
-                Sleep(50);
+                Sleep(TIMEFOR_THREAD_CONTINUE);
                 continue;
             }
             else if (err_code == WSAEISCONN)
@@ -101,7 +103,7 @@ BOOL Comm::RunClient()
 void Comm::SendData(const char * data)
 {
     send_str_ = data;
-    send_data_ = TRUE;
+    SetEvent(send_event_);
 }
 
 void Comm::KeepLiveFun(void *param)
@@ -122,7 +124,7 @@ void Comm::KeepLiveFun(void *param)
             break;
         }
         comm->send_mutex_.unlock();
-        Sleep(TIMEFOR_THREAD_SLEEP * 2);
+        Sleep(TIMEFOR_THREAD_SLEEP);
     }
 
     qDebug() << " @ @ The KeepLive Thread Is Over ! ! ! \n\n";
@@ -132,7 +134,7 @@ void Comm::SendThreadFun(void * param)
 {
     Comm * comm = (Comm*)param;
     while (comm->is_connected_) {
-        if (comm->send_data_) {
+        if (WAIT_OBJECT_0 == WaitForSingleObject(comm->send_event_, INFINITE)) {
             comm->send_mutex_.lock();
             while (true) {
                 int val = send(comm->action_sock_, comm->send_str_.c_str(), comm->send_str_.length(), 0);
@@ -142,17 +144,16 @@ void Comm::SendThreadFun(void * param)
                         continue;
                     }
                     else {
-                        comm->send_data_ = FALSE;
+                        ResetEvent(comm->send_event_);
                         return;
                     }
                 }
                 qDebug() << "Send Msg : " << QString(QLatin1String(comm->send_str_.c_str()));
-                comm->send_data_ = FALSE;
+                ResetEvent(comm->send_event_);
                 break;
             }
             comm->send_mutex_.unlock();
         }
-        Sleep(TIMEFOR_THREAD_SLEEP);
     }
 
     qDebug() << " $ $ The Send Thread Is Over ! ! ! \n\n";
@@ -169,7 +170,7 @@ void Comm::RecvThreadFun(void * param)
         if (val == SOCKET_ERROR) {
             int err_code = WSAGetLastError();
             if (err_code == WSAEWOULDBLOCK) {
-                Sleep(TIMEFOR_THREAD_SLEEP);
+                Sleep(TIMEFOR_THREAD_CONTINUE);
                 continue;
             }
             else {

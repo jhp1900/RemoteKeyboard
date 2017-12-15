@@ -8,7 +8,7 @@
 #include <mutex>
 #include <string>
 
-#define  TIMEFOR_THREAD_EXIT 1000
+#define  TIMEFOR_THREAD_CONTINUE 50
 #define  TIMEFOR_THREAD_SLEEP 500
 #define  BUF_MAX_NUM 1024 * 2
 
@@ -36,7 +36,7 @@ private:
     SOCKET keep_sock_;
     SOCKET action_sock_;
     BOOL is_connected_;
-    BOOL send_data_;
+    HANDLE send_event_;
 
     std::string send_str_;
 

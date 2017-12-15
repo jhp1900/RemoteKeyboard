@@ -5,7 +5,7 @@ Rectangle {
     id: deskRoot;
     width: 480; height: 120;
     color: "lightblue";
-    z: 100;
+    z: 200;
     radius: 5;
     visible: false;
 

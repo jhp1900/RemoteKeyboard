@@ -6,7 +6,7 @@ Rectangle {
     visible: false;
 
     property int innerWidth: menuBtn.width;
-    property int innerHeight: 312;
+    property int innerHeight: 462;
     property bool maxWin: false;
 
     signal changeWinSize(bool maxWin);
@@ -34,7 +34,7 @@ Rectangle {
         }
         MenuItem {
             id: itemBk;
-            innerY: 64;
+            innerY: 94;
             showText: "背景流";
             onClicked: {
                 bkUrlSet.show();
@@ -43,7 +43,7 @@ Rectangle {
         }
         MenuItem {
             id: itemHome;
-            innerY: 126;
+            innerY: 186;
             showText: "连接主机";
             onClicked: {
                 linkHomeSet.show();
@@ -52,7 +52,7 @@ Rectangle {
         }
         MenuItem {
             id: itemCtrl;
-            innerY: 188;
+            innerY: 278;
             showText: "控制台";
             onClicked: {
                 ctrlDesk.show();
@@ -61,7 +61,7 @@ Rectangle {
         }
         MenuItem {
             id: itemQuit;
-            innerY: 250;
+            innerY: 370;
             showText: "Quit";
             onClicked: {
                 Qt.quit();
