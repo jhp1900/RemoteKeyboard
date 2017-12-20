@@ -25,7 +25,7 @@ Window {
         Image {
             id: img
             anchors.fill: parent
-            source: "image://provider"
+            source: "qrc:/res/bk.png"
             MouseArea {
                 anchors.fill: parent;
                 onClicked: menuBar.hide();
@@ -40,8 +40,18 @@ Window {
             anchors.topMargin: 10;
             anchors.right: parent.right;
             anchors.rightMargin: 10;
-            color: "red"
-
+            color: "#88000000"
+            border.color: "#55ffffff";
+            border.width: 1;
+            radius: 75;
+            Text {
+                anchors.centerIn: parent;
+                font.pointSize: 30;
+                font.bold: true;
+                style: Text.Outline;
+                styleColor: "#ffffff";
+                text: "菜单";
+            }
             MouseArea {
                 anchors.fill: parent;
                 onClicked: menuBar.show();
@@ -51,12 +61,12 @@ Window {
         MenuBar {
             id: menuBar;
             anchors.left: menuBtn.left;
-            anchors.top: menuBtn.bottom;
+            anchors.top: menuBtn.top;
         }
 
-        BkUrlSet {
-            id: bkUrlSet;
-            x: (win.width - bkUrlSet.width) / 2;
+        Background {
+            id: bk;
+            x: (win.width - bk.width) / 2;
             y: 50;
         }
 
@@ -151,8 +161,16 @@ Window {
 
     // QML Call C++ ****************************************************************
     Connections {
-        target: bkUrlSet;
-        onClickStart: dispatching.start(url);
+        target: bk;
+        onClickStart: {
+            if (isImg) {
+                img.source = "";
+                img.source = url;
+            }
+            else {
+                dispatching.start(url);
+            }
+        }
     }
     Connections {
         target: linkHomeSet

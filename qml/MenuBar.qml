@@ -2,11 +2,14 @@ import QtQuick 2.7
 
 Rectangle {
     id: barRoot
-    color: "#3c3c3c"
+    color: "#33000000"
+    border.color: "#44ffffff";
+    border.width: 1;
+    radius: 75
     visible: false;
 
     property int innerWidth: menuBtn.width;
-    property int innerHeight: 462;
+    property int innerHeight: 687;
     property bool maxWin: false;
 
     signal changeWinSize(bool maxWin);
@@ -16,11 +19,11 @@ Rectangle {
         width: barRoot.width;
         height: barRoot.height;
         anchors.centerIn: parent;
-        color: "#3c3c3c"
+        color: "#00000000"
 
         MenuItem {
             id: itemWin;
-            innerY: 2;
+            innerY: 152;
             showText: "全屏";
             onClicked: {
                 maxWin = !maxWin;
@@ -34,16 +37,16 @@ Rectangle {
         }
         MenuItem {
             id: itemBk;
-            innerY: 94;
+            innerY: 244;
             showText: "背景流";
             onClicked: {
-                bkUrlSet.show();
+                bk.show();
                 hide();
             }
         }
         MenuItem {
             id: itemHome;
-            innerY: 186;
+            innerY: 336;
             showText: "连接主机";
             onClicked: {
                 linkHomeSet.show();
@@ -52,7 +55,7 @@ Rectangle {
         }
         MenuItem {
             id: itemCtrl;
-            innerY: 278;
+            innerY: 428;
             showText: "控制台";
             onClicked: {
                 ctrlDesk.show();
@@ -61,8 +64,8 @@ Rectangle {
         }
         MenuItem {
             id: itemQuit;
-            innerY: 370;
-            showText: "Quit";
+            innerY: 520;
+            showText: "退出";
             onClicked: {
                 Qt.quit();
             }

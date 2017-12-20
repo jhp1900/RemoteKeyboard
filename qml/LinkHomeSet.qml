@@ -3,7 +3,9 @@ import QtQuick 2.7
 Rectangle {
     id: linkHomeRoot;
     width: 480; height: 200;
-    color: "lightblue";
+    color: "#55000000";
+    border.color: "#55ffffff";
+    border.width: 1;
     z: 200;
     radius: 5;
     visible: false;
@@ -12,7 +14,7 @@ Rectangle {
 
     Rectangle {
         anchors.fill: parent;
-        color: parent.color;
+        color: "transparent";
         radius: parent.radius;
         MouseArea {
             anchors.fill: parent;
@@ -23,105 +25,145 @@ Rectangle {
         }
     }
 
+    Text {
+        id: ipHint;
+        height: 50;
+        anchors.left: parent.left;
+        anchors.top: parent.top;
+        anchors.right: parent.right;
+        anchors.leftMargin: 20;
+        verticalAlignment: Text.AlignVCenter;
+        font.pixelSize: 24;
+        font.bold: true;
+        style: Text.Outline;
+        styleColor: "#ffffff";
+        text: "连接主机";
+    }
+
     Rectangle {
         id: editRect
+        height: 60;
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: btnAnchor.top
-        color: parent.color;
+        anchors.top: ipHint.bottom
+        color: "transparent";
         radius: parent.radius;
 
         Text {
             id: ipText;
-            width: 50;
+            width: 30;
             anchors.left: parent.left;
-            anchors.leftMargin: 30;
+            anchors.leftMargin: 20;
             anchors.verticalCenter: parent.verticalCenter;
             text: "IP:"
         }
-        TextEdit {
+        TextInput {
             id: ipEdit
-            verticalAlignment: Text.AlignVCenter | Text.AlignHCenter
+            height: 46;
+            verticalAlignment: Text.AlignVCenter;
+            horizontalAlignment: Text.AlignHCenter;
             anchors.left: ipText.right;
             anchors.right: portText.left;
-            anchors.rightMargin: 40;
+            anchors.rightMargin: 20;
             anchors.verticalCenter: parent.verticalCenter;
             font.pixelSize: 18;
             text: "18.18.8.22";
             Rectangle {
-                anchors.fill: parent
-                anchors.margins: -14
-                color: "transparent"
-                border.width: 1
+                anchors.fill: parent;
+                color: "#22ffffff";
+                border.color: "#44ffffff";
+                border.width: 1;
+                radius: 5;
             }
         }
 
         Text {
             id: portText
-            width: 60;
+            width: 46;
             anchors.right: portEdit.left;
             anchors.verticalCenter: parent.verticalCenter;
-            text: "PORT:"
+            text: "PORT:";
         }
-        TextEdit {
+        TextInput {
             id: portEdit
-            width: 60;
-            verticalAlignment: Text.AlignVCenter | Text.AlignHCenter;
+            width: 80; height: 46;
+            verticalAlignment: Text.AlignVCenter;
+            horizontalAlignment: Text.AlignHCenter;
             anchors.right: parent.right;
-            anchors.rightMargin: 50;
+            anchors.rightMargin: 20;
             anchors.verticalCenter: parent.verticalCenter;
             font.pixelSize: 18;
             text: "12307";
             Rectangle {
-                anchors.fill: parent
-                anchors.margins: -14
-                color: "transparent"
-                border.width: 1
+                anchors.fill: parent;
+                color: "#22ffffff";
+                border.color: "#44ffffff";
+                border.width: 1;
+                radius: 5;
             }
         }
     }
 
-    Item {
-        id: btnAnchor;
-        height: 60;
-        anchors.bottom: linkHomeRoot.bottom;
-        anchors.bottomMargin: 15;
-        anchors.horizontalCenter: linkHomeRoot.horizontalCenter;
-    }
     Rectangle {
-        width: 120; height: 60;
-        color: "yellow";
-        anchors.top: btnAnchor.top;
-        anchors.right: btnAnchor.left;
-        anchors.rightMargin: 20;
-        radius: 5;
-        Text {
-            anchors.centerIn: parent;
-            text: qsTr("Ok");
+        id: ctrlPanel;
+        color: "transparent";
+        anchors.left: parent.left;
+        anchors.top: editRect.bottom;
+        anchors.right: parent.right;
+        anchors.bottom: parent.bottom;
+
+        Item {
+            id: btnAnchor;
+            height: 70;
+            anchors.verticalCenter: parent.verticalCenter;
+            anchors.horizontalCenter: parent.horizontalCenter;
         }
-        MouseArea {
-            anchors.fill: parent;
-            onClicked: {
-                emit: clickLinkHome(ipEdit.text, portEdit.text);
-                hide();
+        Rectangle {
+            width: 120; height: 70;
+            anchors.top: btnAnchor.top;
+            anchors.right: btnAnchor.left;
+            anchors.rightMargin: 20;
+            color: "#44014e60";
+            border.color: "#44000000";
+            border.width: 1;
+            radius: 5;
+            Text {
+                anchors.centerIn: parent;
+                font.pointSize: 18;
+                font.bold: true;
+                style: Text.Outline;
+                styleColor: "#ffffff";
+                text: qsTr("确定");
+            }
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: {
+                    emit: clickLinkHome(ipEdit.text, portEdit.text);
+                    hide();
+                }
             }
         }
-    }
-    Rectangle {
-        width: 120; height: 60;
-        color: "yellow";
-        anchors.top: btnAnchor.top;
-        anchors.left: btnAnchor.right;
-        anchors.leftMargin: 20;
-        radius: 5;
-        Text {
-            anchors.centerIn: parent;
-            text: qsTr("Cancel");
-        }
-        MouseArea {
-            anchors.fill: parent;
-            onClicked: hide();
+        Rectangle {
+            width: 120; height: 70;
+            anchors.top: btnAnchor.top;
+            anchors.left: btnAnchor.right;
+            anchors.leftMargin: 20;
+            color: "#44014e60";
+            border.color: "#44000000";
+            border.width: 1;
+            radius: 5;
+            Text {
+                anchors.centerIn: parent;
+                font.pointSize: 18;
+                font.bold: true;
+                style: Text.Outline;
+                styleColor: "#ffffff";
+                text: qsTr("取消");
+            }
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: hide();
+            }
         }
     }
 
@@ -140,6 +182,7 @@ Rectangle {
         radius: 20;
         Text {
             anchors.centerIn: parent;
+            font.pointSize: 20;
             text: "X";
         }
         MouseArea {

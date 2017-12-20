@@ -3,8 +3,10 @@ import QtQuick.Layouts 1.1
 
 Rectangle {
     id: deskRoot;
-    width: 480; height: 120;
-    color: "lightblue";
+    width: 560; height: 200;
+    color: "#55000000";
+    border.color: "#55ffffff";
+    border.width: 1;
     z: 200;
     radius: 5;
     visible: false;
@@ -18,7 +20,7 @@ Rectangle {
 
     Rectangle {
         anchors.fill: parent;
-        color: parent.color;
+        color: "transparent";
         radius: parent.radius;
         MouseArea {
             anchors.fill: parent;
@@ -29,99 +31,143 @@ Rectangle {
         }
     }
 
-    RowLayout {
-        anchors.fill: parent;
-        spacing: 10;
-
-        Rectangle {
-            Layout.fillWidth: true;
-        }
-
-        Rectangle {
-            id: dirBtn
-            color: "yellow";
-            Layout.fillWidth: true;
-            Layout.preferredWidth: 120;
-            Layout.preferredHeight: 60;
-            radius: 5;
-            Text {
-                id: dirText;
-                anchors.centerIn: parent;
-                font.pixelSize: 20;
-                text: dirStr;
-            }
-            MouseArea {
-                anchors.fill: parent;
-                onClicked: {
-                    emit: sendAction(dirAction);
-                }
-            }
-        }
-        Rectangle {
-            id: stopBtn;
-            color: "yellow";
-            Layout.fillWidth: true;
-            Layout.preferredWidth: 120;
-            Layout.preferredHeight: 60;
-            radius: 5;
-            Text {
-                id: stopText;
-                anchors.centerIn: parent;
-                font.pixelSize: 20;
-                text: qsTr("结束录制")
-            }
-            MouseArea {
-                anchors.fill: parent;
-                onClicked: {
-                    emit: sendAction("StopRecord");
-                }
-            }
-        }
-        Rectangle {
-            id: autoBtn;
-            color: "yellow";
-            Layout.fillWidth: true;
-            Layout.preferredWidth: 120;
-            Layout.preferredHeight: 60;
-            radius: 5;
-            Text {
-                id: autoText;
-                anchors.centerIn: parent;
-                font.pixelSize: 20;
-                text: qsTr("自动导播")
-            }
-            MouseArea {
-                anchors.fill: parent;
-                onClicked: {
-                    emit: sendAction("AutoDirector");
-                }
-            }
-        }
-        Rectangle {
-            id: manualBtn;
-            color: "yellow";
-            Layout.fillWidth: true;
-            Layout.preferredWidth: 120;
-            Layout.preferredHeight: 60;
-            radius: 5;
-            Text {
-                id: manualText;
-                anchors.centerIn: parent;
-                font.pixelSize: 20;
-                text: qsTr("手动导播")
-            }
-            MouseArea {
-                anchors.fill: parent;
-                onClicked: {
-                    emit: sendAction("ManualDirector");
-                }
-            }
-        }
-
-        Rectangle {
-            Layout.fillWidth: true;
-        }
+    Text {
+        id: conHint;
+        height: 50;
+        anchors.left: parent.left;
+        anchors.top: parent.top;
+        anchors.right: parent.right;
+        anchors.leftMargin: 20;
+        verticalAlignment: Text.AlignVCenter;
+        font.pixelSize: 24;
+        font.bold: true;
+        style: Text.Outline;
+        styleColor: "#ffffff";
+        text: "控制台"
     }
+
+    Rectangle {
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        anchors.bottom: parent.bottom;
+        anchors.top: conHint.bottom;
+        color: "transparent"
+
+        RowLayout {
+            width: 460;
+            height: 120;
+            anchors.centerIn: parent;
+            spacing: 10;
+            Rectangle {
+                Layout.fillWidth: true;
+            }
+
+            Rectangle {
+                id: dirBtn;
+                Layout.fillWidth: true;
+                Layout.preferredWidth: 120;
+                Layout.preferredHeight: 80;
+                color: "#44014e60";
+                border.color: "#44000000";
+                border.width: 1
+                radius: 5;
+                Text {
+                    id: dirText;
+                    anchors.centerIn: parent;
+                    font.pixelSize: 20;
+                    font.bold: true;
+                    style: Text.Outline;
+                    styleColor: "#ffffff";
+                    text: dirStr;
+                }
+                MouseArea {
+                    anchors.fill: parent;
+                    onClicked: {
+                        emit: sendAction(dirAction);
+                    }
+                }
+            }
+            Rectangle {
+                id: stopBtn;
+                Layout.fillWidth: true;
+                Layout.preferredWidth: 120;
+                Layout.preferredHeight: 80;
+                color: "#44014e60";
+                border.color: "#44000000";
+                border.width: 1
+                radius: 5;
+                Text {
+                    id: stopText;
+                    anchors.centerIn: parent;
+                    font.pixelSize: 20;
+                    font.bold: true;
+                    style: Text.Outline;
+                    styleColor: "#ffffff";
+                    text: qsTr("结束录制")
+                }
+                MouseArea {
+                    anchors.fill: parent;
+                    onClicked: {
+                        emit: sendAction("StopRecord");
+                    }
+                }
+            }
+            Rectangle {
+                id: autoBtn;
+                Layout.fillWidth: true;
+                Layout.preferredWidth: 120;
+                Layout.preferredHeight: 80;
+                color: "#44014e60";
+                border.color: "#44000000";
+                border.width: 1
+                radius: 5;
+                Text {
+                    id: autoText;
+                    anchors.centerIn: parent;
+                    font.pixelSize: 20;
+                    font.bold: true;
+                    style: Text.Outline;
+                    styleColor: "#ffffff";
+                    text: qsTr("自动导播")
+                }
+                MouseArea {
+                    anchors.fill: parent;
+                    onClicked: {
+                        emit: sendAction("AutoDirector");
+                    }
+                }
+            }
+            Rectangle {
+                id: manualBtn;
+                Layout.fillWidth: true;
+                Layout.preferredWidth: 120;
+                Layout.preferredHeight: 80;
+                color: "#44014e60";
+                border.color: "#44000000";
+                border.width: 1
+                radius: 5;
+                Text {
+                    id: manualText;
+                    anchors.centerIn: parent;
+                    font.pixelSize: 20;
+                    font.bold: true;
+                    style: Text.Outline;
+                    styleColor: "#ffffff";
+                    text: qsTr("手动导播")
+                }
+                MouseArea {
+                    anchors.fill: parent;
+                    onClicked: {
+                        emit: sendAction("ManualDirector");
+                    }
+                }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true;
+            }
+        }
+        }
 
     Item {
         id: closeAnchor;
@@ -138,6 +184,7 @@ Rectangle {
         radius: 20;
         Text {
             anchors.centerIn: parent;
+            font.pointSize: 20;
             text: "X";
         }
         MouseArea {

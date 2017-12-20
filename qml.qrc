@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
-        <file>qml/BkUrlSet.qml</file>
         <file>qml/MenuBar.qml</file>
         <file>qml/MenuItem.qml</file>
         <file>qml/LinkHomeSet.qml</file>
@@ -14,5 +13,7 @@
         <file>res/manual.png</file>
         <file>res/pause.png</file>
         <file>res/stop.png</file>
+        <file>qml/Background.qml</file>
+        <file>res/bk.png</file>
     </qresource>
 </RCC>

@@ -2,8 +2,9 @@ import QtQuick 2.0
 
 Rectangle {
     id: itemRoot;
-    color: "#00718c";
-    border.color: Qt.lighter(color);
+    color: "#33000000";
+    border.color: "#44cccccc";
+    border.width: 1;
     visible: false;
 
     property int innerX: 2;
@@ -17,7 +18,10 @@ Rectangle {
 
     Text {
         anchors.centerIn: parent
-        font.pixelSize: 20;
+        font.pixelSize: 28;
+        font.bold: true;
+        style: Text.Outline;
+        styleColor: "#ffffff";
         text: showText;
     }
     MouseArea {

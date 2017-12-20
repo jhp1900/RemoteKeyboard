@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QProcess>
 #include <iostream>
 #include <QDateTime>
 #include <QTimer>
@@ -27,6 +28,10 @@ Dispatching::Dispatching(MyImageProvider * imgPro, QObject *parent)
     connect(m_pClickTimer, SIGNAL(timeout()), this, SLOT(clickTimeout()));
 
     m_cfg = std::make_shared<QCfg>();
+
+    // TODI: start SoftKeyboard
+//    QProcess *pprocess = new QProcess(this);
+//    pprocess->startDetached("osk.exe");
 }
 
 Dispatching::~Dispatching()
@@ -95,9 +100,9 @@ void Dispatching::stop()
 void Dispatching::SetImage(const QImage &img)
 {
     if (img.height() > 0) {
-        imgProvider->setImage(img);
+        //imgProvider->setImage(img);
         //imgProvider->setImage(img.scaled(1920, 1080));
-        //imgProvider->setPixmap(QPixmap::fromImage(img.scaled(1920, 1080)));
+        imgProvider->setPixmap(QPixmap::fromImage(img.scaled(1920, 1080)));
         emit callQmlRefeshImg();
     }
 }

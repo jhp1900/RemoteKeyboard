@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    MyImageProvider * imgProvider = new MyImageProvider(QQmlImageProviderBase::Image);
+    MyImageProvider * imgProvider = new MyImageProvider(QQmlImageProviderBase::Pixmap);
     QQmlApplicationEngine engine;
     engine.addImageProvider(QLatin1String("provider"), imgProvider);
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
