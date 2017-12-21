@@ -73,6 +73,7 @@ public slots:
     void onQmlChSwitch(QString name, bool single);
     void onQmlSendAction(QString action);
     void onQmlSaveCHPoint(QString name, int x, int y);
+    void onQmlVK();
 
 private:
     MyImageProvider * imgProvider;

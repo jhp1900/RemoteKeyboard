@@ -1,15 +1,16 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.1
 import QtQuick.Window 2.2
+//import QtQuick
 
 import "../js/componentCreation.js" as ChScript;
 
 Window {
     id: win
     visible: true
-    width: Screen.desktopAvailableWidth;
-    height: Screen.desktopAvailableHeight;
-    //visibility: Window.FullScreen;
+//    width: Screen.desktopAvailableWidth;
+//    height: Screen.desktopAvailableHeight;
+    visibility: Window.FullScreen;
     title: qsTr("RemoteKeyboard")
     flags: Qt.WindowMinMaxButtonsHint | Qt.Window;
 
@@ -89,34 +90,18 @@ Window {
             anchors.top: parent.top;
             anchors.topMargin: 10;
         }
-
-        Rectangle {
-            width: 50;
-            height: 50;
-            anchors.top: menuBtn.top;
-            anchors.right: menuBtn.left;
-            anchors.rightMargin: 10;
-            color: "blue";
-            MouseArea {
-                anchors.fill: parent;
-                onClicked: {
-                    emit: sendActionToCH("Collect");
-                    console.log("sendAction over!!!\n");
-                }
-            }
-        }
     }
 
     //
-    Connections {
-        target: menuBar;
-        onChangeWinSize: {
-            if (maxWin)
-                win.visibility = Window.FullScreen;
-            else
-                win.visibility = Window.AutomaticVisibility;
-        }
-    }
+//    Connections {
+//        target: menuBar;
+//        onChangeWinSize: {
+//            if (maxWin)
+//                win.visibility = Window.FullScreen;
+//            else
+//                win.visibility = Window.AutomaticVisibility;
+//        }
+//    }
 
     // C++ Call QML ****************************************************************
     Connections {
@@ -179,6 +164,13 @@ Window {
     Connections {
         target: ctrlDesk;
         onSendAction: dispatching.onQmlSendAction(action);
+    }
+    Connections {
+        target: menuBar;
+        onSaveCfg: {
+            emit: sendActionToCH("Collect");
+        }
+        onOpenVK: dispatching.onQmlVK();
     }
 
     // JS Function *****************************************************************

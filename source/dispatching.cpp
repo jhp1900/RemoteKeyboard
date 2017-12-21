@@ -3,6 +3,8 @@
 #include <iostream>
 #include <QDateTime>
 #include <QTimer>
+#include <shlwapi.h>
+#include <windows.h>
 
 //#include "pugixml.hpp"
 //#include "pugixml.cpp"
@@ -30,8 +32,8 @@ Dispatching::Dispatching(MyImageProvider * imgPro, QObject *parent)
     m_cfg = std::make_shared<QCfg>();
 
     // TODI: start SoftKeyboard
-//    QProcess *pprocess = new QProcess(this);
-//    pprocess->startDetached("osk.exe");
+    QProcess *pprocess = new QProcess(this);
+    pprocess->startDetached("osk.exe");
 }
 
 Dispatching::~Dispatching()
@@ -208,4 +210,42 @@ void Dispatching::onQmlSaveCHPoint(QString name, int x, int y)
 {
     m_cfg->saveCHPoint(name, x, y);
     qDebug() << name << " POINT IS : " << x << " - - - " << y;
+}
+
+void Dispatching::onQmlVK()
+{
+    auto _Is64BitsOS = []() -> bool {
+            QString mod = "kernel32";
+            QString addr = "GetNativeSystemInfo";
+            typedef VOID(WINAPI *LPFN_GetNativeSystemInfo)(LPSYSTEM_INFO lpSystemInfo);
+            LPFN_GetNativeSystemInfo fnGetNativeSystemInfo = (LPFN_GetNativeSystemInfo)GetProcAddress(GetModuleHandle(mod.toStdWString().c_str()), addr.toLatin1().data());
+
+            SYSTEM_INFO si = { 0 };
+            if (NULL != fnGetNativeSystemInfo) {
+                fnGetNativeSystemInfo(&si);
+            }
+            else {
+                GetSystemInfo(&si);
+            }
+
+            return (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64
+                    || si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_IA64);
+    };
+
+    if (_Is64BitsOS()) {
+        QString appPath = "Process32to64Host.exe";
+        QString operation = "open";
+        QString exePath = "C:\\Windows\\System32\\osk.exe";
+
+        TCHAR path[MAX_PATH] = { 0 };
+        ::GetModuleFileName(nullptr, path, MAX_PATH);
+        ::PathRemoveFileSpec(path);
+        ::PathAppend(path, appPath.toStdWString().c_str());
+        ::ShellExecute(0, operation.toStdWString().c_str(), path, exePath.toStdWString().c_str(), nullptr, SW_SHOWNORMAL);
+    }
+    else {
+        QString operation = "open";
+        QString exePath = "osk.exe";
+        ::ShellExecute(0, operation.toStdWString().c_str(), exePath.toStdWString().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+    }
 }

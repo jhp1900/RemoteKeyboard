@@ -1,7 +1,7 @@
 TEMPLATE = app
 
-QT += qml quick
-CONFIG += c++11
+QT += qml quick svg
+CONFIG += c++11 qtvirtualkeyboardplugin
 
 SOURCES += \
     source/main.cpp \
@@ -54,4 +54,5 @@ LIBS += $$PWD/ffmpeg/lib/avcodec.lib \
         $$PWD/ffmpeg/lib/swresample.lib \
         $$PWD/ffmpeg/lib/swscale.lib \
 
-LIBS += $$PWD/lib/ws2_32.lib
+LIBS += $$PWD/lib/ws2_32.lib \
+        $$PWD/lib/ShLwApi.lib

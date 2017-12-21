@@ -9,10 +9,10 @@ Rectangle {
     visible: false;
 
     property int innerWidth: menuBtn.width;
-    property int innerHeight: 687;
-    property bool maxWin: false;
+    property int innerHeight: 760;
 
-    signal changeWinSize(bool maxWin);
+    signal saveCfg();
+    signal openVK();
 
     Rectangle {
         id: columnLay
@@ -22,17 +22,11 @@ Rectangle {
         color: "#00000000"
 
         MenuItem {
-            id: itemWin;
+            id: itemSaveCfg;
             innerY: 152;
-            showText: "全屏";
+            showText: "保存配置";
             onClicked: {
-                maxWin = !maxWin;
-                emit: changeWinSize(maxWin);
-                hide();
-                if (maxWin)
-                    showText = "恢复";
-                else
-                    showText = "全屏";
+                emit: saveCfg();
             }
         }
         MenuItem {
@@ -63,8 +57,17 @@ Rectangle {
             }
         }
         MenuItem {
-            id: itemQuit;
+            id: itemKey;
             innerY: 520;
+            showText: "触摸键盘";
+            onClicked: {
+                emit: openVK();
+                hide();
+            }
+        }
+        MenuItemQuit {
+            id: itemQuit;
+            innerY: 612;
             showText: "退出";
             onClicked: {
                 Qt.quit();
@@ -82,19 +85,21 @@ Rectangle {
     Connections {
         target: animHeightIncrease;
         onStopped: {
-            itemWin.itemShow();
+            itemSaveCfg.itemShow();
             itemBk.itemShow();
             itemHome.itemShow();
             itemCtrl.itemShow();
+            itemKey.itemShow();
             itemQuit.itemShow();
         }
     }
 
     function hide() {
-        itemWin.itemHide();
+        itemSaveCfg.itemHide();
         itemBk.itemHide();
         itemHome.itemHide();
         itemCtrl.itemHide();
+        itemKey.itemHide();
         itemQuit.itemHide();
         animHeightDecrease.start();
     }
