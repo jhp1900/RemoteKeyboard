@@ -81,19 +81,6 @@ void Dispatching::refeshCh(const std::multimap<int, std::pair<std::string, unsig
     }
 }
 
-void Dispatching::start(QString url)
-{
-    qDebug() << "Dispatching Start!! - " << url;
-    ffmpeg = new QFFmpeg(this);
-    connect(ffmpeg, SIGNAL(GetImage(QImage)), this, SLOT(SetImage(QImage)));
-
-    if (ffmpeg->OpenURL(url.toLatin1().data())) {
-       RtspThread * rtsp = new RtspThread(this);
-       rtsp->setFFmpeg(ffmpeg);
-       rtsp->start();
-    }
-}
-
 void Dispatching::stop()
 {
     qDebug() << "Dispatching Stop!!";
@@ -106,19 +93,6 @@ void Dispatching::SetImage(const QImage &img)
         //imgProvider->setImage(img.scaled(1920, 1080));
         imgProvider->setPixmap(QPixmap::fromImage(img.scaled(1920, 1080)));
         emit callQmlRefeshImg();
-    }
-}
-
-void Dispatching::startKepplive(QString ip, QString port)
-{
-    qDebug() << ip << " : " << port;
-
-    if (comm->ConnectServer(ip.toLatin1().data(), port.toInt()) && comm->RunClient()){
-        connect(comm, SIGNAL(recvPack(QString)), this, SLOT(convertData(QString)));
-        m_cfg->setCurrentIpPlan(ip);
-        qDebug() << "Sock Client Start OK !!";
-    } else {
-        qDebug() << "Sock Client Start ERROR !!";
     }
 }
 
@@ -181,6 +155,32 @@ void Dispatching::clickTimeout()
     m_pClickTimer->stop();
     comm->SendData(m_pvw_name.toLatin1().data());
     //qDebug() << "Send PVW : " << m_pvw_name;
+}
+
+void Dispatching::onQmlStart(QString url)
+{
+    qDebug() << "Dispatching Start!! - " << url;
+    ffmpeg = new QFFmpeg(this);
+    connect(ffmpeg, SIGNAL(GetImage(QImage)), this, SLOT(SetImage(QImage)));
+
+    if (ffmpeg->OpenURL(url.toLatin1().data())) {
+       RtspThread * rtsp = new RtspThread(this);
+       rtsp->setFFmpeg(ffmpeg);
+       rtsp->start();
+    }
+}
+
+void Dispatching::onQmlStartKepplive(QString ip, QString port)
+{
+    qDebug() << ip << " : " << port;
+
+    if (comm->ConnectServer(ip.toLatin1().data(), port.toInt()) && comm->RunClient()){
+        connect(comm, SIGNAL(recvPack(QString)), this, SLOT(convertData(QString)));
+        m_cfg->setCurrentIpPlan(ip);
+        qDebug() << "Sock Client Start OK !!";
+    } else {
+        qDebug() << "Sock Client Start ERROR !!";
+    }
 }
 
 void Dispatching::onQmlChSwitch(QString name, bool single)

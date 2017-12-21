@@ -8,9 +8,12 @@ import "../js/componentCreation.js" as ChScript;
 Window {
     id: win
     visible: true
-//    width: Screen.desktopAvailableWidth;
-//    height: Screen.desktopAvailableHeight;
-    visibility: Window.FullScreen;
+    width: Screen.desktopAvailableWidth;
+    height: Screen.desktopAvailableHeight;
+//    width: 1920;
+//    height: 1080;
+    visibility: Window.AutomaticVisibility;     // 下策，然，若全屏则导致平板无法调出文件对话框和触摸键盘
+//    visibility: Window.FullScreen;
     title: qsTr("RemoteKeyboard")
     flags: Qt.WindowMinMaxButtonsHint | Qt.Window;
 
@@ -92,17 +95,6 @@ Window {
         }
     }
 
-    //
-//    Connections {
-//        target: menuBar;
-//        onChangeWinSize: {
-//            if (maxWin)
-//                win.visibility = Window.FullScreen;
-//            else
-//                win.visibility = Window.AutomaticVisibility;
-//        }
-//    }
-
     // C++ Call QML ****************************************************************
     Connections {
         target: dispatching
@@ -153,13 +145,13 @@ Window {
                 img.source = url;
             }
             else {
-                dispatching.start(url);
+                dispatching.onQmlStart(url);
             }
         }
     }
     Connections {
         target: linkHomeSet
-        onClickLinkHome: dispatching.startKepplive(ip, port);
+        onClickLinkHome: dispatching.onQmlStartKepplive(ip, port);
     }
     Connections {
         target: ctrlDesk;

@@ -341,6 +341,7 @@ Rectangle {
     FileDialog {
         id: fileDialog;
         title: "Background Image";
+        nameFilters: ["IMG(*.png *.jpg *.jpeg)"];
         onAccepted: {
             imgPath.text = fileDialog.fileUrl;
         }

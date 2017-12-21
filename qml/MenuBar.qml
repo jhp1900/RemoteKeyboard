@@ -27,6 +27,7 @@ Rectangle {
             showText: "保存配置";
             onClicked: {
                 emit: saveCfg();
+                hide();
             }
         }
         MenuItem {

@@ -56,6 +56,7 @@ private:
     void refeshCh(const std::multimap<int, std::pair<std::string, unsigned int>> & refesh);
 
 signals:
+    // * C++ Call Qml *********************************************************
     void callQmlRefeshImg();
     void callQmlLoadupCh(QString name, int chType, int count, int index);
     void callQmlRefeshCh(QString name, int chType, int refType);
@@ -63,13 +64,14 @@ signals:
     void callQmlCtrlState(QString obj, int val);
 
 public slots:
-    void start(QString url);
     void stop();
     void SetImage(const QImage & img);
-    void startKepplive(QString ip, QString port);
     void convertData(QString data);
     void clickTimeout();
 
+    // * Qml Call C++ *********************************************************
+    void onQmlStart(QString url);
+    void onQmlStartKepplive(QString ip, QString port);
     void onQmlChSwitch(QString name, bool single);
     void onQmlSendAction(QString action);
     void onQmlSaveCHPoint(QString name, int x, int y);
