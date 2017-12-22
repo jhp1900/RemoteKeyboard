@@ -39,36 +39,12 @@ Window {
             }
         }
 
-        Rectangle {
+        MenuBtn {
             id: menuBtn;
-            width: 150;
-            height: 150;
             anchors.top: parent.top;
             anchors.topMargin: 10;
             anchors.right: parent.right;
             anchors.rightMargin: 10;
-            color: "#88000000"
-            border.color: "#55ffffff";
-            border.width: 1;
-            radius: 75;
-            Text {
-                anchors.centerIn: parent;
-                font.pointSize: 30;
-                font.bold: true;
-                style: Text.Outline;
-                styleColor: "#ffffff";
-                text: "菜单";
-            }
-            MouseArea {
-                anchors.fill: parent;
-                onClicked: {
-                    menuBar.show();
-                    if (firstClick) {
-                        firstClick = false;
-                        dispatching.onQmlGetInitData();
-                    }
-                }
-            }
         }
 
         MenuBar {
@@ -150,10 +126,25 @@ Window {
         }
         onCallQmlSendInitData: {
             emit: initData(bkUrl, bkImg, ip, port);
+            if (isImg) {
+                img.source = "";
+                img.source = bkImg;
+            } else {
+                dispatching.onQmlStart(bkUrl, bkImg, isImg);
+            }
         }
     }
 
     // QML Call C++ ****************************************************************
+    Connections {
+        target: menuBtn;
+        onClickMenuBtn: {
+            if (isFront)
+                dispatching.onQmlGetInitData();
+            else
+                menuBar.show();
+        }
+    }
     Connections {
         target: bk;
         onClickStart: {

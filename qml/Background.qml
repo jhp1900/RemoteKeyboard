@@ -39,7 +39,7 @@ Rectangle {
         Flipable {
             id: flip;
             anchors.fill: parent;
-            property bool flipped: false
+            property bool flipped: false;
 
             front: Rectangle {
                 anchors.fill: parent;

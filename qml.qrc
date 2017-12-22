@@ -16,5 +16,6 @@
         <file>qml/Background.qml</file>
         <file>res/bk.png</file>
         <file>qml/MenuItemQuit.qml</file>
+        <file>qml/MenuBtn.qml</file>
     </qresource>
 </RCC>
