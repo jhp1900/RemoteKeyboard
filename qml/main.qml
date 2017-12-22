@@ -8,20 +8,23 @@ import "../js/componentCreation.js" as ChScript;
 Window {
     id: win
     visible: true
-    width: Screen.desktopAvailableWidth;
-    height: Screen.desktopAvailableHeight;
-//    width: 1920;
-//    height: 1080;
+//    width: Screen.desktopAvailableWidth;
+//    height: Screen.desktopAvailableHeight;
+    width: 1920;
+    height: 1080;
     visibility: Window.AutomaticVisibility;     // 下策，然，若全屏则导致平板无法调出文件对话框和触摸键盘
 //    visibility: Window.FullScreen;
     title: qsTr("RemoteKeyboard")
     flags: Qt.WindowMinMaxButtonsHint | Qt.Window;
+
+    property bool firstClick: true;
 
     signal destroyCH(string name);
     signal switchToActivity(string pgmName, string pvwName);
     signal refeshCH(string name, int chType);
     signal removePS(string name);
     signal sendActionToCH(string action);
+    signal initData(string bkUrl, string bkImg, string ip, string port);
 
     Rectangle {
         anchors.fill: parent;
@@ -58,7 +61,13 @@ Window {
             }
             MouseArea {
                 anchors.fill: parent;
-                onClicked: menuBar.show();
+                onClicked: {
+                    menuBar.show();
+                    if (firstClick) {
+                        firstClick = false;
+                        dispatching.onQmlGetInitData();
+                    }
+                }
             }
         }
 
@@ -94,6 +103,11 @@ Window {
             anchors.topMargin: 10;
         }
     }
+
+//    Component.onCompleted: {
+//        console.log("fjdksajfkldsakldsnavkdsajkfjdsknvf----------------------");
+//        dispatching.onQmlGetBkurlMsg(true);
+//    }
 
     // C++ Call QML ****************************************************************
     Connections {
@@ -134,6 +148,9 @@ Window {
                 stateBar.recodeState = val;
             }
         }
+        onCallQmlSendInitData: {
+            emit: initData(bkUrl, bkImg, ip, port);
+        }
     }
 
     // QML Call C++ ****************************************************************
@@ -142,11 +159,9 @@ Window {
         onClickStart: {
             if (isImg) {
                 img.source = "";
-                img.source = url;
+                img.source = bkImg;
             }
-            else {
-                dispatching.onQmlStart(url);
-            }
+            dispatching.onQmlStart(bkUrl, bkImg, isImg);
         }
     }
     Connections {

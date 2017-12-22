@@ -157,17 +157,19 @@ void Dispatching::clickTimeout()
     //qDebug() << "Send PVW : " << m_pvw_name;
 }
 
-void Dispatching::onQmlStart(QString url)
+void Dispatching::onQmlStart(QString bkUrl, QString bkImg, bool isImg)
 {
-    qDebug() << "Dispatching Start!! - " << url;
-    ffmpeg = new QFFmpeg(this);
-    connect(ffmpeg, SIGNAL(GetImage(QImage)), this, SLOT(SetImage(QImage)));
+    if (!isImg) {
+        ffmpeg = new QFFmpeg(this);
+        connect(ffmpeg, SIGNAL(GetImage(QImage)), this, SLOT(SetImage(QImage)));
 
-    if (ffmpeg->OpenURL(url.toLatin1().data())) {
-       RtspThread * rtsp = new RtspThread(this);
-       rtsp->setFFmpeg(ffmpeg);
-       rtsp->start();
+        if (ffmpeg->OpenURL(bkUrl.toLatin1().data())) {
+            RtspThread * rtsp = new RtspThread(this);
+            rtsp->setFFmpeg(ffmpeg);
+            rtsp->start();
+        }
     }
+    m_cfg->saveBkURL(bkUrl, bkImg, isImg);
 }
 
 void Dispatching::onQmlStartKepplive(QString ip, QString port)
@@ -176,6 +178,7 @@ void Dispatching::onQmlStartKepplive(QString ip, QString port)
 
     if (comm->ConnectServer(ip.toLatin1().data(), port.toInt()) && comm->RunClient()){
         connect(comm, SIGNAL(recvPack(QString)), this, SLOT(convertData(QString)));
+        m_cfg->saveServerInfo(ip, port);
         m_cfg->setCurrentIpPlan(ip);
         qDebug() << "Sock Client Start OK !!";
     } else {
@@ -248,4 +251,15 @@ void Dispatching::onQmlVK()
         QString exePath = "osk.exe";
         ::ShellExecute(0, operation.toStdWString().c_str(), exePath.toStdWString().c_str(), nullptr, nullptr, SW_SHOWNORMAL);
     }
+}
+
+void Dispatching::onQmlGetInitData()
+{
+    QString ip, port;
+    QString bkUrl, bkImg;
+    bool isImg;
+    m_cfg->getServerInfo(ip, port);
+    m_cfg->getBkURL(bkUrl, bkImg, isImg);
+
+    emit callQmlSendInitData(ip, port, bkUrl, bkImg, isImg);
 }

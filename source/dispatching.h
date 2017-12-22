@@ -62,6 +62,7 @@ signals:
     void callQmlRefeshCh(QString name, int chType, int refType);
     void callQmlChangeChActivity(QString pgmName, QString pvwName);
     void callQmlCtrlState(QString obj, int val);
+    void callQmlSendInitData(QString ip, QString port, QString bkUrl, QString bkImg, bool isImg);
 
 public slots:
     void stop();
@@ -70,12 +71,13 @@ public slots:
     void clickTimeout();
 
     // * Qml Call C++ *********************************************************
-    void onQmlStart(QString url);
+    void onQmlStart(QString bkUrl, QString bkImg, bool isImg);
     void onQmlStartKepplive(QString ip, QString port);
     void onQmlChSwitch(QString name, bool single);
     void onQmlSendAction(QString action);
     void onQmlSaveCHPoint(QString name, int x, int y);
     void onQmlVK();
+    void onQmlGetInitData();
 
 private:
     MyImageProvider * imgProvider;

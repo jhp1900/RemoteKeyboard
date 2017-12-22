@@ -67,7 +67,6 @@ Rectangle {
             anchors.rightMargin: 20;
             anchors.verticalCenter: parent.verticalCenter;
             font.pixelSize: 18;
-            text: "18.18.8.22";
             Rectangle {
                 anchors.fill: parent;
                 color: "#22ffffff";
@@ -93,7 +92,6 @@ Rectangle {
             anchors.rightMargin: 20;
             anchors.verticalCenter: parent.verticalCenter;
             font.pixelSize: 18;
-            text: "12307";
             Rectangle {
                 anchors.fill: parent;
                 color: "#22ffffff";
@@ -188,6 +186,14 @@ Rectangle {
         MouseArea {
             anchors.fill: parent;
             onClicked: hide();
+        }
+    }
+
+    Connections {
+        target: win;
+        onInitData: {
+            ipEdit.text = ip;
+            portEdit.text = port;
         }
     }
 

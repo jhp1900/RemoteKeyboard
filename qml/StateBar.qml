@@ -1,5 +1,5 @@
 import QtQuick 2.7
-import QtQuick.Layouts 1.1
+//import QtQuick.Layouts 1.1
 
 Rectangle {
     id: stateRoot;
@@ -10,22 +10,36 @@ Rectangle {
     property int recodeState: -1;
     property int directMode: -1;
 
-    Image {
-        id: rcdImg;
+    Rectangle {
         width: parent.width / 2;
         height: parent.height;
         anchors.left: parent.left;
         anchors.top: parent.top;
-        source: "qrc:/res/begin.png";
+        Image {
+            id: rcdImg;
+            anchors.fill: parent;
+            source: "qrc:/res/begin.png";
+        }
+        MouseArea {
+            anchors.fill: parent;
+            onClicked: ;
+        }
     }
 
-    Image {
-        id: dirImg;
+    Rectangle {
         width: parent.width / 2;
         height: parent.height;
         anchors.right: parent.right;
         anchors.top: parent.top;
-        source: "qrc:/res/auto.png";
+        Image {
+            id: dirImg;
+            anchors.fill: parent;
+            source: "qrc:/res/auto.png";
+        }
+        MouseArea {
+            anchors.fill: parent;
+            onClicked: ;
+        }
     }
 
     onRecodeStateChanged: {

@@ -11,7 +11,8 @@ Rectangle {
     radius: 5;
     visible: false;
 
-    signal clickStart(string url, bool isImg);
+    signal clickStart(string bkUrl, string bkImg, bool isImg);
+//    signal getUrl();
 
     Rectangle {
         anchors.fill: parent;
@@ -75,7 +76,6 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter;
                         horizontalAlignment: Text.AlignHCenter;
                         selectByMouse: true;
-                        text: "rtsp://192.0.0.200/12";
                         Rectangle {
                             anchors.fill: parent
                             color: "#22ffffff";
@@ -125,7 +125,6 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter;
                         selectByMouse: true;
                         readOnly: true;
-                        text: "D:\\Code\\123.png";
                         Rectangle {
                             anchors.fill: parent
                             color: "#22ffffff";
@@ -236,9 +235,9 @@ Rectangle {
                 onClicked: {
                     onClicked: hide();
                     if (flip.flipped)
-                        emit: clickStart(imgPath.text, true);
+                        emit: clickStart(urlEdit.text, imgPath.text, true);
                     else
-                        emit: clickStart(urlEdit.text, false)
+                        emit: clickStart(urlEdit.text, imgPath.text, false)
                 }
             }
         }
@@ -347,6 +346,19 @@ Rectangle {
         }
         onRejected: {
             console.log("Canceled");
+        }
+    }
+
+//    Component.onCompleted: {
+//        //emit: getUrl();
+//        console.log("Component.onCompleted - - - - -- - - - - - - - ");
+//    }
+
+    Connections {
+        target: win;
+        onInitData: {
+            urlEdit.text = bkUrl;
+            imgPath.text = bkImg;
         }
     }
 
