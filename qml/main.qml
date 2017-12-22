@@ -127,10 +127,16 @@ Window {
         onCallQmlSendInitData: {
             emit: initData(bkUrl, bkImg, ip, port);
             if (isImg) {
-                img.source = "";
-                img.source = bkImg;
+                if (bkImg !== "") {
+                    img.source = "";
+                    img.source = bkImg;
+                    console.log(" - onCallQmlSendInitData - bkImg -" + bkImg);
+                }
             } else {
-                dispatching.onQmlStart(bkUrl, bkImg, isImg);
+                if (bkUrl !== "") {
+                    dispatching.onQmlStart(bkUrl, bkImg, isImg);
+                    console.log(" - onCallQmlSendInitData - bkUrl -" + bkUrl);
+                }
             }
         }
     }
