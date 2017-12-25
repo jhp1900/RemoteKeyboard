@@ -9,7 +9,7 @@ Rectangle {
     visible: false;
 
     property int innerWidth: menuBtn.width;
-    property int innerHeight: 760;
+    property int innerHeight: 576;
 
     signal saveCfg();
     signal openVK();
@@ -21,18 +21,18 @@ Rectangle {
         anchors.centerIn: parent;
         color: "#00000000"
 
-        MenuItem {
-            id: itemSaveCfg;
-            innerY: 152;
-            showText: "保存配置";
-            onClicked: {
-                emit: saveCfg();
-                hide();
-            }
-        }
+//        MenuItem {
+//            id: itemSaveCfg;
+//            innerY: 152;
+//            showText: "保存配置";
+//            onClicked: {
+//                emit: saveCfg();
+//                hide();
+//            }
+//        }
         MenuItem {
             id: itemBk;
-            innerY: 244;
+            innerY: 152;
             showText: "背景流";
             onClicked: {
                 bk.show();
@@ -41,25 +41,25 @@ Rectangle {
         }
         MenuItem {
             id: itemHome;
-            innerY: 336;
+            innerY: 244;
             showText: "连接主机";
             onClicked: {
                 linkHomeSet.show();
                 hide();
             }
         }
-        MenuItem {
-            id: itemCtrl;
-            innerY: 428;
-            showText: "控制台";
-            onClicked: {
-                ctrlDesk.show();
-                hide();
-            }
-        }
+//        MenuItem {
+//            id: itemCtrl;
+//            innerY: 428;
+//            showText: "控制台";
+//            onClicked: {
+//                ctrlDesk.show();
+//                hide();
+//            }
+//        }
         MenuItem {
             id: itemKey;
-            innerY: 520;
+            innerY: 336;
             showText: "触摸键盘";
             onClicked: {
                 emit: openVK();
@@ -68,7 +68,7 @@ Rectangle {
         }
         MenuItemQuit {
             id: itemQuit;
-            innerY: 612;
+            innerY: 428;//612
             showText: "退出";
             onClicked: {
                 Qt.quit();
@@ -86,20 +86,20 @@ Rectangle {
     Connections {
         target: animHeightIncrease;
         onStopped: {
-            itemSaveCfg.itemShow();
+            //itemSaveCfg.itemShow();
             itemBk.itemShow();
             itemHome.itemShow();
-            itemCtrl.itemShow();
+            //itemCtrl.itemShow();
             itemKey.itemShow();
             itemQuit.itemShow();
         }
     }
 
     function hide() {
-        itemSaveCfg.itemHide();
+        //itemSaveCfg.itemHide();
         itemBk.itemHide();
         itemHome.itemHide();
-        itemCtrl.itemHide();
+        //itemCtrl.itemHide();
         itemKey.itemHide();
         itemQuit.itemHide();
         animHeightDecrease.start();

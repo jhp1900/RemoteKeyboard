@@ -65,19 +65,31 @@ Window {
             y: 300;
         }
 
-        ControlDesk {
-            id: ctrlDesk;
-            x: (win.width - ctrlDesk.width) / 2;
-            y: 550;
+        RecodDesk {
+            id: recodeDesk;
+            x: 5;
+            y: 305;
         }
 
-        StateBar {
-            id: stateBar;
-            anchors.left: parent.left;
-            anchors.leftMargin: 10;
-            anchors.top: parent.top;
-            anchors.topMargin: 10;
+        DirectorDesk {
+            id: directorDesk;
+            x: 5;
+            y: 675;
         }
+
+//        ControlDesk {
+//            id: ctrlDesk;
+//            x: (win.width - ctrlDesk.width) / 2;
+//            y: 550;
+//        }
+
+//        StateBar {
+//            id: stateBar;
+//            anchors.left: parent.left;
+//            anchors.leftMargin: 10;
+//            anchors.top: parent.top;
+//            anchors.topMargin: 10;
+//        }
     }
 
 //    Component.onCompleted: {
@@ -117,11 +129,11 @@ Window {
         }
         onCallQmlCtrlState: {
             if (obj === "DirectMode") {
-                ctrlDesk.directMode = val;
-                stateBar.directMode = val;
+                directorDesk.directMode = val;
+                //stateBar.directMode = val;
             } else if (obj === "RecodeState") {
-                ctrlDesk.recodeState = val;
-                stateBar.recodeState = val;
+                recodeDesk.recodeState = val;
+                //stateBar.recodeState = val;
             }
         }
         onCallQmlSendInitData: {
@@ -166,7 +178,11 @@ Window {
         onClickLinkHome: dispatching.onQmlStartKepplive(ip, port);
     }
     Connections {
-        target: ctrlDesk;
+        target: directorDesk;
+        onSendAction: dispatching.onQmlSendAction(action);
+    }
+    Connections {
+        target: recodeDesk;
         onSendAction: dispatching.onQmlSendAction(action);
     }
     Connections {
