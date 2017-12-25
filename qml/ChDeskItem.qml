@@ -11,10 +11,10 @@ Rectangle {
     border.color: "#55ffffff";
     border.width: 1;
     radius: 10;
+    visible: false;
 
-    property string chName: "CH1";
+    property string chName: "";
     property int chType: -1;   // 0-未使能; 1-没有预置位的通道; 2-带预置位的通道; 3-预置位;
-    property bool stateEnable: true;
 
     signal switchPVW(string name);
     signal switchPGM(string name);
@@ -33,18 +33,10 @@ Rectangle {
         anchors.fill: parent;
         drag.target: chRoot;
         onClicked: {
-            if (stateEnable) {
-                //console.log("clicked" + chName);
-                //emit: chClicked(chName);
-                emit: switchPVW(chName);
-            }
+            emit: switchPVW(chName);
         }
         onDoubleClicked: {
-            if (stateEnable) {
-                //console.log("Double Clicked" + chName);
-                //emit: chDbClicked(chName);
-                emit: switchPGM(chName);
-            }
+            emit: switchPGM(chName);
         }
     }
 
@@ -65,7 +57,6 @@ Rectangle {
         property: "scale";
         from: 1;
         to: 0;
-        onStopped: chRoot.destroy();
     }
     PropertyAnimation {
         id: animDown;
@@ -81,16 +72,16 @@ Rectangle {
         switch(chType) {
         case 0:
             animBig.start();
-            chRoot.stateEnable = false;
+            //chRoot.stateEnable = false;
             break;
         case 1:
             emit: chRemovePS(chName);
             animBig.start();
-            chRoot.stateEnable = true;
+            //chRoot.stateEnable = true;
             break;
         case 2:
             animBig.start();
-            chRoot.stateEnable = true;
+            //chRoot.stateEnable = true;
             break;
         case 3:
             animDown.start();

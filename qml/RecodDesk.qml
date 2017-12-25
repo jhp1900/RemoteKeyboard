@@ -6,6 +6,7 @@ Rectangle {
     width: 305; height: 130;
     color: "transparent";
     z: 200;
+    visible: false;
 
     property int recodeState: -1;
     property int directMode: -1;

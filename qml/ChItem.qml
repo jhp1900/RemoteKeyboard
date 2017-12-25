@@ -4,11 +4,13 @@ import "../js/componentCreation.js" as ChScript;
 
 Rectangle {
     id: chRoot;
-    width: 120;
-    height: 100;
+    width: 232;
+    height: 192;
     radius: 5
     color: "#77cccccc";
-    z: 50
+    border.color: "#55ffffff";
+    border.width: 1;
+    z: 50;
 
     property string chName: "CH1";
     property int chType: -1;   // 0-未使能; 1-没有预置位的通道; 2-带预置位的通道; 3-预置位;
@@ -55,7 +57,7 @@ Rectangle {
         property: "scale";
         from: 0;
         to: 1;
-        onStopped: creatPreset();
+        //onStopped: creatPreset();
     }
     PropertyAnimation {
         id: animSmall;
@@ -101,34 +103,7 @@ Rectangle {
     }
 
     function creatPreset() {
-        if (chType === 2) {
-            var h = win.height;
-            if (h < 7 * chRoot.chSpace) {
-                chRoot.chSpace = h / 7;
-            }
-            var chY = -3;
-            var yTop = chRoot.y > -chY * chRoot.chSpace;
-            var yBottom = chRoot.y + (chY+7) * chRoot.chSpace < h;
-            while (!(yTop && yBottom)) {
-                if (!yTop)
-                    ++chY;
-                else if (!yBottom)
-                    --chY;
 
-                yTop = chRoot.y > -chY * chRoot.chSpace;
-                yBottom = chRoot.y + (chY+7) * chRoot.chSpace < h;
-            }
-
-            if (chY === -7)
-                chY = -6;
-
-            for(var i = 1; i < 7; ++i){
-                if (chY === 0)
-                    ++chY;
-                ChScript.createChObj(chRoot.x, chRoot.y + chY * chRoot.chSpace, chName + "-" + i, 3, chRoot.y);
-                ++ chY;
-            }
-        }
     }
 
     function onDestroyCH(name) {

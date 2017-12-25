@@ -19,6 +19,7 @@ Window {
 
     property bool firstClick: true;
 
+    signal showCH(string name);
     signal destroyCH(string name);
     signal switchToActivity(string pgmName, string pvwName);
     signal refeshCH(string name, int chType);
@@ -57,11 +58,11 @@ Window {
             y: 305;
         }
 
-        ChDesk {
-            id: chDesk;
-            x: 0;
-            y: 448;
-        }
+//        ChDesk {
+//            id: chDesk;
+//            x: 0;
+//            y: 448;
+//        }
 
         DirectorDesk {
             id: directorDesk;
@@ -113,20 +114,15 @@ Window {
             }
         }
         onCallQmlLoadupCh: {
-//            var gap = Math.floor((win.width - 120) / (count + 1));
-//            var h = (win.height - 100) / 2;
-//            console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + chType + " - " + gap + " - " + h);
-//            ChScript.createChObj(gap * index, h, name, chType, 0);
+            showCHFounction(name, chType);
         }
         onCallQmlRefeshCh: {
             if (refType === 1) {
-//                var w = win.width - 150;
-//                var h = (win.height - 80) / 2;
-//                ChScript.createChObj(w, h, name, chType, 0);
+                showCHFounction(name, chType);
             } else if (refType === -1) {
                 emit: destroyCH(name);
             } else if (refType === 0) {
-                emit: refeshCH(name, chType);
+                emit: refeshCH(name);
             }
         }
         onCallQmlChangeChActivity: {
@@ -163,10 +159,11 @@ Window {
     Connections {
         target: menuBtn;
         onClickMenuBtn: {
-            if (isFront)
-                dispatching.onQmlGetInitData();
-            else
+            if (isFront) {
+                initRK();
+            } else {
                 menuBar.show();
+            }
         }
     }
     Connections {
@@ -193,11 +190,20 @@ Window {
     }
     Connections {
         target: menuBar;
-        onSaveCfg: {
-            emit: sendActionToCH("Collect");
-        }
+//        onSaveCfg: {
+//            emit: sendActionToCH("Collect");
+//        }
         onOpenVK: dispatching.onQmlVK();
     }
+//    Connections {
+//        target: chDesk;
+//        onSwitchPVW: {
+//            dispatching.onQmlChSwitch(name, true);
+//        }
+//        onSwitchPGM: {
+//            dispatching.onQmlChSwitch(name, false);
+//        }
+//    }
 
     // JS Function *****************************************************************
     function onChClicked(name) {
@@ -216,5 +222,25 @@ Window {
 
     function onChSendPoint(name, x, y) {
         dispatching.onQmlSaveCHPoint(name, x, y);
+    }
+
+    function initRK() {
+        dispatching.onQmlGetInitData();
+        recodeDesk.show();
+        directorDesk.show();
+        //dispatching.onQmlStartKepplive(ip, port);
+    }
+    function showCHFounction(name, chType) {
+        var x = 0;
+        if (name === "CH1") x = 7;
+        else if (name === "CH2") x = 246;
+        else if (name === "CH3") x = 485;
+        else if (name === "CH4") x = 724;
+        else if (name === "CH5") x = 964;
+        else if (name === "CH6") x = 1202;
+        else if (name === "CH7") x = 1442;
+        else if (name === "CH8") x = 1680;
+
+        ChScript.createChObj(x, 450, name, chType, 0);
     }
 }
