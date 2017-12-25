@@ -19,5 +19,7 @@
         <file>qml/MenuBtn.qml</file>
         <file>qml/RecodDesk.qml</file>
         <file>qml/DirectorDesk.qml</file>
+        <file>qml/ChDesk.qml</file>
+        <file>qml/ChDeskItem.qml</file>
     </qresource>
 </RCC>

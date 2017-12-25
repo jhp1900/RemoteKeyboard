@@ -39,20 +39,6 @@ Window {
             }
         }
 
-        MenuBtn {
-            id: menuBtn;
-            anchors.top: parent.top;
-            anchors.topMargin: 10;
-            anchors.right: parent.right;
-            anchors.rightMargin: 10;
-        }
-
-        MenuBar {
-            id: menuBar;
-            anchors.left: menuBtn.left;
-            anchors.top: menuBtn.top;
-        }
-
         Background {
             id: bk;
             x: (win.width - bk.width) / 2;
@@ -71,10 +57,30 @@ Window {
             y: 305;
         }
 
+        ChDesk {
+            id: chDesk;
+            x: 0;
+            y: 448;
+        }
+
         DirectorDesk {
             id: directorDesk;
             x: 5;
             y: 675;
+        }
+
+        MenuBtn {
+            id: menuBtn;
+            anchors.top: parent.top;
+            anchors.topMargin: 10;
+            anchors.right: parent.right;
+            anchors.rightMargin: 10;
+        }
+
+        MenuBar {
+            id: menuBar;
+            anchors.left: menuBtn.left;
+            anchors.top: menuBtn.top;
         }
 
 //        ControlDesk {
@@ -107,16 +113,16 @@ Window {
             }
         }
         onCallQmlLoadupCh: {
-            var gap = Math.floor((win.width - 120) / (count + 1));
-            var h = (win.height - 100) / 2;
-            console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + chType + " - " + gap + " - " + h);
-            ChScript.createChObj(gap * index, h, name, chType, 0);
+//            var gap = Math.floor((win.width - 120) / (count + 1));
+//            var h = (win.height - 100) / 2;
+//            console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + chType + " - " + gap + " - " + h);
+//            ChScript.createChObj(gap * index, h, name, chType, 0);
         }
         onCallQmlRefeshCh: {
             if (refType === 1) {
-                var w = win.width - 150;
-                var h = (win.height - 80) / 2;
-                ChScript.createChObj(w, h, name, chType, 0);
+//                var w = win.width - 150;
+//                var h = (win.height - 80) / 2;
+//                ChScript.createChObj(w, h, name, chType, 0);
             } else if (refType === -1) {
                 emit: destroyCH(name);
             } else if (refType === 0) {
