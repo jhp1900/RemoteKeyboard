@@ -74,8 +74,9 @@ bool QFFmpeg::OpenURL(const char *url)
 void QFFmpeg::Play()
 {
     int frameFinished = 0;
+    isRun = true;
     AVPacket pAVPacket;
-    while (true) {
+    while (isRun) {
         if (av_read_frame(pAVFormatContext, &pAVPacket) >= 0) {
             if (pAVPacket.stream_index == videoStreamIndex) {
                 //qDebug() << "¿ªÊ¼½âÂë:" << QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
@@ -92,16 +93,24 @@ void QFFmpeg::Play()
         }
         av_free_packet(&pAVPacket);
     }
-}
-
-bool QFFmpeg::Stop()
-{
+    qDebug() << " ---- Close FFmpeg stream ---- ";
     if (pAVFormatContext)
         avformat_free_context(pAVFormatContext);
     if (pAVFrame)
         av_frame_free(&pAVFrame);
     if (pSwsContext)
         sws_freeContext(pSwsContext);
+}
+
+bool QFFmpeg::Stop()
+{
+    isRun = false;
+//    if (pAVFormatContext)
+//        avformat_free_context(pAVFormatContext);
+//    if (pAVFrame)
+//        av_frame_free(&pAVFrame);
+//    if (pSwsContext)
+//        sws_freeContext(pSwsContext);
 
     return true;
 }

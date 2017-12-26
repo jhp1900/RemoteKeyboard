@@ -11,6 +11,7 @@ class QFFmpeg;
 class Comm;
 class QTimer;
 class QCfg;
+class RtspThread;
 
 struct SockCHPack
 {
@@ -93,6 +94,7 @@ private:
     QString m_pvw_name;
 
     std::shared_ptr<QCfg> m_cfg;
+    RtspThread * m_rtsp;
 };
 
 #endif // DISPATCHING_H

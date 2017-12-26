@@ -25,7 +25,7 @@ Dispatching::Dispatching(MyImageProvider * imgPro, QObject *parent)
     , m_first_refesh(true)
     , m_pClickTimer(NULL)
 {
-    comm = new Comm();
+    //comm = new Comm();
     m_pClickTimer = new QTimer(this);
     connect(m_pClickTimer, SIGNAL(timeout()), this, SLOT(clickTimeout()));
 
@@ -83,7 +83,13 @@ void Dispatching::refeshCh(const std::multimap<int, std::pair<std::string, unsig
 
 void Dispatching::stop()
 {
-    qDebug() << "Dispatching Stop!!";
+    if (m_rtsp) {
+        m_rtsp->stop();
+        m_rtsp->quit();
+        m_rtsp->wait();
+        delete m_rtsp;
+        m_rtsp = nullptr;
+    }
 }
 
 void Dispatching::SetImage(const QImage &img)
@@ -153,20 +159,22 @@ void Dispatching::convertData(QString data)
 void Dispatching::clickTimeout()
 {
     m_pClickTimer->stop();
-    comm->SendData(m_pvw_name.toLatin1().data());
+    if (comm)
+        comm->SendData(m_pvw_name.toLatin1().data());
     //qDebug() << "Send PVW : " << m_pvw_name;
 }
 
 void Dispatching::onQmlStart(QString bkUrl, QString bkImg, bool isImg)
 {
     if (!isImg) {
+        stop();
         ffmpeg = new QFFmpeg(this);
         connect(ffmpeg, SIGNAL(GetImage(QImage)), this, SLOT(SetImage(QImage)));
 
         if (ffmpeg->OpenURL(bkUrl.toLatin1().data())) {
-            RtspThread * rtsp = new RtspThread(this);
-            rtsp->setFFmpeg(ffmpeg);
-            rtsp->start();
+            m_rtsp = new RtspThread(this);
+            m_rtsp->setFFmpeg(ffmpeg);
+            m_rtsp->start();
         }
     }
     m_cfg->saveBkURL(bkUrl, bkImg, isImg);
@@ -176,6 +184,8 @@ void Dispatching::onQmlStartKepplive(QString ip, QString port)
 {
     qDebug() << ip << " : " << port;
 
+    Comm * old_comm = comm;
+    comm = new Comm();
     if (comm->ConnectServer(ip.toLatin1().data(), port.toInt()) && comm->RunClient()){
         connect(comm, SIGNAL(recvPack(QString)), this, SLOT(convertData(QString)));
         m_cfg->saveServerInfo(ip, port);
@@ -183,6 +193,9 @@ void Dispatching::onQmlStartKepplive(QString ip, QString port)
         qDebug() << "Sock Client Start OK !!";
     } else {
         qDebug() << "Sock Client Start ERROR !!";
+    }
+    if (old_comm) {
+        old_comm->Stop();
     }
 }
 

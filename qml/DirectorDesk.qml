@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.1
 
 Rectangle {
     id: deskRoot;
-    width: 450; height: 60;
+    width: 440; height: 60;
     color: "transparent";
     z: 200;
     visible: false;
@@ -31,7 +31,7 @@ Rectangle {
         anchors.top: parent.top;
         anchors.right: parent.right;
         anchors.bottom: parent.bottom;
-        color: "#55000000";
+        color: "#000000";
         border.color: "#55ffffff";
         border.width: 1;
         radius: 5;
@@ -40,8 +40,9 @@ Rectangle {
             anchors.centerIn: parent;
             font.pixelSize: 20;
             font.bold: true;
-            style: Text.Outline;
-            styleColor: "#ffffff";
+            color: "white";
+//            style: Text.Outline;
+//            styleColor: "#ffffff";
             text: qsTr("手动导播")
         }
         MouseArea {
@@ -58,7 +59,7 @@ Rectangle {
         anchors.left: parent.left;
         anchors.top: parent.top;
         anchors.bottom: parent.bottom;
-        color: "#55000000";
+        color: "#000000";
         border.color: "#55ffffff";
         border.width: 1;
         radius: 5;
@@ -67,8 +68,9 @@ Rectangle {
             anchors.centerIn: parent;
             font.pixelSize: 20;
             font.bold: true;
-            style: Text.Outline;
-            styleColor: "#ffffff";
+            color: "white";
+//            style: Text.Outline;
+//            styleColor: "#ffffff";
             text: qsTr("自动导播")
         }
         MouseArea {
@@ -82,10 +84,10 @@ Rectangle {
     onDirectModeChanged: {
         if (directMode === 0) {
             autoText.color = "red";
-            manualText.color = "black";
+            manualText.color = "white";
         } else if (directMode === 1) {
             manualText.color = "red";
-            autoText.color = "black";
+            autoText.color = "white";
         }
     }
 

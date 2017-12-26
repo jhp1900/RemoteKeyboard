@@ -52,7 +52,7 @@ Rectangle {
                     anchors.right: parent.right;
                     anchors.leftMargin: 20;
                     verticalAlignment: Text.AlignVCenter;
-                    font.pixelSize: 24
+                    font.pixelSize: 24;
                     font.bold: true;
                     style: Text.Outline;
                     styleColor: "#ffffff";
@@ -73,6 +73,7 @@ Rectangle {
                         anchors.leftMargin: 20;
                         anchors.rightMargin: 20;
                         font.pixelSize:16;
+                        color: "#ffffff";
                         verticalAlignment: Text.AlignVCenter;
                         horizontalAlignment: Text.AlignHCenter;
                         selectByMouse: true;
@@ -120,7 +121,8 @@ Rectangle {
                         anchors.right: btnBkBrowse.left;
                         anchors.leftMargin: 20;
                         anchors.rightMargin: 4;
-                        font.pixelSize: 16
+                        font.pixelSize: 16;
+                        color: "#ffffff";
                         verticalAlignment: Text.AlignVCenter;
                         horizontalAlignment: Text.AlignHCenter;
                         selectByMouse: true;
@@ -273,6 +275,7 @@ Rectangle {
             border.color: "#44000000";
             border.width: 1
             radius: 5;
+            visible: false;
             Text {
                 id: urlBtnTxt;
                 anchors.centerIn: parent;
@@ -297,6 +300,7 @@ Rectangle {
             border.color: "#44000000";
             border.width: 1
             radius: 5;
+            visible: false;
             Text {
                 id: imgBtnTxt;
                 anchors.centerIn: parent;

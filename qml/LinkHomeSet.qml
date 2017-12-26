@@ -55,6 +55,7 @@ Rectangle {
             anchors.left: parent.left;
             anchors.leftMargin: 20;
             anchors.verticalCenter: parent.verticalCenter;
+            color: "white";
             text: "IP:"
         }
         TextInput {
@@ -67,6 +68,7 @@ Rectangle {
             anchors.rightMargin: 20;
             anchors.verticalCenter: parent.verticalCenter;
             font.pixelSize: 18;
+            color: "#ffffff";
             Rectangle {
                 anchors.fill: parent;
                 color: "#22ffffff";
@@ -81,6 +83,7 @@ Rectangle {
             width: 46;
             anchors.right: portEdit.left;
             anchors.verticalCenter: parent.verticalCenter;
+            color: "white";
             text: "PORT:";
         }
         TextInput {
@@ -92,6 +95,7 @@ Rectangle {
             anchors.rightMargin: 20;
             anchors.verticalCenter: parent.verticalCenter;
             font.pixelSize: 18;
+            color: "#ffffff";
             Rectangle {
                 anchors.fill: parent;
                 color: "#22ffffff";
@@ -136,7 +140,7 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent;
                 onClicked: {
-                    emit: clickLinkHome(ipEdit.text, portEdit.text);
+                    linkHome();
                     hide();
                 }
             }
@@ -204,6 +208,10 @@ Rectangle {
 
     function hide() {
         animSmall.start();
+    }
+
+    function linkHome() {
+        emit: clickLinkHome(ipEdit.text, portEdit.text);
     }
 
     PropertyAnimation {

@@ -24,7 +24,7 @@ Rectangle {
                 font.bold: true;
                 style: Text.Outline;
                 styleColor: "#ffffff";
-                text: "Init";
+                text: "启用";
             }
             MouseArea {
                 anchors.fill: parent;

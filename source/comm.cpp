@@ -13,13 +13,7 @@ Comm::Comm()
 
 Comm::~Comm()
 {
-    if (kelv_thread_.joinable())
-        kelv_thread_.join();
-    if (send_thread_.joinable())
-        send_thread_.join();
-    if (recv_thread_.joinable())
-        recv_thread_.join();
-
+    Stop();
     CloseHandle(send_event_);
     closesocket(keep_sock_);
     closesocket(action_sock_);
@@ -104,6 +98,17 @@ void Comm::SendData(const char * data)
 {
     send_str_ = data;
     SetEvent(send_event_);
+}
+
+WINBOOL Comm::Stop()
+{
+    is_connected_ = false;
+//    if (kelv_thread_.joinable())
+//        kelv_thread_.join();
+//    if (send_thread_.joinable())
+//        send_thread_.join();
+//    if (recv_thread_.joinable())
+//        recv_thread_.join();
 }
 
 void Comm::KeepLiveFun(void *param)

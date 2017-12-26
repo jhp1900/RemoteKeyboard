@@ -34,7 +34,7 @@ Rectangle {
         anchors.left: parent.left;
         anchors.top: parent.top;
         anchors.right: parent.right;
-        color: "#55000000";
+        color: "#000000";
         border.color: "#55ffffff";
         border.width: 1
         radius: 5;
@@ -43,8 +43,9 @@ Rectangle {
             anchors.centerIn: parent;
             font.pixelSize: 20;
             font.bold: true;
-            style: Text.Outline;
-            styleColor: "#ffffff";
+            color: "white";
+//            style: Text.Outline;
+//            styleColor: "#ffffff";
             text: dirStr;
         }
         MouseArea {
@@ -60,7 +61,7 @@ Rectangle {
         anchors.left: parent.left;
         anchors.right: parent.right;
         anchors.bottom: parent.bottom;
-        color: "#55000000";
+        color: "#000000";
         border.color: "#55ffffff";
         border.width: 1
         radius: 5;
@@ -69,8 +70,9 @@ Rectangle {
             anchors.centerIn: parent;
             font.pixelSize: 20;
             font.bold: true;
-            style: Text.Outline;
-            styleColor: "#ffffff";
+            color: "white";
+//            style: Text.Outline;
+//            styleColor: "#ffffff";
             text: qsTr("结束录制")
         }
         MouseArea {
@@ -85,7 +87,7 @@ Rectangle {
         if (recodeState === 0) {    // 停止态
             dirAction = "BeginRecord";
             dirStr = "开始录制";
-            dirText.color = "black";
+            dirText.color = "white";
         } else if (recodeState === 1) {     // 录制态
             dirAction = "PauseRecord";
             dirStr = "暂停录制";
@@ -94,16 +96,6 @@ Rectangle {
             dirAction = "BeginRecord";
             dirStr = "继续录制";
             dirText.color = "red";
-        }
-    }
-
-    onDirectModeChanged: {
-        if (directMode === 0) {
-            autoText.color = "red";
-            manualText.color = "black";
-        } else if (directMode === 1) {
-            manualText.color = "red";
-            autoText.color = "black";
         }
     }
 

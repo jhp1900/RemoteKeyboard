@@ -45,6 +45,7 @@ private:
     int videoStreamIndex;
     int width;
     int height;
+    bool isRun;
 };
 
 #endif // QFFMPEG_H

@@ -55,7 +55,7 @@ Window {
         RecodDesk {
             id: recodeDesk;
             x: 5;
-            y: 305;
+            y: 250;
         }
 
         ChDesk {
@@ -82,6 +82,19 @@ Window {
             id: menuBar;
             anchors.left: menuBtn.left;
             anchors.top: menuBtn.top;
+        }
+
+        Rectangle {
+            id: test;
+            width: 70; height: 70;
+            anchors.top: menuBtn.top;
+            anchors.right: menuBtn.left;
+            anchors.rightMargin: 10;
+            color: "red";
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: dispatching.stop();
+            }
         }
     }
 
@@ -205,6 +218,6 @@ Window {
         recodeDesk.show();
         directorDesk.show();
         chDesk.show();
-        //dispatching.onQmlStartKepplive(ip, port);
+        linkHomeSet.linkHome();
     }
 }

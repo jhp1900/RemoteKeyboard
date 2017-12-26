@@ -11,7 +11,7 @@ public:
     explicit RtspThread(QObject * parent = 0) : QThread(parent) {}
 
     void run() { ffmpeg->Play(); }
-
+    void stop() { ffmpeg->Stop(); }
     void setFFmpeg(QFFmpeg *f) { ffmpeg = f; }
 
 private:
