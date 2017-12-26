@@ -140,8 +140,8 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent;
                 onClicked: {
-                    linkHome();
                     hide();
+                    linkHome();
                 }
             }
         }

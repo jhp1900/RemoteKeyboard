@@ -42,7 +42,8 @@ BOOL Comm::ConnectServer(const char * ip, int port)
     sv_addr.sin_port = htons(port);
 
     int reVal;
-    while (true) {
+    int con_count = 10;
+    while (--con_count) {
         reVal = ::connect(keep_sock_, (SOCKADDR*)&sv_addr, sizeof(sv_addr));
         if (reVal == SOCKET_ERROR) {
             int err_code = WSAGetLastError();
@@ -58,7 +59,8 @@ BOOL Comm::ConnectServer(const char * ip, int port)
         if (reVal == 0)
             break;
     }
-    while (true) {
+    con_count = 10;
+    while (--con_count) {
         reVal = ::connect(action_sock_, (SOCKADDR*)&sv_addr, sizeof(sv_addr));
         if (reVal == SOCKET_ERROR) {
             int err_code = WSAGetLastError();
@@ -66,18 +68,21 @@ BOOL Comm::ConnectServer(const char * ip, int port)
                 Sleep(TIMEFOR_THREAD_CONTINUE);
                 continue;
             }
-            else if (err_code == WSAEISCONN)
-                break;
+            else if (err_code == WSAEISCONN){
+                is_connected_ = TRUE;
+                return TRUE;
+            }
             else
                 return FALSE;
         }
-        if (reVal == 0)
-            break;
+        if (reVal == 0) {
+            is_connected_ = TRUE;
+            return TRUE;
+        }
     }
 
-    is_connected_ = TRUE;
-
-    return TRUE;
+    is_connected_ = FALSE;
+    return FALSE;
 }
 
 BOOL Comm::DisconnectServer()
