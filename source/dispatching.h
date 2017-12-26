@@ -64,6 +64,8 @@ signals:
     void callQmlChangeChActivity(QString pgmName, QString pvwName);
     void callQmlCtrlState(QString obj, int val);
     void callQmlSendInitData(QString ip, QString port, QString bkUrl, QString bkImg, bool isImg);
+    void callQmlOpenURLFail();
+    void callQmlConnectServerFail();
 
 public slots:
     void stop();

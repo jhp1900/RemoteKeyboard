@@ -29,12 +29,12 @@ bool QFFmpeg::OpenURL(const char *url)
     pAVFrame = av_frame_alloc();
 
     if (avformat_open_input(&pAVFormatContext, url, NULL, NULL) < 0) {
-        qDebug() << "打开视频流失败！！！";
+        qDebug() << "Open video stream Fail - 1 !!! ";
         return false;
     }
 
     if (avformat_find_stream_info(pAVFormatContext, NULL) < 0) {
-        qDebug() << "获取视频流信息失败！！！";
+        qDebug() << "Get video stream info Fail - 2 !!! ";
         return false;
     }
 
@@ -47,7 +47,7 @@ bool QFFmpeg::OpenURL(const char *url)
     }
 
     if (videoStreamIndex == -1) {
-        qDebug() << "获取视频流索引失败！！！";
+        qDebug() << "Get video stream index Fail - 3 !!! ";
         return false;
     }
 
@@ -63,7 +63,7 @@ bool QFFmpeg::OpenURL(const char *url)
                                  SWS_BICUBIC, 0, 0, 0);
 
     if (avcodec_open2(pAVCodecContext, pAVCodec, NULL) < 0) {
-        qDebug() << "打开解码器失败！！！";
+        qDebug() << "Open avcodec fail - 4 !!! ";
         return false;
     }
 
@@ -105,12 +105,5 @@ void QFFmpeg::Play()
 bool QFFmpeg::Stop()
 {
     isRun = false;
-//    if (pAVFormatContext)
-//        avformat_free_context(pAVFormatContext);
-//    if (pAVFrame)
-//        av_frame_free(&pAVFrame);
-//    if (pSwsContext)
-//        sws_freeContext(pSwsContext);
-
     return true;
 }

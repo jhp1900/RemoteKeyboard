@@ -40,24 +40,6 @@ Window {
             }
         }
 
-        Background {
-            id: bk;
-            x: (win.width - bk.width) / 2;
-            y: 50;
-        }
-
-        LinkHomeSet {
-            id: linkHomeSet;
-            x: (win.width - linkHomeSet.width) / 2;
-            y: 300;
-        }
-
-        RecodDesk {
-            id: recodeDesk;
-            x: 5;
-            y: 250;
-        }
-
         ChDesk {
             id: chDesk;
             x: 0;
@@ -68,6 +50,24 @@ Window {
             id: directorDesk;
             x: 5;
             y: 675;
+        }
+
+        RecodDesk {
+            id: recodeDesk;
+            x: 5;
+            y: 250;
+        }
+
+        Background {
+            id: bk;
+            x: (win.width - bk.width) / 2;
+            y: 50;
+        }
+
+        LinkHomeSet {
+            id: linkHomeSet;
+            x: (win.width - linkHomeSet.width) / 2;
+            y: 300;
         }
 
         MenuBtn {
@@ -84,18 +84,18 @@ Window {
             anchors.top: menuBtn.top;
         }
 
-        Rectangle {
-            id: test;
-            width: 70; height: 70;
-            anchors.top: menuBtn.top;
-            anchors.right: menuBtn.left;
-            anchors.rightMargin: 10;
-            color: "red";
-            MouseArea {
-                anchors.fill: parent;
-                onClicked: dispatching.stop();
-            }
-        }
+//        Rectangle {
+//            id: test;
+//            width: 70; height: 70;
+//            anchors.top: menuBtn.top;
+//            anchors.right: menuBtn.left;
+//            anchors.rightMargin: 10;
+//            color: "red";
+//            MouseArea {
+//                anchors.fill: parent;
+//                onClicked: dispatching.stop();
+//            }
+//        }
     }
 
     // C++ Call QML ****************************************************************
@@ -148,6 +148,13 @@ Window {
                     console.log(" - onCallQmlSendInitData - bkUrl -" + bkUrl);
                 }
             }
+        }
+        onCallQmlOpenURLFail:{
+            bk.show();
+        }
+        onCallQmlConnectServerFail: {
+            console.log("  8 8 88 8  ****   **** onCallQmlConnectServerFail");
+            linkHomeSet.show();
         }
     }
 

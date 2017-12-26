@@ -175,6 +175,8 @@ void Dispatching::onQmlStart(QString bkUrl, QString bkImg, bool isImg)
             m_rtsp = new RtspThread(this);
             m_rtsp->setFFmpeg(ffmpeg);
             m_rtsp->start();
+        } else {
+            emit callQmlOpenURLFail();
         }
     }
     m_cfg->saveBkURL(bkUrl, bkImg, isImg);
@@ -192,6 +194,7 @@ void Dispatching::onQmlStartKepplive(QString ip, QString port)
         m_cfg->setCurrentIpPlan(ip);
         qDebug() << "Sock Client Start OK !!";
     } else {
+        emit callQmlConnectServerFail();
         qDebug() << "Sock Client Start ERROR !!";
     }
     if (old_comm) {
