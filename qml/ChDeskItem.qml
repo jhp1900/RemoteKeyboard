@@ -6,21 +6,23 @@ Rectangle {
     id: chRoot;
     width: 236;
     height: 196;
+    y: 450;
     anchors.top: parent.top;
     color: "#55000000";
     border.color: "#55ffffff";
     border.width: 1;
     radius: 10;
-    visible: false;
 
     property string chName: "";
     property int chType: -1;   // 0-未使能; 1-没有预置位的通道; 2-带预置位的通道; 3-预置位;
+    property int y2: 0;
 
     signal switchPVW(string name);
     signal switchPGM(string name);
     signal chRemovePS(string name);
 
     Text {
+        id: chTxt;
         anchors.centerIn: parent;
         font.pixelSize: 34;
         font.bold: true;
@@ -31,12 +33,19 @@ Rectangle {
     MouseArea {
         id: mouseArea;
         anchors.fill: parent;
-        drag.target: chRoot;
+        //drag.target: chRoot;
         onClicked: {
             emit: switchPVW(chName);
         }
         onDoubleClicked: {
             emit: switchPGM(chName);
+        }
+    }
+
+    Connections {
+        target: win;
+        onSwitchToActivity: {
+            onSwitchToActivity(pgmName, pvwName);
         }
     }
 
@@ -102,11 +111,11 @@ Rectangle {
 
     function onSwitchToActivity(pgm_name, pvw_name) {
         if (chName === pgm_name)
-            color = "#77ff0000";
+            chTxt.color = "#ff0000";
         else if (chName === pvw_name)
-            color = "#7700ff00";
+            chTxt.color = "#00ff00";
         else
-            color = "#77cccccc";
+            chTxt.color = "#000000";
     }
 
     function onRefeshCH(name, chType) {
@@ -129,5 +138,9 @@ Rectangle {
         if (action === "Collect")
             chSendPoint(chName, chRoot.x, chRoot.y);
             //console.log(chRoot.chName + " POINT : " + chRoot.x + " - - " + chRoot.y);
+    }
+
+    function showCh() {
+        animBig.start();
     }
 }

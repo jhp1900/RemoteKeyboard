@@ -58,11 +58,11 @@ Window {
             y: 305;
         }
 
-//        ChDesk {
-//            id: chDesk;
-//            x: 0;
-//            y: 448;
-//        }
+        ChDesk {
+            id: chDesk;
+            x: 0;
+            y: 448;
+        }
 
         DirectorDesk {
             id: directorDesk;
@@ -83,26 +83,7 @@ Window {
             anchors.left: menuBtn.left;
             anchors.top: menuBtn.top;
         }
-
-//        ControlDesk {
-//            id: ctrlDesk;
-//            x: (win.width - ctrlDesk.width) / 2;
-//            y: 550;
-//        }
-
-//        StateBar {
-//            id: stateBar;
-//            anchors.left: parent.left;
-//            anchors.leftMargin: 10;
-//            anchors.top: parent.top;
-//            anchors.topMargin: 10;
-//        }
     }
-
-//    Component.onCompleted: {
-//        console.log("fjdksajfkldsakldsnavkdsajkfjdsknvf----------------------");
-//        dispatching.onQmlGetBkurlMsg(true);
-//    }
 
     // C++ Call QML ****************************************************************
     Connections {
@@ -114,11 +95,13 @@ Window {
             }
         }
         onCallQmlLoadupCh: {
-            showCHFounction(name, chType);
+//            showCHFounction(name, chType);
+//            chDesk.showCh(name);
         }
         onCallQmlRefeshCh: {
             if (refType === 1) {
-                showCHFounction(name, chType);
+//                showCHFounction(name, chType);
+//                chDesk.show(name);
             } else if (refType === -1) {
                 emit: destroyCH(name);
             } else if (refType === 0) {
@@ -127,7 +110,7 @@ Window {
         }
         onCallQmlChangeChActivity: {
             console.log("onCallQmlChangeChActivity : " + pgmName + " - " + pvwName);
-            switchToActivity(pgmName, pvwName);
+            emit: switchToActivity(pgmName, pvwName);
         }
         onCallQmlCtrlState: {
             if (obj === "DirectMode") {
@@ -190,20 +173,13 @@ Window {
     }
     Connections {
         target: menuBar;
-//        onSaveCfg: {
-//            emit: sendActionToCH("Collect");
-//        }
         onOpenVK: dispatching.onQmlVK();
     }
-//    Connections {
-//        target: chDesk;
-//        onSwitchPVW: {
-//            dispatching.onQmlChSwitch(name, true);
-//        }
-//        onSwitchPGM: {
-//            dispatching.onQmlChSwitch(name, false);
-//        }
-//    }
+    Connections {
+        target: chDesk;
+        onSwitchPVW: dispatching.onQmlChSwitch(name, true);
+        onSwitchPGM: dispatching.onQmlChSwitch(name, false);
+    }
 
     // JS Function *****************************************************************
     function onChClicked(name) {
@@ -228,19 +204,7 @@ Window {
         dispatching.onQmlGetInitData();
         recodeDesk.show();
         directorDesk.show();
+        chDesk.show();
         //dispatching.onQmlStartKepplive(ip, port);
-    }
-    function showCHFounction(name, chType) {
-        var x = 0;
-        if (name === "CH1") x = 7;
-        else if (name === "CH2") x = 246;
-        else if (name === "CH3") x = 485;
-        else if (name === "CH4") x = 724;
-        else if (name === "CH5") x = 964;
-        else if (name === "CH6") x = 1202;
-        else if (name === "CH7") x = 1442;
-        else if (name === "CH8") x = 1680;
-
-        ChScript.createChObj(x, 450, name, chType, 0);
     }
 }

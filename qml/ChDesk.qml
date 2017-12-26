@@ -5,70 +5,55 @@ Rectangle {
     width: 1920;
     height: 196;
     color: "transparent";
+    visible: false;
 
     signal switchPVW(string name);
     signal switchPGM(string name);
 
     ChDeskItem {
         id: ch1;
+        x: 7;
         chName: "CH1";
-        anchors.left: parent.left;
-        anchors.leftMargin: 6;
     }
     ChDeskItem {
         id: ch2;
-        anchors.left: ch1.right;
-        anchors.leftMargin: 3;
+        x: 246;
         chName: "CH2";
     }
     ChDeskItem {
         id: ch3;
-        anchors.left: ch2.right;
-        anchors.leftMargin: 3;
+        x: 485;
         chName: "CH3";
     }
     ChDeskItem {
         id: ch4;
-        anchors.left: ch3.right;
-        anchors.leftMargin: 3;
+        x: 724;
         chName: "CH4";
     }
     ChDeskItem {
         id: ch5;
-        anchors.left: ch4.right;
-        anchors.leftMargin: 3;
+        x: 964;
         chName: "CH5";
     }
     ChDeskItem {
         id: ch6;
-        anchors.left: ch5.right;
-        anchors.leftMargin: 3;
+        x: 1202;
         chName: "CH6";
     }
     ChDeskItem {
         id: ch7;
-        anchors.left: ch6.right;
-        anchors.leftMargin: 3;
+        x: 1442;
         chName: "CH7";
     }
     ChDeskItem {
         id: ch8;
-        anchors.left: ch7.right;
-        anchors.leftMargin: 3;
+        x: 1680;
         chName: "CH8";
     }
 
     Connections {
         target: win;
         onShowCH: {
-            if (name === "CH1") ch1.onRefeshCH(name, 0);
-            else if (name === "CH2") ch2.onRefeshCH(name, 1);
-            else if (name === "CH3") ch3.onRefeshCH(name, 1);
-            else if (name === "CH4") ch4.onRefeshCH(name, 1);
-            else if (name === "CH5") ch5.onRefeshCH(name, 1);
-            else if (name === "CH6") ch6.onRefeshCH(name, 1);
-            else if (name === "CH7") ch7.onRefeshCH(name, 1);
-            else if (name === "CH8") ch8.onRefeshCH(name, 1);
         }
     }
     Connections {
@@ -112,10 +97,38 @@ Rectangle {
         onSwitchPGM: onSwitchPGMF(name);
     }
 
+    function show() {
+        visible = true;
+        animBig.start();
+    }
+
+    function hide() {
+        animSmall.start();
+    }
+
     function onSwitchPVWF(name) {
         emit: switchPVW(name);
     }
     function onSwitchPGMF(name) {
         emit: switchPGM(name);
+    }
+
+    PropertyAnimation {
+        id: animBig;
+        target: chDeskRoot;
+        duration: 500;
+        easing.type: Easing.OutBounce;
+        property: "scale";
+        from: 0;
+        to: 1;
+    }
+    PropertyAnimation {
+        id: animSmall;
+        target: chDeskRoot;
+        duration: 500;
+        easing.type: Easing.OutBounce;
+        property: "scale";
+        from: 1;
+        to: 0;
     }
 }
