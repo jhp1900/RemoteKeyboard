@@ -28,15 +28,23 @@ bool QFFmpeg::OpenURL(const char *url)
     pAVFormatContext = avformat_alloc_context();
     pAVFrame = av_frame_alloc();
 
-    if (avformat_open_input(&pAVFormatContext, url, NULL, NULL) < 0) {
-        qDebug() << "Open video stream Fail - 1 !!! ";
+    AVDictionary *pm = NULL;
+    av_dict_set(&pm, "stimeout", "1000000", 0);
+
+    qDebug() << "OpenURL init Success - 0 !!! " << url;
+
+    int r = avformat_open_input(&pAVFormatContext, url, NULL, &pm);
+    if (r < 0) {
+        qDebug() << "Open video stream Fail - 1 !!! -  " << r;
         return false;
     }
+    qDebug() << "Open video stream Success - 1 !!! ";
 
     if (avformat_find_stream_info(pAVFormatContext, NULL) < 0) {
         qDebug() << "Get video stream info Fail - 2 !!! ";
         return false;
     }
+    qDebug() << "Get video stream info Success - 2 !!! ";
 
     videoStreamIndex = -1;
     for (uint i = 0; i < pAVFormatContext->nb_streams; ++i) {
@@ -50,6 +58,7 @@ bool QFFmpeg::OpenURL(const char *url)
         qDebug() << "Get video stream index Fail - 3 !!! ";
         return false;
     }
+    qDebug() << "Get video stream index Success - 3 !!! ";
 
     pAVCodecContext = pAVFormatContext->streams[videoStreamIndex]->codec;
 
@@ -66,6 +75,7 @@ bool QFFmpeg::OpenURL(const char *url)
         qDebug() << "Open avcodec fail - 4 !!! ";
         return false;
     }
+    qDebug() << "Open avcodec Success - 4 !!! ";
 
     qDebug() << "The URL Open Success !!!!";
     return true;

@@ -144,8 +144,8 @@ Window {
                 }
             } else {
                 if (bkUrl !== "") {
-                    dispatching.onQmlStart(bkUrl, bkImg, isImg);
                     console.log(" - onCallQmlSendInitData - bkUrl -" + bkUrl);
+                    dispatching.onQmlStart(bkUrl, bkImg, isImg);
                 } else {
                     bk.show();
                 }

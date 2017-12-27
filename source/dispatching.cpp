@@ -167,10 +167,10 @@ void Dispatching::clickTimeout()
 void Dispatching::onQmlStart(QString bkUrl, QString bkImg, bool isImg)
 {
     if (!isImg) {
-        stop();
+        //stop();
         ffmpeg = new QFFmpeg(this);
         connect(ffmpeg, SIGNAL(GetImage(QImage)), this, SLOT(SetImage(QImage)));
-
+        qDebug() << " - onQmlStart      OpenURL -";
         if (ffmpeg->OpenURL(bkUrl.toLatin1().data())) {
             m_rtsp = new RtspThread(this);
             m_rtsp->setFFmpeg(ffmpeg);
