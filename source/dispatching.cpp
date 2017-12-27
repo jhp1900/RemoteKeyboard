@@ -6,15 +6,11 @@
 #include <shlwapi.h>
 #include <windows.h>
 
-//#include "pugixml.hpp"
-//#include "pugixml.cpp"
-
 #include "dispatching.h"
 #include "myimageprovider.h"
 #include "qffmpeg.h"
 #include "rtspthread.h"
 #include "comm.h"
-
 #include "qcfg.h"
 
 Dispatching::Dispatching(MyImageProvider * imgPro, QObject *parent)
@@ -83,7 +79,13 @@ void Dispatching::refeshCh(const std::multimap<int, std::pair<std::string, unsig
 
 void Dispatching::stop()
 {
-    qDebug() << "Dispatching Stop!!";
+    if (m_rtsp) {
+        m_rtsp->stop();
+        m_rtsp->quit();
+        m_rtsp->wait();
+        delete m_rtsp;
+        m_rtsp = nullptr;
+    }
 }
 
 void Dispatching::SetImage(const QImage &img)
@@ -153,20 +155,23 @@ void Dispatching::convertData(QString data)
 void Dispatching::clickTimeout()
 {
     m_pClickTimer->stop();
-    comm->SendData(m_pvw_name.toLatin1().data());
-    //qDebug() << "Send PVW : " << m_pvw_name;
+    if (comm)
+        comm->SendData(m_pvw_name.toLatin1().data());
 }
 
 void Dispatching::onQmlStart(QString bkUrl, QString bkImg, bool isImg)
 {
+    stop();
     if (!isImg) {
         ffmpeg = new QFFmpeg(this);
         connect(ffmpeg, SIGNAL(GetImage(QImage)), this, SLOT(SetImage(QImage)));
 
         if (ffmpeg->OpenURL(bkUrl.toLatin1().data())) {
-            RtspThread * rtsp = new RtspThread(this);
-            rtsp->setFFmpeg(ffmpeg);
-            rtsp->start();
+            m_rtsp = new RtspThread(this);
+            m_rtsp->setFFmpeg(ffmpeg);
+            m_rtsp->start();
+        } else {
+            emit callQmlOpenURLFail();
         }
     }
     m_cfg->saveBkURL(bkUrl, bkImg, isImg);
@@ -176,14 +181,19 @@ void Dispatching::onQmlStartKepplive(QString ip, QString port)
 {
     qDebug() << ip << " : " << port;
 
+    Comm * old_comm = comm;
+    comm = new Comm;
     if (comm->ConnectServer(ip.toLatin1().data(), port.toInt()) && comm->RunClient()){
         connect(comm, SIGNAL(recvPack(QString)), this, SLOT(convertData(QString)));
         m_cfg->saveServerInfo(ip, port);
         m_cfg->setCurrentIpPlan(ip);
         qDebug() << "Sock Client Start OK !!";
     } else {
+        emit callQmlConnectServerFail();
         qDebug() << "Sock Client Start ERROR !!";
     }
+    if (old_comm)
+        old_comm->Stop();
 }
 
 void Dispatching::onQmlChSwitch(QString name, bool single)

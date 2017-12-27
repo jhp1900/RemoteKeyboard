@@ -136,7 +136,7 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent;
                 onClicked: {
-                    emit: clickLinkHome(ipEdit.text, portEdit.text);
+                    linkHome();
                     hide();
                 }
             }
@@ -204,6 +204,10 @@ Rectangle {
 
     function hide() {
         animSmall.start();
+    }
+
+    function linkHome() {
+        emit: clickLinkHome(ipEdit.text, portEdit.text);
     }
 
     PropertyAnimation {

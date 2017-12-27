@@ -23,6 +23,7 @@ public:
     BOOL DisconnectServer();
     BOOL RunClient();
     void SendData(const char * data);
+    BOOL Stop();
 
 public:
     static void KeepLiveFun(void *param);

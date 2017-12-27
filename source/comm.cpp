@@ -13,6 +13,8 @@ Comm::Comm()
 
 Comm::~Comm()
 {
+    Stop();
+
     if (kelv_thread_.joinable())
         kelv_thread_.join();
     if (send_thread_.joinable())
@@ -48,7 +50,8 @@ BOOL Comm::ConnectServer(const char * ip, int port)
     sv_addr.sin_port = htons(port);
 
     int reVal;
-    while (true) {
+    int conn_count = 10;
+    while (--conn_count) {
         reVal = ::connect(keep_sock_, (SOCKADDR*)&sv_addr, sizeof(sv_addr));
         if (reVal == SOCKET_ERROR) {
             int err_code = WSAGetLastError();
@@ -64,7 +67,8 @@ BOOL Comm::ConnectServer(const char * ip, int port)
         if (reVal == 0)
             break;
     }
-    while (true) {
+    conn_count = 10;
+    while (--conn_count) {
         reVal = ::connect(action_sock_, (SOCKADDR*)&sv_addr, sizeof(sv_addr));
         if (reVal == SOCKET_ERROR) {
             int err_code = WSAGetLastError();
@@ -72,18 +76,21 @@ BOOL Comm::ConnectServer(const char * ip, int port)
                 Sleep(TIMEFOR_THREAD_CONTINUE);
                 continue;
             }
-            else if (err_code == WSAEISCONN)
-                break;
+            else if (err_code == WSAEISCONN) {
+                is_connected_ = TRUE;
+                return TRUE;
+            }
             else
                 return FALSE;
         }
-        if (reVal == 0)
-            break;
+        if (reVal == 0) {
+            is_connected_ = TRUE;
+            return TRUE;
+        }
     }
 
-    is_connected_ = TRUE;
-
-    return TRUE;
+    is_connected_ = FALSE;
+    return FALSE;
 }
 
 BOOL Comm::DisconnectServer()
@@ -104,6 +111,11 @@ void Comm::SendData(const char * data)
 {
     send_str_ = data;
     SetEvent(send_event_);
+}
+
+WINBOOL Comm::Stop()
+{
+    is_connected_ = false;
 }
 
 void Comm::KeepLiveFun(void *param)

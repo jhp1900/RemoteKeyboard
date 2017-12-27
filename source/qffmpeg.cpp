@@ -28,7 +28,10 @@ bool QFFmpeg::OpenURL(const char *url)
     pAVFormatContext = avformat_alloc_context();
     pAVFrame = av_frame_alloc();
 
-    if (avformat_open_input(&pAVFormatContext, url, NULL, NULL) < 0) {
+    AVDictionary *pm = nullptr;
+    av_dict_set(&pm, "stimeout", "1000000", 0);
+
+    if (avformat_open_input(&pAVFormatContext, url, NULL, &pm) < 0) {
         qDebug() << "打开视频流失败！！！";
         return false;
     }
@@ -75,7 +78,8 @@ void QFFmpeg::Play()
 {
     int frameFinished = 0;
     AVPacket pAVPacket;
-    while (true) {
+    isRun = true;
+    while (isRun) {
         if (av_read_frame(pAVFormatContext, &pAVPacket) >= 0) {
             if (pAVPacket.stream_index == videoStreamIndex) {
                 //qDebug() << "开始解码:" << QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
@@ -96,12 +100,6 @@ void QFFmpeg::Play()
 
 bool QFFmpeg::Stop()
 {
-    if (pAVFormatContext)
-        avformat_free_context(pAVFormatContext);
-    if (pAVFrame)
-        av_frame_free(&pAVFrame);
-    if (pSwsContext)
-        sws_freeContext(pSwsContext);
-
+    isRun = false;
     return true;
 }

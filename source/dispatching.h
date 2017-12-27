@@ -11,6 +11,7 @@ class QFFmpeg;
 class Comm;
 class QTimer;
 class QCfg;
+class RtspThread;
 
 struct SockCHPack
 {
@@ -63,6 +64,8 @@ signals:
     void callQmlChangeChActivity(QString pgmName, QString pvwName);
     void callQmlCtrlState(QString obj, int val);
     void callQmlSendInitData(QString ip, QString port, QString bkUrl, QString bkImg, bool isImg);
+    void callQmlOpenURLFail();
+    void callQmlConnectServerFail();
 
 public slots:
     void stop();
@@ -93,6 +96,7 @@ private:
     QString m_pvw_name;
 
     std::shared_ptr<QCfg> m_cfg;
+    RtspThread * m_rtsp;
 };
 
 #endif // DISPATCHING_H

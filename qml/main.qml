@@ -136,8 +136,16 @@ Window {
                 if (bkUrl !== "") {
                     dispatching.onQmlStart(bkUrl, bkImg, isImg);
                     console.log(" - onCallQmlSendInitData - bkUrl -" + bkUrl);
+                } else {
+                    bk.show();
                 }
             }
+        }
+        onCallQmlOpenURLFail: {
+            bk.show();
+        }
+        onCallQmlConnectServerFail: {
+            linkHomeSet.show();
         }
     }
 
@@ -146,19 +154,27 @@ Window {
         target: menuBtn;
         onClickMenuBtn: {
             if (isFront)
-                dispatching.onQmlGetInitData();
-            else
+                initRK();
+            else if (!menuBar.visible)
                 menuBar.show();
+            else
+                menuBar.hide();
         }
     }
     Connections {
         target: bk;
         onClickStart: {
             if (isImg) {
-                img.source = "";
-                img.source = bkImg;
+                if (bkImg !== "") {
+                    img.source = "";
+                    img.source = bkImg;
+                }
+            } else {
+                if (bkUrl !== "")
+                    dispatching.onQmlStart(bkUrl, bkImg, isImg);
+                else
+                    bk.show();
             }
-            dispatching.onQmlStart(bkUrl, bkImg, isImg);
         }
     }
     Connections {
@@ -194,5 +210,10 @@ Window {
 
     function onChSendPoint(name, x, y) {
         dispatching.onQmlSaveCHPoint(name, x, y);
+    }
+
+    function initRK() {
+        dispatching.onQmlGetInitData();
+        linkHomeSet.linkHome();
     }
 }
