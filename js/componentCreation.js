@@ -21,6 +21,7 @@ function finishChCreation(x, y, name, chType, y2) {
             win.refeshCH.connect(item.onRefeshCH);
             win.removePS.connect(item.onRemovePS);
             win.sendActionToCH.connect(item.onSendActionToCH);
+            win.restoreChPoint.connect(item.onRestoreChPoint);
             item.chClicked.connect(win.onChClicked);
             item.chDbClicked.connect(win.onChDbClicked);
             item.chRemovePS.connect(win.onChRemovePS);

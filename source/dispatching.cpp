@@ -36,9 +36,9 @@ Dispatching::~Dispatching()
 {
 }
 
-void Dispatching::cmpChMap(const std::map<std::string, unsigned int> &data)
+void Dispatching::cmpChMap(const std::map<QString, unsigned int> &data)
 {
-    std::multimap<int, std::pair<std::string, unsigned int>> cmpResult;
+    std::multimap<int, std::pair<QString, unsigned int>> cmpResult;
     for (auto item = data.cbegin(); item != data.cend(); ++item) {
         auto old_item = m_old_chs.find(item->first);
         if (old_item == m_old_chs.end()) {
@@ -60,20 +60,20 @@ void Dispatching::cmpChMap(const std::map<std::string, unsigned int> &data)
         refeshCh(cmpResult);
 }
 
-void Dispatching::refeshCh(const std::multimap<int, std::pair<std::string, unsigned int> > &refesh)
+void Dispatching::refeshCh(const std::multimap<int, std::pair<QString, unsigned int> > &refesh)
 {
     if(m_first_refesh) {
         m_first_refesh = false;
         int count = refesh.size();
         int i = 0;
-        std::cout << "Ergodic refesh multimap ...... " << refesh.size() << std::endl;
-        for (auto item = refesh.cbegin(); item != refesh.cend(); ++item) {
-            emit callQmlLoadupCh(item->second.first.c_str(), item->second.second, count, ++i);
-        }
+
+        for (auto item = refesh.cbegin(); item != refesh.cend(); ++item)
+            emit callQmlLoadupCh(item->second.first, item->second.second, count, ++i);
+
+        emit callQmlLoadOver();
     } else {
-        for (auto item = refesh.cbegin(); item != refesh.cend(); ++item) {
-            emit callQmlRefeshCh(item->second.first.c_str(), item->second.second, item->first);
-        }
+        for (auto item = refesh.cbegin(); item != refesh.cend(); ++item)
+            emit callQmlRefeshCh(item->second.first, item->second.second, item->first);
     }
 }
 
@@ -109,7 +109,7 @@ void Dispatching::convertData(QString data)
     if (!root)
         return;
 
-    std::map<std::string, unsigned int> ch_data = {};
+    std::map<QString, unsigned int> ch_data = {};
     pugi::xml_node ch_node = root.child("CH");
     if (ch_node) {
         auto attr = ch_node.first_attribute();
@@ -161,7 +161,7 @@ void Dispatching::clickTimeout()
 
 void Dispatching::onQmlStart(QString bkUrl, QString bkImg, bool isImg)
 {
-    stop();
+    //stop();
     if (!isImg) {
         ffmpeg = new QFFmpeg(this);
         connect(ffmpeg, SIGNAL(GetImage(QImage)), this, SLOT(SetImage(QImage)));
@@ -272,4 +272,11 @@ void Dispatching::onQmlGetInitData()
     m_cfg->getBkURL(bkUrl, bkImg, isImg);
 
     emit callQmlSendInitData(ip, port, bkUrl, bkImg, isImg);
+}
+
+void Dispatching::onQmlRequestPointsData()
+{
+        auto ch_points = m_cfg->getCHPoints();
+        for (auto item : ch_points)
+            emit callQmlRestoreChPoint(item.first, item.second.first, item.second.second);
 }

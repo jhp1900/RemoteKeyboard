@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "qcfg.h"
 #include "pugixml.cpp"
 
@@ -14,7 +16,7 @@ QCfg::~QCfg()
 
 bool QCfg::setCurrentIpPlan(const QString &ip_play)
 {
-    m_ip_plan = ip_play;
+    m_ip_plan = "_" + ip_play;
 }
 
 bool QCfg::saveCHPoint(const QString &name, int x, int y)
@@ -35,6 +37,19 @@ bool QCfg::saveCHPoint(const QString &name, int x, int y)
     attr = y;
 
     saveCfg();
+}
+
+std::map<QString, std::pair<int, int> > QCfg::getCHPoints()
+{
+    std::map<QString, std::pair<int, int> > ch_points;
+    pugi::xml_node plan_node = getCurretIpPlanNode();
+    pugi::xml_node node = plan_node.first_child();
+    while (node) {
+        ch_points[node.name()] = std::make_pair(node.attribute("x").as_int(), node.attribute("y").as_int());
+        node = node.next_sibling();
+    }
+
+    return ch_points;
 }
 
 bool QCfg::saveBkURL(const QString &bkUrl, const QString &bkImg, bool isImg)
@@ -158,6 +173,7 @@ pugi::xml_node QCfg::getRoot()
 
 pugi::xml_node QCfg::getCurretIpPlanNode()
 {
+    qDebug() << " getCurretIpPlanNode " << m_ip_plan;
     return getNode(m_ip_plan);
 }
 

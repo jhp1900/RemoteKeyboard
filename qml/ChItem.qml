@@ -15,6 +15,8 @@ Rectangle {
     property int y2;
     property bool stateEnable: true;
     property int chSpace: 120;
+    property int rx;
+    property int ry;
 
     signal chClicked(string name);
     signal chDbClicked(string name);
@@ -75,6 +77,24 @@ Rectangle {
         property: "y";
         from: y2;
         to: y;
+    }
+    PropertyAnimation {
+        id: animMoveX;
+        target: chRoot;
+        duration: 500;
+        easing.type: Easing.OutExpo;
+        property: "x";
+        from: x;
+        to:rx;
+    }
+    PropertyAnimation {
+        id: animMoveY;
+        target: chRoot;
+        duration: 500;
+        easing.type: Easing.OutExpo;
+        property: "y";
+        from: y;
+        to: ry;
     }
 
     onChTypeChanged: {
@@ -169,5 +189,14 @@ Rectangle {
         if (action === "Collect")
             chSendPoint(chName, chRoot.x, chRoot.y);
             //console.log(chRoot.chName + " POINT : " + chRoot.x + " - - " + chRoot.y);
+    }
+
+    function onRestoreChPoint(name, x, y) {
+        if (chName === name) {
+            chRoot.rx = x;
+            chRoot.ry = y;
+            animMoveX.start();
+            animMoveY.start();
+        }
     }
 }

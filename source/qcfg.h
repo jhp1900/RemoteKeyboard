@@ -2,6 +2,8 @@
 #define QCFG_H
 
 #include <QString>
+#include <map>
+#include <utility>
 
 #include "pugixml.hpp"
 
@@ -13,6 +15,7 @@ public:
 
     bool setCurrentIpPlan(const QString &ip_play);
     bool saveCHPoint(const QString &name, int x, int y);
+    std::map<QString, std::pair<int, int>> getCHPoints();
     bool saveBkURL(const QString &bkUrl, const QString &bkImg, bool isImg);
     bool getBkURL(QString &bkUrl, QString &bkImg, bool &isImg);
     bool saveServerInfo(const QString &ip, const QString &port);

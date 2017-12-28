@@ -25,6 +25,7 @@ Window {
     signal removePS(string name);
     signal sendActionToCH(string action);
     signal initData(string bkUrl, string bkImg, string ip, string port);
+    signal restoreChPoint(string name, int x, int y);
 
     Rectangle {
         anchors.fill: parent;
@@ -80,6 +81,17 @@ Window {
         }
     }
 
+    // Timer ***********************************************************************
+    Timer {
+        id: restoreChTimer;
+        interval: 1000;
+        repeat: false;
+        onTriggered: {
+            console.log("  * * * * * * onTriggered Timer ********************");
+            dispatching.onQmlRequestPointsData();
+        }
+    }
+
 //    Component.onCompleted: {
 //        console.log("fjdksajfkldsakldsnavkdsajkfjdsknvf----------------------");
 //        dispatching.onQmlGetBkurlMsg(true);
@@ -99,6 +111,12 @@ Window {
             var h = (win.height - 100) / 2;
             console.log("onCallQmlRefeshCh : " + name + " - " + count + " - " + index + " - " + chType + " - " + gap + " - " + h);
             ChScript.createChObj(gap * index, h, name, chType, 0);
+        }
+        onCallQmlLoadOver: {
+            restoreChTimer.start();
+        }
+        onCallQmlRestoreChPoint: {
+            emit: restoreChPoint(name, x, y);
         }
         onCallQmlRefeshCh: {
             if (refType === 1) {
