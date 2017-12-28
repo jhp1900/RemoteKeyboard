@@ -161,7 +161,7 @@ void Dispatching::clickTimeout()
 
 void Dispatching::onQmlStart(QString bkUrl, QString bkImg, bool isImg)
 {
-    //stop();
+    stop();
     if (!isImg) {
         ffmpeg = new QFFmpeg(this);
         connect(ffmpeg, SIGNAL(GetImage(QImage)), this, SLOT(SetImage(QImage)));
@@ -173,6 +173,8 @@ void Dispatching::onQmlStart(QString bkUrl, QString bkImg, bool isImg)
         } else {
             emit callQmlOpenURLFail();
         }
+    } else {
+        stop();
     }
     m_cfg->saveBkURL(bkUrl, bkImg, isImg);
 }

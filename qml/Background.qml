@@ -75,6 +75,7 @@ Rectangle {
                         font.pixelSize:16;
                         verticalAlignment: Text.AlignVCenter;
                         horizontalAlignment: Text.AlignHCenter;
+                        color: "white";
                         selectByMouse: true;
                         Rectangle {
                             anchors.fill: parent
@@ -123,6 +124,7 @@ Rectangle {
                         font.pixelSize: 16
                         verticalAlignment: Text.AlignVCenter;
                         horizontalAlignment: Text.AlignHCenter;
+                        color: "white";
                         selectByMouse: true;
                         readOnly: true;
                         Rectangle {

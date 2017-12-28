@@ -184,6 +184,7 @@ Window {
         onClickStart: {
             if (isImg) {
                 if (bkImg !== "") {
+                    dispatching.onQmlStart(bkUrl, bkImg, isImg);
                     img.source = "";
                     img.source = bkImg;
                 }
@@ -233,5 +234,6 @@ Window {
     function initRK() {
         dispatching.onQmlGetInitData();
         linkHomeSet.linkHome();
+        stateBar.show();
     }
 }
