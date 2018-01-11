@@ -98,6 +98,7 @@ Rectangle {
     }
 
     onChTypeChanged: {
+        chRoot.visible = true;
         switch(chType) {
         case 0:
             animBig.start();
@@ -109,7 +110,11 @@ Rectangle {
             chRoot.stateEnable = true;
             break;
         case 2:
-            animBig.start();
+            //animBig.start();
+            creatPreset();
+            chRoot.visible = false;
+            //chRoot.destroy();
+            //animSmall.start();
             chRoot.stateEnable = true;
             break;
         case 3:
@@ -143,11 +148,11 @@ Rectangle {
             }
 
             if (chY === -count)
-                chY = -count + 1;
+                chY = -(count - 2);
 
             for(var i = 1; i < count; ++i){
-                if (chY === 0)
-                    ++chY;
+//                if (chY === 0)
+//                    ++chY;
                 ChScript.createChObj(chRoot.x, chRoot.y + chY * chRoot.chSpace, chName + "-" + i, 3, chRoot.y);
                 ++ chY;
             }
