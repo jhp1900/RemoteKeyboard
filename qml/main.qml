@@ -163,6 +163,7 @@ Window {
             bk.show();
         }
         onCallQmlConnectServerFail: {
+            console.log("   *   onCallQmlConnectServerFail   *   ")
             linkHomeSet.show();
         }
     }

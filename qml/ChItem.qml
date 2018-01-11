@@ -122,13 +122,16 @@ Rectangle {
 
     function creatPreset() {
         if (chType === 2) {
+            var count = 4;
+            var chY = -1;
             var h = win.height;
-            if (h < 7 * chRoot.chSpace) {
-                chRoot.chSpace = h / 7;
+
+            if (h < count * chRoot.chSpace) {
+                chRoot.chSpace = h / count;
             }
-            var chY = -3;
+
             var yTop = chRoot.y > -chY * chRoot.chSpace;
-            var yBottom = chRoot.y + (chY+7) * chRoot.chSpace < h;
+            var yBottom = chRoot.y + (chY+count) * chRoot.chSpace < h;
             while (!(yTop && yBottom)) {
                 if (!yTop)
                     ++chY;
@@ -136,13 +139,13 @@ Rectangle {
                     --chY;
 
                 yTop = chRoot.y > -chY * chRoot.chSpace;
-                yBottom = chRoot.y + (chY+7) * chRoot.chSpace < h;
+                yBottom = chRoot.y + (chY+count) * chRoot.chSpace < h;
             }
 
-            if (chY === -7)
-                chY = -6;
+            if (chY === -count)
+                chY = -count + 1;
 
-            for(var i = 1; i < 7; ++i){
+            for(var i = 1; i < count; ++i){
                 if (chY === 0)
                     ++chY;
                 ChScript.createChObj(chRoot.x, chRoot.y + chY * chRoot.chSpace, chName + "-" + i, 3, chRoot.y);
